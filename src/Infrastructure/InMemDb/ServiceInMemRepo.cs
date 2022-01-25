@@ -1,10 +1,13 @@
-﻿using Application.Interfaces;
+﻿using Application.Dtos;
+using Application.Interfaces;
+using AutoMapper;
 using CoreBusiness.Models;
 
 namespace Infrastructure.InMemDb;
 
 public class ServiceInMemRepo : IServiceRepo
 {
+
     private static List<Service> _services = new()
     {
         new Service { ServiceId = 1, Name = "Web Development", Description = "Building web apps with DotNet", SvgPath = String.Empty },
@@ -12,14 +15,21 @@ public class ServiceInMemRepo : IServiceRepo
         new Service { ServiceId = 3, Name = "Data Analysist", Description = "Visualizing data by Power Bi", SvgPath = String.Empty }
     };
 
-    public async Task<IEnumerable<Service>> GetAllAsync()
+    private readonly IMapper _mapper;
+
+    public ServiceInMemRepo(IMapper mapper)
     {
-        return await Task.FromResult(_services);
+        _mapper = mapper;
     }
 
-    public async Task<Service> GetByIdAsync(int id)
+    public async Task<IEnumerable<ServiceDto>> GetAllAsync()
     {
-        return await Task.FromResult(_services.Find(s => s.ServiceId == id));
+        return await Task.FromResult(_mapper.Map<List<ServiceDto>>(_services));
+    }
+
+    public async Task<ServiceDto> GetByIdAsync(int id)
+    {
+        return await Task.FromResult(_mapper.Map<ServiceDto>(_services.Find(s => s.ServiceId == id)));
     }
 
     public async Task<bool> IsExistsAsync(int id)
@@ -27,8 +37,10 @@ public class ServiceInMemRepo : IServiceRepo
         return await Task.FromResult(_services.Any(s => s.ServiceId == id));
     }
 
-    public async Task<bool> CreateAsync(Service serviceToCreate)
+    public async Task<bool> CreateAsync(ServiceDto serviceDtoToCreate)
     {
+        var serviceToCreate = _mapper.Map<Service>(serviceDtoToCreate);
+
         if (_services.Any(s => s.Name.Equals(serviceToCreate.Name, StringComparison.OrdinalIgnoreCase)))
             return await Task.FromResult(false);
 
@@ -41,8 +53,10 @@ public class ServiceInMemRepo : IServiceRepo
         return await SaveAsync();
     }
 
-    public async Task<bool> UpdateAsync(Service serviceToUpdate)
+    public async Task<bool> UpdateAsync(ServiceDto serviceDtoToUpdate)
     {
+        var serviceToUpdate = _mapper.Map<Service>(serviceDtoToUpdate);
+
         var index = _services.FindIndex(s => s.ServiceId == serviceToUpdate.ServiceId);
 
         if (index < 0)

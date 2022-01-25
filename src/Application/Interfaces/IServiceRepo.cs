@@ -1,7 +1,8 @@
-﻿using CoreBusiness.Models;
+﻿using Application.Dtos;
+using CoreBusiness.Models;
 
 namespace Application.Interfaces;
 
-public interface IServiceRepo : IBaseRepo<Service>
+public interface IServiceRepo : IBaseRepo<ServiceDto>
 {
 }

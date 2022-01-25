@@ -2,6 +2,13 @@
 
 public static class ApiConfigs
 {
+    private static IServiceControllers _serviceControllers;
+
+    public static void InitDIContainer(IServiceControllers serviceControllers)
+    {
+        _serviceControllers = serviceControllers;
+    }
+
     public static void ConfigureApi(this WebApplication app)
     {
         // User Api
@@ -9,12 +16,14 @@ public static class ApiConfigs
         app.MapPut("/Users", UpdateUser);
 
         // Service Api
-        app.MapGet("/Services", GetServices);
-        app.MapGet("/Services/{id}", GetServiceById);
-        app.MapPost("/Services", CreateService);
-        app.MapPut("/Services", UpdateService);
-        app.MapDelete("/Services/{id}", DeleteService);
+        app.MapGet("/Services", async () => await _serviceControllers.GetAll());
+        app.MapGet("/Services/{id}", async (int id) => await _serviceControllers.GetById(id));
+        app.MapPost("/Services", async (ServiceDto serviceDto) => await _serviceControllers.Create(serviceDto));
+        app.MapPut("/Services", async (ServiceDto serviceDto) => await _serviceControllers.Update(serviceDto));
+        app.MapDelete("/Services/{id}", async (int id) => await _serviceControllers.Delete(id));
     }
+
+    #region User
 
     private static async Task<IResult> GetUser(IUserRepo userRepo, IMapper mapper)
     {
@@ -50,6 +59,10 @@ public static class ApiConfigs
         }
     }
 
+    #endregion
+
+    #region Service
+
     private static async Task<IResult> GetServices(IServiceRepo serviceRepo, IMapper mapper)
     {
         try
@@ -83,7 +96,7 @@ public static class ApiConfigs
     {
         try
         {
-            var isCreateSuccess = await serviceRepo.CreateAsync(mapper.Map<Service>(serviceDtoToCreate));
+            var isCreateSuccess = await serviceRepo.CreateAsync(serviceDtoToCreate);
 
             if (!isCreateSuccess)
                 return Results.Problem();
@@ -100,7 +113,7 @@ public static class ApiConfigs
     {
         try
         {
-            var isUpdateSuccess = await serviceRepo.UpdateAsync(mapper.Map<Service>(serviceDtoToUpdate));
+            var isUpdateSuccess = await serviceRepo.UpdateAsync(serviceDtoToUpdate);
 
             if (!isUpdateSuccess)
                 return Results.Problem();
@@ -128,5 +141,7 @@ public static class ApiConfigs
         {
             return Results.Problem(e.Message);
         }
-    }
+    } 
+
+    #endregion
 }

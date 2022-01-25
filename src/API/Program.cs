@@ -9,6 +9,8 @@ builder.Services.AddAutoMapper(typeof(Mapping));
 builder.Services.AddSingleton<IUserRepo, UserInMemRepo>();
 builder.Services.AddSingleton<IServiceRepo, ServiceInMemRepo>();
 
+builder.Services.AddScoped<IServiceControllers, ServiceControllers>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,6 +21,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+using (var serviceScope = app.Services.CreateScope())
+{
+    var serviceControllers = serviceScope.ServiceProvider.GetRequiredService<IServiceControllers>();
+    ApiConfigs.InitDIContainer(serviceControllers);
+}
 
 app.ConfigureApi();
 
