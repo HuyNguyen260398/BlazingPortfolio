@@ -7,6 +7,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Mapping));
 
 builder.Services.AddSingleton<IUserRepo, UserInMemRepo>();
+builder.Services.AddSingleton<IServiceRepo, ServiceInMemRepo>();
 
 var app = builder.Build();
 
