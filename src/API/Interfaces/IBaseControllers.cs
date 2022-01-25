@@ -1,4 +1,4 @@
-﻿namespace API;
+﻿namespace API.Interfaces;
 
 public interface IBaseControllers<T> where T : class
 {

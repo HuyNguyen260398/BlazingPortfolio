@@ -1,4 +1,4 @@
-﻿namespace API;
+﻿namespace API.Interfaces;
 
 public interface IServiceControllers : IBaseControllers<ServiceDto>
 {

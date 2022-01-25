@@ -1,4 +1,4 @@
-﻿namespace API;
+﻿namespace API.Controllers;
 
 public class ServiceControllers : BaseControllers<ServiceDto>, IServiceControllers
 {

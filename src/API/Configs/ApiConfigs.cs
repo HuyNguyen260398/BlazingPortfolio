@@ -1,4 +1,4 @@
-﻿namespace API;
+﻿namespace API.Configs;
 
 public static class ApiConfigs
 {

@@ -1,4 +1,4 @@
-﻿namespace API;
+﻿namespace API.Controllers;
 
 public class BaseControllers<T> : IBaseControllers<T> where T : class
 {
