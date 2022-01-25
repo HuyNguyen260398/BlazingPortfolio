@@ -41,9 +41,10 @@ public class UserInMemRepo : IUserRepo
         throw new NotImplementedException();
     }
 
-    public Task<bool> UpdateAsync(User entity)
+    public async Task<bool> UpdateAsync(User userToUpdate)
     {
-        throw new NotImplementedException();
+        _users[0] = userToUpdate;
+        return await SaveAsync();
     }
 
     public Task<bool> DeleteAsync(int id)
@@ -56,8 +57,8 @@ public class UserInMemRepo : IUserRepo
         throw new NotImplementedException();
     }
 
-    public Task<bool> SaveAsync()
+    public async Task<bool> SaveAsync()
     {
-        throw new NotImplementedException();
+        return await Task.FromResult(true);
     }
 }
