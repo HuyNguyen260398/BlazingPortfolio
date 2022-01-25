@@ -7,10 +7,11 @@ public class UserInMemRepo : IUserRepo
 {
     private static List<User> _users = new()
     {
-        new User 
+        new User
         {
             FirstName = "Huy",
             LastName = "Nguyen",
+            DoB = new DateTime(1998, 03, 26).Date,
             Email = "huynguyen260398@gmail.com",
             Phone = "(+84)903336493",
             Address = "Tran Tan Street, HCM City, Viet Nam",
@@ -20,14 +21,9 @@ public class UserInMemRepo : IUserRepo
         }
     };
 
-    public Task<bool> CreateAsync(User entity)
+    public async Task<User> GetUser()
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> DeleteAsync(int id)
-    {
-        throw new NotImplementedException();
+        return await Task.FromResult(_users.First());
     }
 
     public Task<IEnumerable<User>> GetAllAsync()
@@ -40,17 +36,27 @@ public class UserInMemRepo : IUserRepo
         throw new NotImplementedException();
     }
 
+    public Task<bool> CreateAsync(User entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> UpdateAsync(User entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> DeleteAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<bool> IsExistsAsync(int id)
     {
         throw new NotImplementedException();
     }
 
     public Task<bool> SaveAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> UpdateAsync(User entity)
     {
         throw new NotImplementedException();
     }
