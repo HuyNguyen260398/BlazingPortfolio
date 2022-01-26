@@ -30,7 +30,7 @@ public class UserInMemRepo : IUserRepo
         _mapper = mapper;
     }
 
-    public async Task<UserDto> GetUser()
+    public async Task<UserDto> GetUserAsync()
     {
         return await Task.FromResult(_mapper.Map<UserDto>(_users.First()));
     }

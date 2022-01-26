@@ -5,5 +5,5 @@ namespace Application.Interfaces;
 
 public interface IUserRepo : IBaseRepo<UserDto>
 {
-    Task<UserDto> GetUser();
+    Task<UserDto> GetUserAsync();
 }

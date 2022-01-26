@@ -13,7 +13,7 @@ public class UserController : BaseController<UserDto>, IUserController
     {
         try
         {
-            var user = await _userRepo.GetUser();
+            var user = await _userRepo.GetUserAsync();
 
             if (user == null)
                 return Results.NotFound();
