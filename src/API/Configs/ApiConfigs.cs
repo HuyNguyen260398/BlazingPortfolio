@@ -2,62 +2,28 @@
 
 public static class ApiConfigs
 {
-    private static IServiceControllers _serviceControllers;
+    private static IUserController _userController;
+    private static IServiceController _serviceController;
 
-    public static void InitDIContainer(IServiceControllers serviceControllers)
+    public static void InitDIContainer(
+        IUserController userController,
+        IServiceController serviceController)
     {
-        _serviceControllers = serviceControllers;
+        _userController = userController;
+        _serviceController = serviceController;
     }
 
     public static void ConfigureApi(this WebApplication app)
     {
         // User Api
-        app.MapGet("/Users", GetUser);
-        app.MapPut("/Users", UpdateUser);
+        app.MapGet("/Users", async () => await _userController.GetUser());
+        app.MapPut("/Users", async (UserDto userDto) => await _userController.Update(userDto));
 
         // Service Api
-        app.MapGet("/Services", async () => await _serviceControllers.GetAll());
-        app.MapGet("/Services/{id}", async (int id) => await _serviceControllers.GetById(id));
-        app.MapPost("/Services", async (ServiceDto serviceDto) => await _serviceControllers.Create(serviceDto));
-        app.MapPut("/Services", async (ServiceDto serviceDto) => await _serviceControllers.Update(serviceDto));
-        app.MapDelete("/Services/{id}", async (int id) => await _serviceControllers.Delete(id));
+        app.MapGet("/Services", async () => await _serviceController.GetAll());
+        app.MapGet("/Services/{id}", async (int id) => await _serviceController.GetById(id));
+        app.MapPost("/Services", async (ServiceDto serviceDto) => await _serviceController.Create(serviceDto));
+        app.MapPut("/Services", async (ServiceDto serviceDto) => await _serviceController.Update(serviceDto));
+        app.MapDelete("/Services/{id}", async (int id) => await _serviceController.Delete(id));
     }
-
-    #region User
-
-    private static async Task<IResult> GetUser(IUserRepo userRepo, IMapper mapper)
-    {
-        try
-        {
-            var user = mapper.Map<UserDto>(await userRepo.GetUser());
-
-            if (user == null)
-                return Results.NotFound();
-
-            return Results.Ok(user);
-        }
-        catch (Exception e)
-        {
-            return Results.Problem(e.Message);
-        }
-    }
-
-    private static async Task<IResult> UpdateUser(UserDto userDtoToUpdate, IUserRepo userRepo, IMapper mapper)
-    {
-        try
-        {
-            var isUpdateSuccess = await userRepo.UpdateAsync(mapper.Map<User>(userDtoToUpdate));
-
-            if (!isUpdateSuccess)
-                return Results.Problem();
-
-            return Results.NoContent();
-        }
-        catch (Exception e)
-        {
-            return Results.Problem(e.Message);
-        }
-    }
-
-    #endregion
 }

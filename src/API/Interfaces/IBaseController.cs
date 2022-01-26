@@ -1,6 +1,6 @@
 ﻿namespace API.Interfaces;
 
-public interface IBaseControllers<T> where T : class
+public interface IBaseController<T> where T : class
 {
     Task<IResult> GetAll();
     Task<IResult> GetById(int id);

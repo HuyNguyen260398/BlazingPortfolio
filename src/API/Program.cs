@@ -9,7 +9,8 @@ builder.Services.AddAutoMapper(typeof(Mapping));
 builder.Services.AddSingleton<IUserRepo, UserInMemRepo>();
 builder.Services.AddSingleton<IServiceRepo, ServiceInMemRepo>();
 
-builder.Services.AddScoped<IServiceControllers, ServiceControllers>();
+builder.Services.AddScoped<IUserController, UserController>();
+builder.Services.AddScoped<IServiceController, ServiceController>();
 
 var app = builder.Build();
 
@@ -24,8 +25,12 @@ app.UseHttpsRedirection();
 
 using (var serviceScope = app.Services.CreateScope())
 {
-    var serviceControllers = serviceScope.ServiceProvider.GetRequiredService<IServiceControllers>();
-    ApiConfigs.InitDIContainer(serviceControllers);
+    var userController = serviceScope.ServiceProvider.GetRequiredService<IUserController>();
+    var serviceController = serviceScope.ServiceProvider.GetRequiredService<IServiceController>();
+
+    ApiConfigs.InitDIContainer(
+        userController,
+        serviceController);
 }
 
 app.ConfigureApi();

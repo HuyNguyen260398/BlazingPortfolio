@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Dtos;
+using Application.Interfaces;
+using AutoMapper;
 using CoreBusiness.Models;
 
 namespace Infrastructure.InMemDb;
@@ -21,29 +23,36 @@ public class UserInMemRepo : IUserRepo
         }
     };
 
-    public async Task<User> GetUser()
+    private readonly IMapper _mapper;
+
+    public UserInMemRepo(IMapper mapper)
     {
-        return await Task.FromResult(_users.First());
+        _mapper = mapper;
     }
 
-    public Task<IEnumerable<User>> GetAllAsync()
+    public async Task<UserDto> GetUser()
+    {
+        return await Task.FromResult(_mapper.Map<UserDto>(_users.First()));
+    }
+
+    public Task<IEnumerable<UserDto>> GetAllAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task<User> GetByIdAsync(int id)
+    public Task<UserDto> GetByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> CreateAsync(User entity)
+    public Task<bool> CreateAsync(UserDto entity)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> UpdateAsync(User userToUpdate)
+    public async Task<bool> UpdateAsync(UserDto userDtoToUpdate)
     {
-        _users[0] = userToUpdate;
+        _users[0] = _mapper.Map<User>(userDtoToUpdate);
         return await SaveAsync();
     }
 

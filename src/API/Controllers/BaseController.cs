@@ -1,10 +1,10 @@
 ﻿namespace API.Controllers;
 
-public class BaseControllers<T> : IBaseControllers<T> where T : class
+public class BaseController<T> : IBaseController<T> where T : class
 {
     private readonly IBaseRepo<T> _repo;
 
-    public BaseControllers(IBaseRepo<T> repo)
+    public BaseController(IBaseRepo<T> repo)
     {
         _repo = repo;
     }

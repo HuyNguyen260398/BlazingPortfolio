@@ -1,8 +1,9 @@
-﻿using CoreBusiness.Models;
+﻿using Application.Dtos;
+using CoreBusiness.Models;
 
 namespace Application.Interfaces;
 
-public interface IUserRepo : IBaseRepo<User>
+public interface IUserRepo : IBaseRepo<UserDto>
 {
-    Task<User> GetUser();
+    Task<UserDto> GetUser();
 }
