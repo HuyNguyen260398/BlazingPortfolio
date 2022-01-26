@@ -1,9 +1,4 @@
-﻿using Application.Dtos;
-using Application.Interfaces;
-using AutoMapper;
-using CoreBusiness.Models;
-
-namespace Infrastructure.InMemDb;
+﻿namespace Infrastructure.InMemDb;
 
 public class UserInMemRepo : IUserRepo
 {

@@ -1,8 +1,4 @@
-﻿using Application.Dtos;
-using AutoMapper;
-using CoreBusiness.Models;
-
-namespace Application.Profiles;
+﻿namespace Application.Profiles;
 
 public class Mapping : Profile
 {

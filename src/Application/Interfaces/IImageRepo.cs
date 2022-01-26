@@ -1,6 +1,4 @@
-﻿using Application.Dtos;
-
-namespace Application.Interfaces;
+﻿namespace Application.Interfaces;
 
 public interface IImageRepo : IBaseRepo<ImageDto>
 {
