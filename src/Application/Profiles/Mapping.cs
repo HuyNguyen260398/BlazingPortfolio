@@ -10,5 +10,6 @@ public class Mapping : Profile
     {
         CreateMap<User, UserDto>().ReverseMap();
         CreateMap<Service, ServiceDto>().ReverseMap();
+        CreateMap<Archievement, ArchievementDto>().ReverseMap();
     }
 }

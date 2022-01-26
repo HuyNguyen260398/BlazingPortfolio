@@ -8,9 +8,11 @@ builder.Services.AddAutoMapper(typeof(Mapping));
 
 builder.Services.AddSingleton<IUserRepo, UserInMemRepo>();
 builder.Services.AddSingleton<IServiceRepo, ServiceInMemRepo>();
+builder.Services.AddSingleton<IArchievementRepo, ArchievementInMemRepo>();
 
 builder.Services.AddScoped<IUserController, UserController>();
 builder.Services.AddScoped<IServiceController, ServiceController>();
+builder.Services.AddScoped<IArchievementController, ArchievementController>();
 
 var app = builder.Build();
 
@@ -27,10 +29,12 @@ using (var serviceScope = app.Services.CreateScope())
 {
     var userController = serviceScope.ServiceProvider.GetRequiredService<IUserController>();
     var serviceController = serviceScope.ServiceProvider.GetRequiredService<IServiceController>();
+    var archievementController = serviceScope.ServiceProvider.GetRequiredService<IArchievementController>();
 
     ApiConfigs.InitDIContainer(
         userController,
-        serviceController);
+        serviceController,
+        archievementController);
 }
 
 app.ConfigureApi();

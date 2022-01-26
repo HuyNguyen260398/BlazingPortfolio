@@ -4,13 +4,16 @@ public static class ApiConfigs
 {
     private static IUserController _userController;
     private static IServiceController _serviceController;
+    private static IArchievementController _archievementController;
 
     public static void InitDIContainer(
         IUserController userController,
-        IServiceController serviceController)
+        IServiceController serviceController,
+        IArchievementController archievementController)
     {
         _userController = userController;
         _serviceController = serviceController;
+        _archievementController = archievementController;
     }
 
     public static void ConfigureApi(this WebApplication app)
@@ -25,5 +28,12 @@ public static class ApiConfigs
         app.MapPost("/Services", async (ServiceDto serviceDto) => await _serviceController.Create(serviceDto));
         app.MapPut("/Services", async (ServiceDto serviceDto) => await _serviceController.Update(serviceDto));
         app.MapDelete("/Services/{id}", async (int id) => await _serviceController.Delete(id));
+
+        // Archievement Api
+        app.MapGet("/Archievements", async () => await _archievementController.GetAll());
+        app.MapGet("/Archievements/{id}", async (int id) => await _archievementController.GetById(id));
+        app.MapPost("/Archievements", async (ArchievementDto archievementDto) => await _archievementController.Create(archievementDto));
+        app.MapPut("/Archievements", async (ArchievementDto archievementDto) => await _archievementController.Update(archievementDto));
+        app.MapDelete("/Archievements/{id}", async (int id) => await _archievementController.Delete(id));
     }
 }
