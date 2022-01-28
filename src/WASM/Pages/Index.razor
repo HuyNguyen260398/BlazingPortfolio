@@ -27,14 +27,22 @@
 
 @code 
 {
+    UserDto User = null;
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             //await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/ie8.js");
+            //await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/modernizr.custom.js");
+
             await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/init.js");
             await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/jquery.js");
-            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/modernizr.custom.js");
             await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/plugins.js");
         }
     }
