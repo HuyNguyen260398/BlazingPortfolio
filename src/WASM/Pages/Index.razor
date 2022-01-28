@@ -1,9 +1,49 @@
 ﻿@page "/"
+@inject IJSRuntime JSRuntime
 
-<PageTitle>Index</PageTitle>
+<ModalboxNews />
 
-<h1>Hello, world!</h1>
+<MobileMenu />
 
-Welcome to your new app.
+<Topbar />
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<Hero />
+
+<About />
+
+<Services />
+
+<Portfolio />
+
+<Counter />
+
+<News />
+
+<Contact />
+
+<Copyright />
+
+<Cursor />
+
+@code 
+{
+    UserDto User = null;
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            //await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/ie8.js");
+            //await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/modernizr.custom.js");
+
+            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/init.js");
+            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/jquery.js");
+            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/plugins.js");
+        }
+    }
+}
