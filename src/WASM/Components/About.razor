@@ -20,44 +20,44 @@
             </div>
             <div class="right">
                 <div class="about_title">
-                    <h3>I'm Albert Walkers and <span class="arlo_tm_animation_text_word"></span></h3>
+                    <h3>I'm @($"{User.FirstName} {User.LastName}") and <span class="arlo_tm_animation_text_word"></span></h3>
                 </div>
                 <div class="text">
-                    <p>Hi! My name is <span>Albert Walkers</span>. I am a Web Developer, and I'm very passionate and dedicated to my work. With 20 years experience as a professional Web developer, I have acquired the skills and knowledge necessary to make your project a success.</p>
+                    <p>Hi! My name is <span>@($"{User.FirstName} {User.LastName}")</span>. I am a Web Developer, and I'm very passionate and dedicated to my work. With 20 years experience as a professional Web developer, I have acquired the skills and knowledge necessary to make your project a success.</p>
                 </div>
                 <div class="about_short_contact_wrap">
                     <ul>
                         <li>
                             <img class="svg" src="Arlo/img/svg/gift.svg" alt="" />
-                            <span><label>Birthday:</label> 01.07.1990</span>
+                            <span><label>Birthday:</label> @User.DoB.ToString("dd.MM.yyyy")</span>
                         </li>
                         <li>
                             <img class="svg" src="Arlo/img/svg/calendar-4.svg" alt="" />
-                            <span><label>Age:</label> 30</span>
+                            <span><label>Age:</label> @(DateTime.Now.Year - User.DoB.Year)</span>
                         </li>
                         <li>
                             <img class="svg" src="Arlo/img/svg/location-1.svg" alt="" />
-                            <span><label>Location:</label> <a class="href_location" href="#">44 Place, Plano, USA</a></span>
+                            <span><label>Location:</label> <a class="href_location" href="#">@User.Address</a></span>
                         </li>
                         <li>
                             <img class="svg" src="Arlo/img/svg/game-controller-2.svg" alt="" />
-                            <span><label>Interests:</label> Playstation, Reading</span>
+                            <span><label>Interests:</label> @User.Interests</span>
                         </li>
                         <li>
                             <img class="svg" src="Arlo/img/svg/study-5.svg" alt="" />
-                            <span><label>Study:</label> <a class="href_location" href="#"> Univercity of Chicago</a></span>
+                            <span><label>Study:</label> <a class="href_location" href="#"> @User.Study</a></span>
                         </li>
                         <li>
                             <img class="svg" src="Arlo/img/svg/degree-1.svg" alt="" />
-                            <span><label>Degree:</label> Master</span>
+                            <span><label>Degree:</label> @User.Degree</span>
                         </li>
                         <li>
                             <img class="svg" src="Arlo/img/svg/message-3.svg" alt="" />
-                            <span><label>Mail:</label> <a href="mailto:example@gmail.com">mymail&#64;gmail.com</a></span>
+                            <span><label>Mail:</label> <a href="mailto:example@gmail.com">@User.Email</a></span>
                         </li>
                         <li>
                             <img class="svg" src="Arlo/img/svg/call-2.svg" alt="" />
-                            <span><label>Phone:</label> <a href="tel:+77 022 177 05 05">+77 022 177 05 05</a></span>
+                            <span><label>Phone:</label> <a href="tel:+77 022 177 05 05">@User.Phone</a></span>
                         </li>
                     </ul>
                 </div>
@@ -69,3 +69,9 @@
     </div>
 </div>
 <!-- /ABOUT -->
+
+@code
+{
+    [Parameter]
+    public UserDto User { get; set; }
+}

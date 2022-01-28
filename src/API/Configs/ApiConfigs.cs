@@ -25,33 +25,33 @@ public static class ApiConfigs
     public static void ConfigureApi(this WebApplication app)
     {
         // User
-        app.MapGet("/Users", async () => await _userController.GetUser());
-        app.MapPut("/Users", async (UserDto userDto) => await _userController.Update(userDto));
+        app.MapGet("/api/users", async () => await _userController.GetUser());
+        app.MapPut("/api/users", async (UserDto userDto) => await _userController.Update(userDto));
 
         // Service
-        app.MapGet("/Services", async () => await _serviceController.GetAll());
-        app.MapGet("/Services/{id}", async (int id) => await _serviceController.GetById(id));
-        app.MapPost("/Services", async (ServiceDto serviceDto) => await _serviceController.Create(serviceDto));
-        app.MapPut("/Services", async (ServiceDto serviceDto) => await _serviceController.Update(serviceDto));
-        app.MapDelete("/Services/{id}", async (int id) => await _serviceController.Delete(id));
+        app.MapGet("/api/services", async () => await _serviceController.GetAll());
+        app.MapGet("/api/services/{id}", async (int id) => await _serviceController.GetById(id));
+        app.MapPost("/api/services", async (ServiceDto serviceDto) => await _serviceController.Create(serviceDto));
+        app.MapPut("/api/services", async (ServiceDto serviceDto) => await _serviceController.Update(serviceDto));
+        app.MapDelete("/api/services/{id}", async (int id) => await _serviceController.Delete(id));
 
         // Image
-        app.MapGet("/Images", async () => await _imageController.GetAll());
-        app.MapPost("/Images", async (ImageDto imageDto) => await _imageController.UploadImage(imageDto));
-        app.MapDelete("/Images/{guid}", async (string guid) => await _imageController.RemoveImage(guid));
+        app.MapGet("/api/images", async () => await _imageController.GetAll());
+        app.MapPost("/api/images", async (ImageDto imageDto) => await _imageController.UploadImage(imageDto));
+        app.MapDelete("/api/images/{guid}", async (string guid) => await _imageController.RemoveImage(guid));
 
         // Archievement
-        app.MapGet("/Archievements", async () => await _archievementController.GetAll());
-        app.MapGet("/Archievements/{id}", async (int id) => await _archievementController.GetById(id));
-        app.MapPost("/Archievements", async (ArchievementDto archievementDto) => await _archievementController.Create(archievementDto));
-        app.MapPut("/Archievements", async (ArchievementDto archievementDto) => await _archievementController.Update(archievementDto));
-        app.MapDelete("/Archievements/{id}", async (int id) => await _archievementController.Delete(id));
+        app.MapGet("/api/archievements", async () => await _archievementController.GetAll());
+        app.MapGet("/api/archievements/{id}", async (int id) => await _archievementController.GetById(id));
+        app.MapPost("/api/archievements", async (ArchievementDto archievementDto) => await _archievementController.Create(archievementDto));
+        app.MapPut("/api/archievements", async (ArchievementDto archievementDto) => await _archievementController.Update(archievementDto));
+        app.MapDelete("/api/archievements/{id}", async (int id) => await _archievementController.Delete(id));
 
         // Post
-        app.MapGet("/Posts", async () => await _postController.GetAll());
-        app.MapGet("/Posts/{id}", async (int id) => await _postController.GetById(id));
-        app.MapPost("/Posts", async (PostDto postDto) => await _postController.Create(postDto));
-        app.MapPut("/Posts", async (PostDto postDto) => await _postController.Update(postDto));
-        app.MapDelete("/Posts/{id}", async (int id) => await _postController.Delete(id));
+        app.MapGet("/api/posts", async () => await _postController.GetAll());
+        app.MapGet("/api/posts/{id}", async (int id) => await _postController.GetById(id));
+        app.MapPost("/api/posts", async (PostDto postDto) => await _postController.Create(postDto));
+        app.MapPut("/api/posts", async (PostDto postDto) => await _postController.Update(postDto));
+        app.MapDelete("/api/posts/{id}", async (int id) => await _postController.Delete(id));
     }
 }

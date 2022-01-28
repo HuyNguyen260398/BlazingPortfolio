@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject IJSRuntime JSRuntime
+@inject IUserRepo UserRepo
 
 <ModalboxNews />
 
@@ -9,7 +10,7 @@
 
 <Hero />
 
-<About />
+<About User="User"/>
 
 <Services />
 
@@ -27,11 +28,11 @@
 
 @code 
 {
-    UserDto User = null;
+    private UserDto User;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        return base.OnInitializedAsync();
+        User = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

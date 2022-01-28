@@ -11,7 +11,7 @@ public class UserInMemRepo : IUserRepo
             DoB = new DateTime(1998, 03, 26).Date,
             Email = "huynguyen260398@gmail.com",
             Phone = "(+84)903336493",
-            Address = "Tran Tan Street, HCM City, Viet Nam",
+            Address = "HCM City, Viet Nam",
             Study = "University of Greenwich",
             Degree = "Bachelor of Computer Science",
             Interests = "Building websites"
