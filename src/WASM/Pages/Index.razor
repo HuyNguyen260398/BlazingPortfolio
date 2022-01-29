@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject IJSRuntime JSRuntime
 @inject IUserRepo UserRepo
+@inject IServiceRepo ServiceRepo
 
 <ModalboxNews />
 
@@ -10,9 +11,9 @@
 
 <Hero />
 
-<About User="User"/>
+<About User="_user"/>
 
-<Services />
+<Services ServiceList="_services"/>
 
 <Portfolio />
 
@@ -28,20 +29,20 @@
 
 @code 
 {
-    private UserDto User;
+    private UserDto _user;
+    private IEnumerable<ServiceDto> _services;
 
     protected override async Task OnInitializedAsync()
     {
-        User = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
+        _user = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
+
+        _services = await ServiceRepo.GetAllAsync(ApiEndPoints.ServiceEndpoint);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            //await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/ie8.js");
-            //await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/modernizr.custom.js");
-
             await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/init.js");
             await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/jquery.js");
             await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/plugins.js");

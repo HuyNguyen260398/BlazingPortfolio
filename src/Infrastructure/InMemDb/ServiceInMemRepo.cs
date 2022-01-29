@@ -5,9 +5,27 @@ public class ServiceInMemRepo : IServiceRepo
 
     private static List<Service> _services = new()
     {
-        new Service { ServiceId = 1, Name = "Web Development", Description = "Building web apps with DotNet", SvgPath = String.Empty },
-        new Service { ServiceId = 2, Name = "DevOps", Description = "Upscaling apps using DevOps stacks", SvgPath = String.Empty },
-        new Service { ServiceId = 3, Name = "Data Analysist", Description = "Visualizing data by Power Bi", SvgPath = String.Empty }
+        new Service 
+        { 
+            ServiceId = 1, 
+            Name = "Web Developement", 
+            Description = "Building web apps with DotNet", 
+            SvgPath = "uploads/code.svg" 
+        },
+        new Service 
+        { 
+            ServiceId = 2, 
+            Name = "DevOps", 
+            Description = "Upscaling apps using DevOps stacks", 
+            SvgPath = "uploads/telegram.svg" 
+        },
+        new Service 
+        { 
+            ServiceId = 3, 
+            Name = "Data Analysist", 
+            Description = "Visualizing data by Power Bi", 
+            SvgPath = "uploads/creativity.svg"
+        }
     };
 
     private readonly IMapper _mapper;

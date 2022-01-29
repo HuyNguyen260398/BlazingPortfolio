@@ -1,61 +1,38 @@
-﻿<!-- SERVICES -->
-<div class="arlo_tm_section" id="services">
-    <div class="arlo_tm_services">
-        <div class="container">
-            <div class="arlo_tm_main_title">
-                <span>Services</span>
-                <h3>Quality Services</h3>
-            </div>
-            <div class="service_inner">
-                <ul>
-                    <li class="wow fadeInLeft" data-wow-duration="1.5s">
-                        <div class="inner">
-                            <img class="svg" src="Arlo/img/svg/creativity.svg" alt="" />
-                            <h3>Creative Design</h3>
-                            <p>Web design is a similar process of creation, with the intention of presenting...</p>
-                        </div>
-                    </li>
-                    <li class="wow fadeInLeft" data-wow-duration="1.5s" data-wow-delay="0.2s">
-                        <div class="inner">
-                            <img class="svg" src="Arlo/img/svg/code.svg" alt="" />
-                            <h3>Web Development</h3>
-                            <p>Web design is a similar process of creation, with the intention of presenting...</p>
-                        </div>
-                    </li>
-                    <li class="wow fadeInLeft" data-wow-duration="1.5s" data-wow-delay="0.4s">
-                        <div class="inner">
-                            <img class="svg" src="Arlo/img/svg/telegram.svg" alt="" />
-                            <h3>Brand Identity</h3>
-                            <p>Web design is a similar process of creation, with the intention of presenting...</p>
-                        </div>
-                    </li>
-                    <li class="wow fadeInLeft" data-wow-duration="1.5s">
-                        <div class="inner">
-                            <img class="svg" src="Arlo/img/svg/photoshop.svg" alt="" />
-                            <h3>Adobe Photoshop</h3>
-                            <p>Web design is a similar process of creation, with the intention of presenting...</p>
-                        </div>
-                    </li>
-                    <li class="wow fadeInLeft" data-wow-duration="1.5s" data-wow-delay="0.2s">
-                        <div class="inner">
-                            <img class="svg" src="Arlo/img/svg/ai.svg" alt="" />
-                            <h3>Adobe Illustrator</h3>
-                            <p>Web design is a similar process of creation, with the intention of presenting...</p>
-                        </div>
-                    </li>
-                    <li class="wow fadeInLeft" data-wow-duration="1.5s" data-wow-delay="0.4s">
-                        <div class="inner">
-                            <img class="svg" src="Arlo/img/svg/share.svg" alt="" />
-                            <h3>Social Media</h3>
-                            <p>Web design is a similar process of creation, with the intention of presenting...</p>
-                        </div>
-                    </li>
-                </ul>
-                <div class="lets_work wow fadeInLeft" data-wow-duration="1.5s">
-                    <p>Are you interested in working with me? <a href="#contact"> Let's started now</a></p>
+﻿@if (ServiceList != null && ServiceList.Count() > 0)
+{
+    <!-- SERVICES -->
+    <div class="arlo_tm_section" id="services">
+        <div class="arlo_tm_services">
+            <div class="container">
+                <div class="arlo_tm_main_title">
+                    <span>Services</span>
+                    <h3>Quality Services</h3>
+                </div>
+                <div class="service_inner">
+                    <ul>
+                        @foreach (var service in ServiceList)
+                        {
+                            <li class="wow fadeInLeft" data-wow-duration="1.5s">
+                            <div class="inner">
+                                <img class="svg" src="@($"{ApiEndPoints.ServerBaseUrl}/{service.SvgPath}")" alt="" />
+                                <h3>@service.Name</h3>
+                                <p>@service.Description</p>
+                            </div>
+                        </li>
+                        }
+                    </ul>
+                    <div class="lets_work wow fadeInLeft" data-wow-duration="1.5s">
+                        <p>Are you interested in working with me? <a href="#contact"> Let's started now</a></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- /SERVICES -->
+    <!-- /SERVICES -->
+}
+
+@code
+{
+    [Parameter]
+    public IEnumerable<ServiceDto> ServiceList { get; set; }
+}

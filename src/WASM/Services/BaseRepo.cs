@@ -1,8 +1,4 @@
-﻿using System.Net;
-using System.Net.Http.Json;
-using WASM.Interfaces;
-
-namespace WASM.Services;
+﻿namespace WASM.Services;
 
 public class BaseRepo<T> : IBaseRepo<T> where T : class
 {

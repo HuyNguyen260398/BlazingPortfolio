@@ -1,6 +1,4 @@
-﻿using Application.Dtos;
-
-namespace WASM.Interfaces;
+﻿namespace WASM.Interfaces;
 
 public interface IUserRepo : IBaseRepo<UserDto>
 {

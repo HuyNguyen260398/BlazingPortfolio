@@ -1,8 +1,4 @@
-﻿using WASM.Interfaces;
-using Application.Dtos;
-using System.Net.Http.Json;
-
-namespace WASM.Services;
+﻿namespace WASM.Services;
 
 public class UserRepo : BaseRepo<UserDto>, IUserRepo
 {

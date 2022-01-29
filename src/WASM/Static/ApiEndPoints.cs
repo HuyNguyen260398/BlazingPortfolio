@@ -8,4 +8,5 @@ internal static class ApiEndPoints
     internal const string ServerBaseUrl = "";
 #endif
     internal readonly static string UserEndpoint = $"{ServerBaseUrl}/api/users";
+    internal readonly static string ServiceEndpoint = $"{ServerBaseUrl}/api/services";
 }
