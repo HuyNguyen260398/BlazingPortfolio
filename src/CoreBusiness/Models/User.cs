@@ -11,4 +11,7 @@ public class User
     public string Study { get; set; }
     public string Degree { get; set; }
     public string Interests { get; set; }
+    public string Intro { get; set; }
+    public string AvatarImagePath { get; set; }
+    public string BackgroundImagePath { get; set; }
 }

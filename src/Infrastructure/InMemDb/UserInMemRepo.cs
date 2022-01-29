@@ -14,7 +14,10 @@ public class UserInMemRepo : IUserRepo
             Address = "HCM City, Viet Nam",
             Study = "University of Greenwich",
             Degree = "Bachelor of Computer Science",
-            Interests = "Building websites"
+            Interests = "Building websites",
+            Intro = "I am a Web Developer, and I'm very passionate and dedicated to my work. With 2 years experience as a senior Web developer, I have acquired the skills and knowledge necessary to make your project a success.",
+            AvatarImagePath = "uploads/avatar.jpg",
+            BackgroundImagePath = "uploads/ocean_background.jpg"
         }
     };
 
