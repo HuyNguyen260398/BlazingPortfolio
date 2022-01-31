@@ -1,8 +1,14 @@
-﻿global using AutoMapper;
+﻿global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.IdentityModel.Tokens;
+global using Microsoft.OpenApi.Models;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using System.Text;
 global using API.Configs;
 global using API.Controllers;
 global using API.Interfaces;
-global using CoreBusiness.Models;
+global using API.Services;
 global using Application.Dtos;
 global using Application.Interfaces;
 global using Application.Profiles;
