@@ -12,7 +12,34 @@ builder.Services.AddCors(o =>
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Blazing Portfolio API",
+        Description = "Web APIs for managing a portfolio webpage.",
+        Version = "v1"
+    });
+});
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, c =>
+                {
+                    c.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
+                    c.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidAudience = builder.Configuration["Auth0:Audience"],
+                        ValidIssuer = $"{builder.Configuration["Auth0:Domain"]}"
+                    };
+                });
+
+builder.Services.AddAuthorization(o =>
+{
+    o.AddPolicy("read-write", p => p.
+        RequireAuthenticatedUser().
+        RequireClaim("scope", "read-write"));
+});
+
 builder.Services.AddAutoMapper(typeof(Mapping));
 
 builder.Services.AddSingleton<IUserRepo, UserInMemRepo>();
@@ -36,10 +63,27 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCors("CorsPolicy");
+
+app.Use(async (ctx, next) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (BadHttpRequestException ex)
+    {
+        ctx.Response.StatusCode = ex.StatusCode;
+
+        await ctx.Response.WriteAsync(ex.Message);
+    }
+});
 
 using (var serviceScope = app.Services.CreateScope())
 {
