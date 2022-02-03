@@ -25,7 +25,7 @@ public static class ApiConfigs
     public static void ConfigureApi(this WebApplication app)
     {
         // User
-        app.MapGet("/api/users", async () => await _userController.GetUser()).WithTags("User");
+        app.MapGet("/api/users", async () => await _userController.GetUser()).WithTags("User").Produces<UserDto>(statusCode: 200);
         app.MapPut("/api/users", async (UserDto userDto) => await _userController.Update(userDto)).WithTags("User");
 
         // Service

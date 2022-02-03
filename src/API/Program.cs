@@ -12,32 +12,35 @@ builder.Services.AddCors(o =>
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-    var securityScheme = new OpenApiSecurityScheme
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Name = "JWT Authentication",
-        Description = "Enter JWT Bearer token * *_only_ * *",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer", // must be lower case
+        Scheme = "Bearer",
         BearerFormat = "JWT",
-        Reference = new OpenApiReference
-        {
-            Id = JwtBearerDefaults.AuthenticationScheme,
-            Type = ReferenceType.SecurityScheme
-        }
-    };
-    c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Description = "Bearer Authentication with JWT Token",
+        Type = SecuritySchemeType.Http
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
-        {securityScheme, new string[] { }}
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            new List<string>()
+        }
     });
 });
 
 builder.Services.AddAutoMapper(typeof(Mapping));
 
-builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
 {
     opt.TokenValidationParameters = new()
@@ -51,6 +54,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+builder.Services.AddAuthorization();
 
 builder.Services.AddSingleton<ITokenService, TokenService>();
 
@@ -60,11 +64,11 @@ builder.Services.AddSingleton<IImageRepo, ImageInMemRepo>();
 builder.Services.AddSingleton<IArchievementRepo, ArchievementInMemRepo>();
 builder.Services.AddSingleton<IPostRepo, PostInMemRepo>();
 
-builder.Services.AddScoped<IUserController, UserController>();
-builder.Services.AddScoped<IServiceController, ServiceController>();
-builder.Services.AddScoped<IImageController, ImageController>();
-builder.Services.AddScoped<IArchievementController, ArchievementController>();
-builder.Services.AddScoped<IPostController, PostController>();
+builder.Services.AddSingleton<IUserController, UserController>();
+builder.Services.AddSingleton<IServiceController, ServiceController>();
+builder.Services.AddSingleton<IImageController, ImageController>();
+builder.Services.AddSingleton<IArchievementController, ArchievementController>();
+builder.Services.AddSingleton<IPostController, PostController>();
 
 var app = builder.Build();
 
@@ -80,8 +84,8 @@ app.UseStaticFiles();
 
 app.UseCors("CorsPolicy");
 
-app.UseAuthentication();
 app.UseAuthorization();
+app.UseAuthentication();
 
 using (var serviceScope = app.Services.CreateScope())
 {
@@ -102,33 +106,27 @@ using (var serviceScope = app.Services.CreateScope())
 app.ConfigureApi();
 
 // Login
-app.MapPost("/login", [AllowAnonymous] async (ITokenService tokenService, IUserRepo userRepo, HttpResponse response) =>
+app.MapPost("/login", [AllowAnonymous] async (ITokenService tokenService, IUserRepo userRepo) =>
 {
     // Todo: Separate this into a controller.
 
     var userDto = await userRepo.GetUserAsync(); // Todo: Update User and UserDto for login with username and password.
 
     if (userDto == null)
-    {
-        response.StatusCode = 401;
-        return;
-    }
+        return Results.NotFound();
 
-    var token = tokenService.BuildToken(builder.Configuration["Jwt:Key"], builder.Configuration["Jwt:Issuer"], builder.Configuration["Jwt:Audience"], userDto);
+    var token = await tokenService.BuildToken(builder.Configuration["Jwt:Key"], builder.Configuration["Jwt:Issuer"], builder.Configuration["Jwt:Audience"], userDto);
 
-    await response.WriteAsJsonAsync(new { token = token });
-
-    return;
+    return Results.Ok(token);
 })
 .Produces(StatusCodes.Status200OK)
 .WithName("Login")
 .WithTags("Accounts");
 
-app.MapGet("/AuthorizedResource", (Func<string>)(
-    [Authorize] () => "Action Succeeded")
-)
+app.MapGet("/AuthorizedResource", () => "Action Succeeded")
 .Produces(StatusCodes.Status200OK)
 .WithName("Authorized")
-.WithTags("Accounts").RequireAuthorization();
+.WithTags("Accounts")
+.RequireAuthorization();
 
 app.Run();

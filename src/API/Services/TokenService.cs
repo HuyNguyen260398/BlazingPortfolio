@@ -2,8 +2,7 @@
 
 public class TokenService : ITokenService
 {
-    private TimeSpan _expiryDuration = new TimeSpan(0, 1, 0, 0);
-    public string BuildToken(string key, string issuer, string audience, UserDto user)
+    public async Task<string> BuildToken(string key, string issuer, string audience, UserDto user)
     {
         var claims = new[]
         {
@@ -15,8 +14,10 @@ public class TokenService : ITokenService
 
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var tokenDescriptor = new JwtSecurityToken(issuer, audience, claims, expires: DateTime.Now.Add(_expiryDuration), signingCredentials: credentials);
+        var tokenDescriptor = new JwtSecurityToken(issuer, audience, claims, expires: DateTime.Now.AddDays(60), notBefore: DateTime.UtcNow, signingCredentials: credentials);
 
-        return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+
+        return await Task.FromResult(tokenString);
     }
 }
