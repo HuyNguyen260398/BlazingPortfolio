@@ -84,8 +84,8 @@ app.UseStaticFiles();
 
 app.UseCors("CorsPolicy");
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 using (var serviceScope = app.Services.CreateScope())
 {
@@ -115,7 +115,11 @@ app.MapPost("/login", [AllowAnonymous] async (ITokenService tokenService, IUserR
     if (userDto == null)
         return Results.NotFound();
 
-    var token = await tokenService.BuildToken(builder.Configuration["Jwt:Key"], builder.Configuration["Jwt:Issuer"], builder.Configuration["Jwt:Audience"], userDto);
+    var token = await tokenService.BuildToken(
+        builder.Configuration["Jwt:Key"], 
+        builder.Configuration["Jwt:Issuer"], 
+        builder.Configuration["Jwt:Audience"], 
+        userDto);
 
     return Results.Ok(token);
 })

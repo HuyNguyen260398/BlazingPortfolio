@@ -14,7 +14,13 @@ public class TokenService : ITokenService
 
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var tokenDescriptor = new JwtSecurityToken(issuer, audience, claims, expires: DateTime.Now.AddDays(60), notBefore: DateTime.UtcNow, signingCredentials: credentials);
+        var tokenDescriptor = new JwtSecurityToken(
+            issuer, 
+            audience, 
+            claims, 
+            expires: DateTime.UtcNow.AddDays(10), 
+            notBefore: null, 
+            signingCredentials: credentials);
 
         var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
 
