@@ -12,8 +12,7 @@ public class PostInMemRepo : IPostRepo
             Excerpt = "Excerpt 1", 
             Content = "Content 1", 
             IsPublished = true, 
-            PublishDate = DateTime.Now.Date, 
-            Author = "Huy Nguyen" 
+            PublishDate = DateTime.Now.Date
         },
         new Post
         {
@@ -23,8 +22,7 @@ public class PostInMemRepo : IPostRepo
             Excerpt = "Excerpt 2",
             Content = "Content 2",
             IsPublished = true,
-            PublishDate = DateTime.Now.Date,
-            Author = "Huy Nguyen"
+            PublishDate = DateTime.Now.Date
         },
         new Post
         {
@@ -34,8 +32,7 @@ public class PostInMemRepo : IPostRepo
             Excerpt = "Excerpt 3",
             Content = "Content 3",
             IsPublished = true,
-            PublishDate = DateTime.Now.Date,
-            Author = "Huy Nguyen"
+            PublishDate = DateTime.Now.Date
         },
     };
 

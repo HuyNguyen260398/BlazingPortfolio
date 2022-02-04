@@ -9,5 +9,4 @@ public class PostDto
     public string Content { get; set; }
     public bool IsPublished { get; set; }
     public DateTime PublishDate { get; set; }
-    public string Author { get; set; }
 }

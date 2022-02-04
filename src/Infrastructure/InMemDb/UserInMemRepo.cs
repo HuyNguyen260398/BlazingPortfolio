@@ -10,6 +10,7 @@ public class UserInMemRepo : IUserRepo
             LastName = "Nguyen",
             DoB = new DateTime(1998, 03, 26).Date,
             Email = "huynguyen260398@gmail.com",
+            Password = "Pa$sw0rd",
             Phone = "(+84)903336493",
             Address = "HCM City, Viet Nam",
             Study = "University of Greenwich",
