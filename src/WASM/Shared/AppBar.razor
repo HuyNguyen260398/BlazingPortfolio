@@ -1,0 +1,23 @@
+﻿<MudAppBar>
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+    &nbsp; My Blazing Portfolio Website
+    <MudSpacer />
+    <MudIconButton Icon="@Icons.Custom.Brands.LinkedIn" Color="Color.Inherit" />
+    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
+</MudAppBar>
+<MudDrawer ClipMode="@DrawerClipMode.Always" @bind-Open="@_drawerOpen">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">Huy NG</MudText>
+    </MudDrawerHeader>
+    <NavMenu />
+</MudDrawer>
+
+@code
+{
+    bool _drawerOpen = false;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}
