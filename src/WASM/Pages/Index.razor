@@ -1,51 +1,7 @@
 ﻿@page "/"
-@inject IJSRuntime JSRuntime
-@inject IUserRepo UserRepo
-@inject IServiceRepo ServiceRepo
 
-<ModalboxNews />
+<PageTitle>Index</PageTitle>
 
-<MobileMenu />
+<h1>Hello, world!</h1>
 
-<Topbar />
-
-<Hero />
-
-<About User="_user" />
-
-<Services ServiceList="_services" />
-
-<Portfolio />
-
-<Counter />
-
-<News />
-
-<Contact />
-
-<Copyright />
-
-<Cursor />
-
-@code 
-{
-    private UserDto _user;
-    private IEnumerable<ServiceDto> _services;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _user = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
-
-        _services = await ServiceRepo.GetAllAsync(ApiEndPoints.ServiceEndpoint);
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/init.js");
-            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/jquery.js");
-            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Arlo/js/plugins.js");
-        }
-    }
-}
+Welcome to your new app.
