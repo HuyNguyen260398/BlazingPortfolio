@@ -2,7 +2,7 @@
 
 public class ImageInMemRepo : IImageRepo
 {
-    private readonly List<Image> _images = new()
+    private static List<Image> _images = new()
     {
         new Image 
         { 

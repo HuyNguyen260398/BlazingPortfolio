@@ -6,6 +6,7 @@ public class UserInMemRepo : IUserRepo
     {
         new User
         {
+            UserId = 1,
             FirstName = "Huy",
             LastName = "Nguyen",
             DoB = new DateTime(1998, 03, 26).Date,
