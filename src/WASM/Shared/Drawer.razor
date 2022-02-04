@@ -1,0 +1,12 @@
+﻿<MudDrawer ClipMode="@DrawerClipMode.Always" @bind-Open="@DrawerOpen">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">Huy NG</MudText>
+    </MudDrawerHeader>
+    <NavMenu />
+</MudDrawer>
+
+@code
+{
+    [Parameter]
+    public bool DrawerOpen { get; set; }
+}
