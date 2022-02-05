@@ -31,6 +31,19 @@
 
     <!--MudBlazor-->
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+
+    <script>
+        function BlazorScrollToId(id) {
+            const element = document.getElementById(id);
+            if (element instanceof HTMLElement) {
+                element.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                    inline: "nearest"
+                });
+            }
+        }
+    </script>
 </body>
 
 </html>
