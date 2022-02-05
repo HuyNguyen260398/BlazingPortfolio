@@ -15,17 +15,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Mapping));
 
-builder.Services.AddSingleton<IUserRepo, UserInMemRepo>();
-builder.Services.AddSingleton<IServiceRepo, ServiceInMemRepo>();
-builder.Services.AddSingleton<IImageRepo, ImageInMemRepo>();
 builder.Services.AddSingleton<IArchievementRepo, ArchievementInMemRepo>();
+builder.Services.AddSingleton<IImageRepo, ImageInMemRepo>();
 builder.Services.AddSingleton<IPostRepo, PostInMemRepo>();
+builder.Services.AddSingleton<IServiceRepo, ServiceInMemRepo>();
+builder.Services.AddSingleton<ISkillRepo, SkillInMemRepo>();
+builder.Services.AddSingleton<IUserRepo, UserInMemRepo>();
 
-builder.Services.AddScoped<IUserController, UserController>();
-builder.Services.AddScoped<IServiceController, ServiceController>();
-builder.Services.AddScoped<IImageController, ImageController>();
 builder.Services.AddScoped<IArchievementController, ArchievementController>();
+builder.Services.AddScoped<IImageController, ImageController>();
 builder.Services.AddScoped<IPostController, PostController>();
+builder.Services.AddScoped<IServiceController, ServiceController>();
+builder.Services.AddScoped<ISkillController, SkillController>();
+builder.Services.AddScoped<IUserController, UserController>();
 
 var app = builder.Build();
 
@@ -44,6 +46,7 @@ app.UseCors("CorsPolicy");
 using (var serviceScope = app.Services.CreateScope())
 {
     var userController = serviceScope.ServiceProvider.GetRequiredService<IUserController>();
+    var skillController = serviceScope.ServiceProvider.GetRequiredService<ISkillController>();
     var serviceController = serviceScope.ServiceProvider.GetRequiredService<IServiceController>();
     var imageController = serviceScope.ServiceProvider.GetRequiredService<IImageController>();
     var archievementController = serviceScope.ServiceProvider.GetRequiredService<IArchievementController>();
@@ -51,6 +54,7 @@ using (var serviceScope = app.Services.CreateScope())
 
     ApiConfigs.InitDIContainer(
         userController,
+        skillController,
         serviceController,
         imageController,
         archievementController,

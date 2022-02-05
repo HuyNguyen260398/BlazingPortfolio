@@ -3,6 +3,7 @@
 public static class ApiConfigs
 {
     private static IUserController _userController;
+    private static ISkillController _skillController;
     private static IServiceController _serviceController;
     private static IImageController _imageController;
     private static IArchievementController _archievementController;
@@ -10,12 +11,14 @@ public static class ApiConfigs
 
     public static void InitDIContainer(
         IUserController userController,
+        ISkillController skillController,
         IServiceController serviceController,
         IImageController imageController,
         IArchievementController archievementController,
         IPostController postController)
     {
         _userController = userController;
+        _skillController = skillController;
         _serviceController = serviceController;
         _imageController = imageController;
         _archievementController = archievementController;
@@ -27,6 +30,13 @@ public static class ApiConfigs
         // User
         app.MapGet("/api/users", async () => await _userController.GetUser()).WithTags("User");
         app.MapPut("/api/users", async (UserDto userDto) => await _userController.Update(userDto)).WithTags("User");
+
+        // Skill
+        app.MapGet("/api/skills", async () => await _skillController.GetAll()).WithTags("Skill");
+        app.MapGet("/api/skills/{id}", async (int id) => await _skillController.GetById(id)).WithTags("Skill");
+        app.MapPost("/api/skills", async (SkillDto skillDto) => await _skillController.Create(skillDto)).WithTags("Skill");
+        app.MapPut("/api/skills", async (SkillDto skillDto) => await _skillController.Update(skillDto)).WithTags("Skill");
+        app.MapDelete("/api/skills/{id}", async (int id) => await _skillController.Delete(id)).WithTags("Skill");
 
         // Service
         app.MapGet("/api/services", async () => await _serviceController.GetAll()).WithTags("Service");
