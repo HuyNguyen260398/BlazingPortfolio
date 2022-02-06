@@ -1,16 +1,17 @@
-﻿<MudItem xs="12" id="home">
-    <MudPaper Class="mt-5 d-flex justify-center rounded-xl" Elevation="3" Height="850px" Style="background-image: url('./asset/img/full_stack.jpg'); background-size: 100% 100%;">
-
-        <div class="align-self-center">
-            <div class="d-block d-flex justify-center">
-                <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" Src="./asset/img/avatar.png" Height="200" Width="200" Class="rounded-circle" />
+﻿<MudGrid id="home">
+    <MudItem xs="12" Class="mt-5">
+        <MudPaper Class="d-flex justify-center rounded-xl" Elevation="3" Height="850px" Style="background-image: url('./asset/img/full_stack.jpg'); background-size: 100% 100%;">
+            <div class="align-self-center">
+                <div class="d-block d-flex justify-center">
+                    <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" Src="./asset/img/avatar.png" Height="200" Width="200" Class="rounded-circle" />
+                </div>
+                <MudChip Color="Color.Secondary" Class="d-block mt-5" Style="height: 50px">
+                    <MudText Typo="Typo.h5" Align="Align.Center">Hi! My name is Huy and I am a DotNet developer.</MudText>
+                </MudChip>
             </div>
-            <MudChip Color="Color.Secondary" Class="d-block mt-4" Style="height: 50px">
-                <MudText Typo="Typo.h5" Align="Align.Center">Hi! My name is Huy and I am a DotNet developer.</MudText>
-            </MudChip>
-        </div>
-    </MudPaper>
-</MudItem>
-<MudItem xs="12" Style="margin-top:-100px" Class="d-flex justify-center">
-    <MudFab Class="" Color="Color.Secondary" StartIcon="@Icons.Filled.KeyboardArrowDown" Link="#about" />
-</MudItem>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" Style="margin-top:-100px" Class="d-flex justify-center">
+        <MudFab Class="" Color="Color.Secondary" StartIcon="@Icons.Filled.KeyboardArrowDown" Link="#about" />
+    </MudItem>
+</MudGrid>
