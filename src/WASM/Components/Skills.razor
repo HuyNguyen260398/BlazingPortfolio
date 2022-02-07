@@ -1,9 +1,53 @@
-﻿<MudItem xs="12" id="skills">
-    <MudPaper Class="mt-5" Elevation="3" Height="50px"></MudPaper>
-</MudItem>
-<MudItem md="4" sm="12" xs="12">
-    <MudPaper Class="mt-5" Elevation="3" Height="300px"></MudPaper>
-</MudItem>
-<MudItem md="8" sm="12" xs="12">
-    <MudPaper Class="mt-5" Elevation="3" Height="300px"></MudPaper>
-</MudItem>
+﻿<MudGrid id="skills" Class="mt-5" Style="border:2px solid green">
+    <MudItem xs="12" Class="px-0 py-0 my-5">
+        <MudText Typo="Typo.h3" Color="Color.Secondary" Style="margin-left:50px">MY SKILLS</MudText>
+    </MudItem>
+    <MudItem md="6" sm="12" xs="12">
+        <div class="row">
+            <div class="col-6">
+                <MudText Typo="Typo.h6" Color="Color.Secondary">C#</MudText>
+            </div>
+            <div class="col-6">
+                <MudText Typo="Typo.h6" Color="Color.Secondary" Class="text-end">90%</MudText>
+            </div>
+            <div class="col-12">
+                <MudProgressLinear Color="Color.Primary" Rounded="true" Size="Size.Medium" Value="90" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <MudText Typo="Typo.h6" Color="Color.Secondary">SQL</MudText>
+            </div>
+            <div class="col-6">
+                <MudText Typo="Typo.h6" Color="Color.Secondary" Class="text-end">50%</MudText>
+            </div>
+            <div class="col-12">
+                <MudProgressLinear Color="Color.Primary" Rounded="true" Size="Size.Medium" Value="50" />
+            </div>
+        </div>
+    </MudItem>
+    <MudItem md="6" sm="12" xs="12">
+        <div class="row">
+            <div class="col-6">
+                <MudText Typo="Typo.h6" Color="Color.Secondary">Dot Net</MudText>
+            </div>
+            <div class="col-6">
+                <MudText Typo="Typo.h6" Color="Color.Secondary" Class="text-end">70%</MudText>
+            </div>
+            <div class="col-12">
+                <MudProgressLinear Color="Color.Primary" Rounded="true" Size="Size.Medium" Value="70" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <MudText Typo="Typo.h6" Color="Color.Secondary">Azure</MudText>
+            </div>
+            <div class="col-6">
+                <MudText Typo="Typo.h6" Color="Color.Secondary" Class="text-end">50%</MudText>
+            </div>
+            <div class="col-12">
+                <MudProgressLinear Color="Color.Primary" Rounded="true" Size="Size.Medium" Value="50" />
+            </div>
+        </div>
+    </MudItem>
+</MudGrid>
