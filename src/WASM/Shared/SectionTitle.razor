@@ -1,5 +1,11 @@
-﻿<MudItem xs="12" Class="px-0 py-0 my-5">
+﻿@*<MudItem xs="12" Class="px-0 py-0 my-5">
     <MudText Typo="Typo.h3" Color="Color.Secondary" Style="margin-left:50px">@Title.ToUpper()</MudText>
+    </MudItem>*@
+
+<MudItem xs="12">
+    <MudPaper Height="100px" Elevation="5" Class="d-flex justify-center align-center mud-theme-primary">
+        <MudText Typo="Typo.h3" Class="text-center text-white">@Title</MudText>
+    </MudPaper>
 </MudItem>
 
 @code {
