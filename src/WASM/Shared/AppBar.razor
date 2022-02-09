@@ -1,0 +1,19 @@
+﻿<MudAppBar>
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+    &nbsp; Huy NG
+    <MudSpacer />
+    <MudIconButton Icon="@Icons.Custom.Brands.LinkedIn" Color="Color.Inherit" />
+    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
+</MudAppBar>
+
+<Drawer DrawerOpen="_drawerOpen" />
+
+@code
+{
+    private bool _drawerOpen = false;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}

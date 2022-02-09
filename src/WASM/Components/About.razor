@@ -1,77 +1,66 @@
-﻿<!-- ABOUT -->
-<div class="arlo_tm_about" id="about">
-    <div class="container">
-        <div class="arlo_tm_main_title">
-            <span>Biography</span>
-            <h3>About Me</h3>
-        </div>
-        <div class="about_inner">
-            <div class="left">
-                <div class="about_image_wrap parallax" data-relative-input="true">
-                    <div class="image layer" data-depth="0.1">
-                        <img src="Arlo/img/ratios/550x650.jpg" alt="" />
-                        <div class="inner" data-img-url="Arlo/img/about/1.jpg"></div>
+﻿<MudGrid id="about" Class="mt-5">
+    <SectionTitle Title="Some Words About Me" />
+    <MudItem md="4" sm="12" xs="12" Class="d-flex justify-center">
+            <MudImage Elevation="5" Fluid="true" Src="./asset/img/dotnet-bot.png" Style="height:100%"/>
+    </MudItem>
+    <MudItem md="8" sm="12" xs="12">
+        <MudPaper Class="pa-5" Elevation="5" Style="height: 100%">
+            <MudText Typo="Typo.h5">My name is <span class="mud-primary-text"><strong>Nguyen Gia Huy</strong></span></MudText>
+            <MudText Typo="Typo.body1" Class="mt-5">
+                I am a Web Developer, and I'm very passionate and dedicated to my work. With 20 years experience as a professional Web developer, I have acquired the skills and knowledge necessary to make your project a success. I enjoy every step of the design process, from discussion and collaboration to concept and execution, but I find the most satisfaction in seeing the finished product do everything for you that it was created to do.
+            </MudText>
+            <MudGrid Class="mt-5">
+                <MudItem md="6" sm="12" xs="12">
+                    <div class="row">
+                        <MudIcon Class="col-sm-2" Icon="@Icons.Filled.Cake" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
+                        <MudText Class="col-sm-2"><strong>Birthday:</strong></MudText>
+                        <MudText Class="col-sm-8 text-end">26.03.1998</MudText>
                     </div>
-                    <div class="border layer" data-depth="0.2">
-                        <img src="Arlo/img/ratios/550x650.jpg" alt="" />
-                        <div class="inner"></div>
+                    <div class="row">
+                        <MudIcon Class="col-sm-2" Icon="@Icons.Filled.LocationOn" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
+                        <MudText Class="col-sm-2"><strong>Location:</strong></MudText>
+                        <MudText Class="col-sm-8 text-end">HCM City, VN</MudText>
                     </div>
-                </div>
-            </div>
-            <div class="right">
-                <div class="about_title">
-                    <h3>I'm @($"{User.FirstName} {User.LastName}") and <span class="arlo_tm_animation_text_word"></span></h3>
-                </div>
-                <div class="text">
-                    <p>Hi! My name is <span>@($"{User.FirstName} {User.LastName}")</span>. I am a Web Developer, and I'm very passionate and dedicated to my work. With 20 years experience as a professional Web developer, I have acquired the skills and knowledge necessary to make your project a success.</p>
-                </div>
-                <div class="about_short_contact_wrap">
-                    <ul>
-                        <li>
-                            <img class="svg" src="Arlo/img/svg/gift.svg" alt="" />
-                            <span><label>Birthday:</label> @User.DoB.ToString("dd.MM.yyyy")</span>
-                        </li>
-                        <li>
-                            <img class="svg" src="Arlo/img/svg/calendar-4.svg" alt="" />
-                            <span><label>Age:</label> @(DateTime.Now.Year - User.DoB.Year)</span>
-                        </li>
-                        <li>
-                            <img class="svg" src="Arlo/img/svg/location-1.svg" alt="" />
-                            <span><label>Location:</label> <a class="href_location" href="#">@User.Address</a></span>
-                        </li>
-                        <li>
-                            <img class="svg" src="Arlo/img/svg/game-controller-2.svg" alt="" />
-                            <span><label>Interests:</label> @User.Interests</span>
-                        </li>
-                        <li>
-                            <img class="svg" src="Arlo/img/svg/study-5.svg" alt="" />
-                            <span><label>Study:</label> <a class="href_location" href="#"> @User.Study</a></span>
-                        </li>
-                        <li>
-                            <img class="svg" src="Arlo/img/svg/degree-1.svg" alt="" />
-                            <span><label>Degree:</label> @User.Degree</span>
-                        </li>
-                        <li>
-                            <img class="svg" src="Arlo/img/svg/message-3.svg" alt="" />
-                            <span><label>Mail:</label> <a href="mailto:example@gmail.com">@User.Email</a></span>
-                        </li>
-                        <li>
-                            <img class="svg" src="Arlo/img/svg/call-2.svg" alt="" />
-                            <span><label>Phone:</label> <a href="tel:+77 022 177 05 05">@User.Phone</a></span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="arlo_tm_button">
-                    <a href="Arlo/img/resume/resume.jpg" download><span>Download CV</span></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /ABOUT -->
-
-@code
-{
-    [Parameter]
-    public UserDto User { get; set; }
-}
+                    <div class="row">
+                        <MudIcon Class="col-sm-2" Icon="@Icons.Filled.Business" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
+                        <MudText Class="col-sm-2"><strong>Study:</strong></MudText>
+                        <MudText Class="col-sm-8 text-end">Greenwich</MudText>
+                    </div>
+                    <div class="row">
+                        <MudIcon Class="col-sm-2" Icon="@Icons.Filled.Email" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
+                        <MudText Class="col-sm-2"><strong>Email:</strong></MudText>
+                        <MudText Class="col-sm-8 text-end">huynguyen260398@gmail.com</MudText>
+                    </div>
+                </MudItem>
+                <MudItem md="6" sm="12" xs="12">
+                    <div class="row">
+                        <MudIcon Class="col-sm-2" Icon="@Icons.Filled.CalendarMonth" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
+                        <MudText Class="col-sm-2"><strong>Age:</strong></MudText>
+                        <MudText Class="col-sm-8 text-end">24</MudText>
+                    </div>
+                    <div class="row">
+                        <MudIcon Class="col-sm-2" Icon="@Icons.Filled.VideogameAsset" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
+                        <MudText Class="col-sm-2"><strong>Interests:</strong></MudText>
+                        <MudText Class="col-sm-8 text-end">Musics</MudText>
+                    </div>
+                    <div class="row">
+                        <MudIcon Class="col-sm-2" Icon="@Icons.Filled.School" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
+                        <MudText Class="col-sm-2"><strong>Degree:</strong></MudText>
+                        <MudText Class="col-sm-8 text-end">Bachelor</MudText>
+                    </div>
+                    <div class="row">
+                        <MudIcon Class="col-sm-2" Icon="@Icons.Filled.Phone" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
+                        <MudText Class="col-sm-2"><strong>Phone:</strong></MudText>
+                        <MudText Class="col-sm-8 text-end">0903.336.493</MudText>
+                    </div>
+                </MudItem>
+            </MudGrid>
+            <MudGrid Class="mt-5">
+                <MudItem xs="12">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Filled.FileDownload" Class="mr-5">Download CV</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Filled.Send">Send Message</MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+</MudGrid>

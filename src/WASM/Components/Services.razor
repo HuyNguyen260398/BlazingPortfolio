@@ -1,38 +1,58 @@
-﻿@if (ServiceList != null && ServiceList.Count() > 0)
-{
-    <!-- SERVICES -->
-    <div class="arlo_tm_section" id="services">
-        <div class="arlo_tm_services">
-            <div class="container">
-                <div class="arlo_tm_main_title">
-                    <span>Services</span>
-                    <h3>Quality Services</h3>
-                </div>
-                <div class="service_inner">
-                    <ul>
-                        @foreach (var service in ServiceList)
-                        {
-                            <li class="wow fadeInLeft" data-wow-duration="1.5s">
-                            <div class="inner">
-                                <img class="svg" src="@($"{ApiEndPoints.ServerBaseUrl}/{service.SvgPath}")" alt="" />
-                                <h3>@service.Name</h3>
-                                <p>@service.Description</p>
-                            </div>
-                        </li>
-                        }
-                    </ul>
-                    <div class="lets_work wow fadeInLeft" data-wow-duration="1.5s">
-                        <p>Are you interested in working with me? <a href="#contact"> Let's started now</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /SERVICES -->
-}
+﻿<MudGrid id="services" Class="mt-5">
+    <SectionTitle Title="Blazing Services I Developed" />
+    <MudItem md="4" sm="6" xs="12">
+        <MudCard Elevation="5">
+            <MudCardContent>
+                <MudIcon Icon="@Icons.Filled.DesktopWindows" Color="Color.Primary" Style="font-size: 5rem;"/>
+                <MudText Typo="Typo.h5" Class="my-3"><strong>Web Developement</strong></MudText>
+                <MudText Typo="Typo.body1">Building web apps with DotNet</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem md="4" sm="6" xs="12">
+        <MudCard Elevation="5">
+            <MudCardContent>
+                <MudIcon Icon="@Icons.Filled.CloudSync" Color="Color.Primary" Style="font-size: 5rem;"/>
+                <MudText Typo="Typo.h5" Class="my-3"><strong>DevOps</strong></MudText>
+                <MudText Typo="Typo.body1">Upscaling apps using DevOps stacks</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem md="4" sm="6" xs="12">
+        <MudCard Elevation="5">
+            <MudCardContent>
+                <MudIcon Icon="@Icons.Filled.QueryStats" Color="Color.Primary" Style="font-size: 5rem;"/>
+                <MudText Typo="Typo.h5" Class="my-3"><strong>Data Analysist</strong></MudText>
+                <MudText Typo="Typo.body1">Visualizing data by Power Bi</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem md="4" sm="6" xs="12">
+        <MudCard Elevation="5">
+            <MudCardContent>
+                <MudIcon Icon="@Icons.Custom.Brands.Apple" Color="Color.Primary" Style="font-size: 5rem;"/>
+                <MudText Typo="Typo.h5" Class="my-3"><strong>Apple Services</strong></MudText>
+                <MudText Typo="Typo.body1">Apple Services</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem md="4" sm="6" xs="12">
+        <MudCard Elevation="5">
+            <MudCardContent>
+                <MudIcon Icon="@Icons.Custom.Brands.Microsoft" Color="Color.Primary" Style="font-size: 5rem;"/>
+                <MudText Typo="Typo.h5" Class="my-3"><strong>Windows Services</strong></MudText>
+                <MudText Typo="Typo.body1">Windows Services</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem md="4" sm="6" xs="12">
+        <MudCard Elevation="5">
+            <MudCardContent>
+                <MudIcon Icon="@Icons.Custom.Brands.Linux" Color="Color.Primary" Style="font-size: 5rem;"/>
+                <MudText Typo="Typo.h5" Class="my-3"><strong>Linux Services</strong></MudText>
+                <MudText Typo="Typo.body1">Linux Services</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
 
-@code
-{
-    [Parameter]
-    public IEnumerable<ServiceDto> ServiceList { get; set; }
-}
+</MudGrid>
