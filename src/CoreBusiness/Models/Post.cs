@@ -8,15 +8,10 @@ public class Post
     [Required]
     public string Title { get; set; }
 
-<<<<<<< HEAD
-    public string ThumbnailPath { get; set; }
-
-=======
     [Required]
     public string ThumbnailPath { get; set; }
 
     [Required]
->>>>>>> 8ee9317 (Added SQLite db.)
     public string Excerpt { get; set; }
 
     [Required]

@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     public DbSet<Image> Images { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Service> Services { get; set; }
+    public DbSet<Skill> Skills { get; set; }
     public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -116,6 +117,14 @@ public class AppDbContext : DbContext
             }
         };
 
+        List<Skill> skillsToSeed = new()
+        {
+            new Skill { SkillId = 1, Name = "C#", YearsOfExperience = 3, ScorePercentage = 0.9m },
+            new Skill { SkillId = 2, Name = "SQL", YearsOfExperience = 1, ScorePercentage = 0.5m },
+            new Skill { SkillId = 3, Name = "DotNet", YearsOfExperience = 2, ScorePercentage = 0.7m },
+            new Skill { SkillId = 4, Name = "Blazor", YearsOfExperience = 2, ScorePercentage = 0.7m },
+        };
+
         List<User> usersToSeed = new()
         {
             new User
@@ -125,6 +134,7 @@ public class AppDbContext : DbContext
                 LastName = "Nguyen",
                 DoB = new DateTime(1998, 03, 26).Date,
                 Email = "huynguyen260398@gmail.com",
+                Password = "Pas$w0rd",
                 Phone = "(+84)903336493",
                 Address = "HCM City, Viet Nam",
                 Study = "University of Greenwich",
@@ -140,6 +150,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Image>().HasData(imagesToSeed);
         modelBuilder.Entity<Post>().HasData(postsToSeed);
         modelBuilder.Entity<Service>().HasData(servicesToSeed);
+        modelBuilder.Entity<Skill>().HasData(skillsToSeed); ;
         modelBuilder.Entity<User>().HasData(usersToSeed);
     }
 }

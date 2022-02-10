@@ -5,10 +5,7 @@ public class Image
     [Key]
     public int ImageId { get; set; }
 
-<<<<<<< HEAD
-=======
     [Required]
->>>>>>> 8ee9317 (Added SQLite db.)
     public string ImageGuid { get; set; }
 
     [Required]

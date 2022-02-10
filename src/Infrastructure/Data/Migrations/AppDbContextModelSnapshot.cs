@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Data
+namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -15,7 +15,7 @@ namespace Infrastructure.Data
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.2");
 
             modelBuilder.Entity("CoreBusiness.Models.Archievement", b =>
                 {
@@ -95,7 +95,7 @@ namespace Infrastructure.Data
                         new
                         {
                             ImageId = 1,
-                            ImageGuid = "05b5a988-4c4b-4cc0-9800-aaa8af8dd806",
+                            ImageGuid = "0ed4ebf5-0b51-43e5-bd77-0b514a4900fd",
                             NewImageBase64Content = "",
                             NewImageExtension = ".png",
                             OldImagePath = "",
@@ -104,7 +104,7 @@ namespace Infrastructure.Data
                         new
                         {
                             ImageId = 2,
-                            ImageGuid = "b5c1a3f3-5938-4e07-9e66-14e292ac7524",
+                            ImageGuid = "050f0a10-9f36-422c-b676-fd95b582d996",
                             NewImageBase64Content = "",
                             NewImageExtension = ".png",
                             OldImagePath = "",
@@ -113,7 +113,7 @@ namespace Infrastructure.Data
                         new
                         {
                             ImageId = 3,
-                            ImageGuid = "3a6f082a-1f04-46e1-92e4-eea7016163a9",
+                            ImageGuid = "8e8b849e-145d-4c47-a4ca-f6e6d9f5cfc3",
                             NewImageBase64Content = "",
                             NewImageExtension = ".png",
                             OldImagePath = "",
@@ -160,7 +160,7 @@ namespace Infrastructure.Data
                             Content = "Content 1",
                             Excerpt = "Excerpt 1",
                             IsPublished = true,
-                            PublishDate = new DateTime(2022, 2, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            PublishDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             ThumbnailPath = "",
                             Title = "Post 1"
                         },
@@ -170,7 +170,7 @@ namespace Infrastructure.Data
                             Content = "Content 2",
                             Excerpt = "Excerpt 2",
                             IsPublished = true,
-                            PublishDate = new DateTime(2022, 2, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            PublishDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             ThumbnailPath = "",
                             Title = "Post 2"
                         },
@@ -180,7 +180,7 @@ namespace Infrastructure.Data
                             Content = "Content 3",
                             Excerpt = "Excerpt 3",
                             IsPublished = true,
-                            PublishDate = new DateTime(2022, 2, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            PublishDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             ThumbnailPath = "",
                             Title = "Post 3"
                         });
@@ -232,6 +232,57 @@ namespace Infrastructure.Data
                         });
                 });
 
+            modelBuilder.Entity("CoreBusiness.Models.Skill", b =>
+                {
+                    b.Property<int>("SkillId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("ScorePercentage")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("YearsOfExperience")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("SkillId");
+
+                    b.ToTable("Skills");
+
+                    b.HasData(
+                        new
+                        {
+                            SkillId = 1,
+                            Name = "C#",
+                            ScorePercentage = 0.9m,
+                            YearsOfExperience = 3
+                        },
+                        new
+                        {
+                            SkillId = 2,
+                            Name = "SQL",
+                            ScorePercentage = 0.5m,
+                            YearsOfExperience = 1
+                        },
+                        new
+                        {
+                            SkillId = 3,
+                            Name = "DotNet",
+                            ScorePercentage = 0.7m,
+                            YearsOfExperience = 2
+                        },
+                        new
+                        {
+                            SkillId = 4,
+                            Name = "Blazor",
+                            ScorePercentage = 0.7m,
+                            YearsOfExperience = 2
+                        });
+                });
+
             modelBuilder.Entity("CoreBusiness.Models.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -277,6 +328,10 @@ namespace Infrastructure.Data
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -303,6 +358,7 @@ namespace Infrastructure.Data
                             Interests = "Building websites",
                             Intro = "I am a Web Developer, and I'm very passionate and dedicated to my work. With 2 years experience as a senior Web developer, I have acquired the skills and knowledge necessary to make your project a success.",
                             LastName = "Nguyen",
+                            Password = "Pas$w0rd",
                             Phone = "(+84)903336493",
                             Study = "University of Greenwich"
                         });

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Infrastructure.Data
+namespace Infrastructure.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Reset : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -74,6 +74,21 @@ namespace Infrastructure.Data
                 });
 
             migrationBuilder.CreateTable(
+                name: "Skills",
+                columns: table => new
+                {
+                    SkillId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    YearsOfExperience = table.Column<int>(type: "INTEGER", nullable: false),
+                    ScorePercentage = table.Column<decimal>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skills", x => x.SkillId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -83,6 +98,7 @@ namespace Infrastructure.Data
                     LastName = table.Column<string>(type: "TEXT", nullable: false),
                     DoB = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", nullable: false),
                     Phone = table.Column<string>(type: "TEXT", nullable: false),
                     Address = table.Column<string>(type: "TEXT", nullable: false),
                     Study = table.Column<string>(type: "TEXT", nullable: false),
@@ -120,32 +136,32 @@ namespace Infrastructure.Data
             migrationBuilder.InsertData(
                 table: "Images",
                 columns: new[] { "ImageId", "ImageGuid", "NewImageBase64Content", "NewImageExtension", "OldImagePath", "RelativeImagePath" },
-                values: new object[] { 1, "05b5a988-4c4b-4cc0-9800-aaa8af8dd806", "", ".png", "", "" });
+                values: new object[] { 1, "0ed4ebf5-0b51-43e5-bd77-0b514a4900fd", "", ".png", "", "" });
 
             migrationBuilder.InsertData(
                 table: "Images",
                 columns: new[] { "ImageId", "ImageGuid", "NewImageBase64Content", "NewImageExtension", "OldImagePath", "RelativeImagePath" },
-                values: new object[] { 2, "b5c1a3f3-5938-4e07-9e66-14e292ac7524", "", ".png", "", "" });
+                values: new object[] { 2, "050f0a10-9f36-422c-b676-fd95b582d996", "", ".png", "", "" });
 
             migrationBuilder.InsertData(
                 table: "Images",
                 columns: new[] { "ImageId", "ImageGuid", "NewImageBase64Content", "NewImageExtension", "OldImagePath", "RelativeImagePath" },
-                values: new object[] { 3, "3a6f082a-1f04-46e1-92e4-eea7016163a9", "", ".png", "", "" });
+                values: new object[] { 3, "8e8b849e-145d-4c47-a4ca-f6e6d9f5cfc3", "", ".png", "", "" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "PostId", "Content", "Excerpt", "IsPublished", "PublishDate", "ThumbnailPath", "Title" },
-                values: new object[] { 1, "Content 1", "Excerpt 1", true, new DateTime(2022, 2, 4, 0, 0, 0, 0, DateTimeKind.Local), "", "Post 1" });
+                values: new object[] { 1, "Content 1", "Excerpt 1", true, new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local), "", "Post 1" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "PostId", "Content", "Excerpt", "IsPublished", "PublishDate", "ThumbnailPath", "Title" },
-                values: new object[] { 2, "Content 2", "Excerpt 2", true, new DateTime(2022, 2, 4, 0, 0, 0, 0, DateTimeKind.Local), "", "Post 2" });
+                values: new object[] { 2, "Content 2", "Excerpt 2", true, new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local), "", "Post 2" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "PostId", "Content", "Excerpt", "IsPublished", "PublishDate", "ThumbnailPath", "Title" },
-                values: new object[] { 3, "Content 3", "Excerpt 3", true, new DateTime(2022, 2, 4, 0, 0, 0, 0, DateTimeKind.Local), "", "Post 3" });
+                values: new object[] { 3, "Content 3", "Excerpt 3", true, new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local), "", "Post 3" });
 
             migrationBuilder.InsertData(
                 table: "Services",
@@ -163,9 +179,29 @@ namespace Infrastructure.Data
                 values: new object[] { 3, "Visualizing data by Power Bi", "Data Analysist", "uploads/creativity.svg" });
 
             migrationBuilder.InsertData(
+                table: "Skills",
+                columns: new[] { "SkillId", "Name", "ScorePercentage", "YearsOfExperience" },
+                values: new object[] { 1, "C#", 0.9m, 3 });
+
+            migrationBuilder.InsertData(
+                table: "Skills",
+                columns: new[] { "SkillId", "Name", "ScorePercentage", "YearsOfExperience" },
+                values: new object[] { 2, "SQL", 0.5m, 1 });
+
+            migrationBuilder.InsertData(
+                table: "Skills",
+                columns: new[] { "SkillId", "Name", "ScorePercentage", "YearsOfExperience" },
+                values: new object[] { 3, "DotNet", 0.7m, 2 });
+
+            migrationBuilder.InsertData(
+                table: "Skills",
+                columns: new[] { "SkillId", "Name", "ScorePercentage", "YearsOfExperience" },
+                values: new object[] { 4, "Blazor", 0.7m, 2 });
+
+            migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "Address", "AvatarImagePath", "BackgroundImagePath", "Degree", "DoB", "Email", "FirstName", "Interests", "Intro", "LastName", "Phone", "Study" },
-                values: new object[] { 1, "HCM City, Viet Nam", "uploads/avatar.jpg", "uploads/ocean_background.jpg", "Bachelor of Computer Science", new DateTime(1998, 3, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "huynguyen260398@gmail.com", "Huy", "Building websites", "I am a Web Developer, and I'm very passionate and dedicated to my work. With 2 years experience as a senior Web developer, I have acquired the skills and knowledge necessary to make your project a success.", "Nguyen", "(+84)903336493", "University of Greenwich" });
+                columns: new[] { "UserId", "Address", "AvatarImagePath", "BackgroundImagePath", "Degree", "DoB", "Email", "FirstName", "Interests", "Intro", "LastName", "Password", "Phone", "Study" },
+                values: new object[] { 1, "HCM City, Viet Nam", "uploads/avatar.jpg", "uploads/ocean_background.jpg", "Bachelor of Computer Science", new DateTime(1998, 3, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "huynguyen260398@gmail.com", "Huy", "Building websites", "I am a Web Developer, and I'm very passionate and dedicated to my work. With 2 years experience as a senior Web developer, I have acquired the skills and knowledge necessary to make your project a success.", "Nguyen", "Pas$w0rd", "(+84)903336493", "University of Greenwich" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -181,6 +217,9 @@ namespace Infrastructure.Data
 
             migrationBuilder.DropTable(
                 name: "Services");
+
+            migrationBuilder.DropTable(
+                name: "Skills");
 
             migrationBuilder.DropTable(
                 name: "Users");

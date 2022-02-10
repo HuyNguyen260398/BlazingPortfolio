@@ -17,12 +17,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Mapping));
 
-builder.Services.AddSingleton<IArchievementRepo, ArchievementInMemRepo>();
-builder.Services.AddSingleton<IImageRepo, ImageInMemRepo>();
-builder.Services.AddSingleton<IPostRepo, PostInMemRepo>();
-builder.Services.AddSingleton<IServiceRepo, ServiceInMemRepo>();
-builder.Services.AddSingleton<ISkillRepo, SkillInMemRepo>();
-builder.Services.AddSingleton<IUserRepo, UserInMemRepo>();
+builder.Services.AddSingleton<IArchievementRepo, ArchievementRepo>();
+builder.Services.AddSingleton<IImageRepo, ImageRepo>();
+builder.Services.AddSingleton<IPostRepo, PostRepo>();
+builder.Services.AddSingleton<IServiceRepo, ServiceRepo>();
+builder.Services.AddSingleton<ISkillRepo, SkillRepo>();
+builder.Services.AddSingleton<IUserRepo, UserRepo>();
 
 builder.Services.AddScoped<IArchievementController, ArchievementController>();
 builder.Services.AddScoped<IImageController, ImageController>();
