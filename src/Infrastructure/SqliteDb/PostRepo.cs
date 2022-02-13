@@ -16,7 +16,7 @@ public class PostRepo : IPostRepo
         if (entity == null)
             return false;
 
-        await _db.AddAsync(entity);
+        await _db.AddAsync(_mapper.Map<Post>(entity));
         return await SaveAsync();
     }
 

@@ -33,7 +33,8 @@ public class ArchievementRepo : IArchievementRepo
 
     public async Task<IEnumerable<ArchievementDto>> GetAllAsync()
     {
-        return _mapper.Map<IEnumerable<ArchievementDto>>(await _db.Archievements.ToListAsync());
+        var archievements = _mapper.Map<IEnumerable<ArchievementDto>>(await _db.Archievements.ToListAsync());
+        return archievements;
     }
 
     public async Task<ArchievementDto> GetByIdAsync(int id)

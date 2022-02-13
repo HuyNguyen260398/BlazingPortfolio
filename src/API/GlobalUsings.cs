@@ -1,8 +1,11 @@
-﻿global using API.Configs;
+﻿global using System.Reflection;
+global using API.Configs;
 global using API.Controllers;
 global using API.Interfaces;
+global using API.Extensions;
 global using Application.Dtos;
 global using Application.Interfaces;
 global using Application.Profiles;
 global using Infrastructure;
 global using Infrastructure.SqliteDb;
+global using Infrastructure.InMemDb;

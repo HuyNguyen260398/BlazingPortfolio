@@ -1,5 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
+
+
 // Cors Policy
 builder.Services.AddCors(o =>
 {
@@ -17,12 +19,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Mapping));
 
-builder.Services.AddSingleton<IArchievementRepo, ArchievementRepo>();
-builder.Services.AddSingleton<IImageRepo, ImageRepo>();
-builder.Services.AddSingleton<IPostRepo, PostRepo>();
-builder.Services.AddSingleton<IServiceRepo, ServiceRepo>();
-builder.Services.AddSingleton<ISkillRepo, SkillRepo>();
-builder.Services.AddSingleton<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IArchievementRepo, ArchievementRepo>();
+builder.Services.AddScoped<IImageRepo, ImageRepo>();
+builder.Services.AddScoped<IPostRepo, PostRepo>();
+builder.Services.AddScoped<IServiceRepo, ServiceRepo>();
+builder.Services.AddScoped<ISkillRepo, SkillRepo>();
+builder.Services.AddScoped<IUserRepo, UserRepo>();
+
+//builder.Services.AddScoped<IArchievementRepo, ArchievementInMemRepo>();
+//builder.Services.AddScoped<IImageRepo, ImageInMemRepo>();
+//builder.Services.AddScoped<IPostRepo, PostInMemRepo>();
+//builder.Services.AddScoped<IServiceRepo, ServiceInMemRepo>();
+//builder.Services.AddScoped<ISkillRepo, SkillInMemRepo>();
+//builder.Services.AddScoped<IUserRepo, UserInMemRepo>();
 
 builder.Services.AddScoped<IArchievementController, ArchievementController>();
 builder.Services.AddScoped<IImageController, ImageController>();
@@ -30,6 +39,8 @@ builder.Services.AddScoped<IPostController, PostController>();
 builder.Services.AddScoped<IServiceController, ServiceController>();
 builder.Services.AddScoped<ISkillController, SkillController>();
 builder.Services.AddScoped<IUserController, UserController>();
+
+builder.Services.AddEndpoints();
 
 var app = builder.Build();
 
@@ -45,24 +56,34 @@ app.UseStaticFiles();
 
 app.UseCors("CorsPolicy");
 
-using (var serviceScope = app.Services.CreateScope())
-{
-    var userController = serviceScope.ServiceProvider.GetRequiredService<IUserController>();
-    var skillController = serviceScope.ServiceProvider.GetRequiredService<ISkillController>();
-    var serviceController = serviceScope.ServiceProvider.GetRequiredService<IServiceController>();
-    var imageController = serviceScope.ServiceProvider.GetRequiredService<IImageController>();
-    var archievementController = serviceScope.ServiceProvider.GetRequiredService<IArchievementController>();
-    var postController = serviceScope.ServiceProvider.GetRequiredService<IPostController>();
+//using (var serviceScope = app.Services.CreateScope())
+//{
+//    var scopeProvider = serviceScope.ServiceProvider;
 
-    ApiConfigs.InitDIContainer(
-        userController,
-        skillController,
-        serviceController,
-        imageController,
-        archievementController,
-        postController);
-}
+//    try
+//    {
+//        var userController = scopeProvider.GetRequiredService<IUserController>();
+//        var skillController = scopeProvider.GetRequiredService<ISkillController>();
+//        var serviceController = scopeProvider.GetRequiredService<IServiceController>();
+//        var imageController = scopeProvider.GetRequiredService<IImageController>();
+//        var archievementController = scopeProvider.GetRequiredService<IArchievementController>();
+//        var postController = scopeProvider.GetRequiredService<IPostController>();
 
-app.ConfigureApi();
+//        ApiConfigs.InitDIContainer(
+//            userController,
+//            skillController,
+//            serviceController,
+//            imageController,
+//            archievementController,
+//            postController);
+//    }
+//    catch (Exception)
+//    {
+//        throw;
+//    }
+
+//}
+
+app.MapEndpoints();
 
 app.Run();
