@@ -3,6 +3,9 @@
 @inject IUserRepo UserRepo
 @inject ISkillRepo SkillRepo
 @inject IServiceRepo ServiceRepo
+@inject IImageRepo ImageRepo
+@inject IArchievementRepo ArchievementRepo
+@inject IPostRepo PostRepo
 
 <Home AvatarPath="@(user.AvatarImagePath)" />
 
@@ -12,13 +15,13 @@
 
 <Services ServiceList="serviceList" />
 
-<Portfolio />
+<Portfolio PortfolioImageList="imageList" />
 
 <Testimonials />
 
-<Archievements />
+<Archievements ArchievementList="archievementList" />
 
-<Posts />
+<Posts PostList="postList" />
 
 <Contact />
 
@@ -29,11 +32,17 @@
     private UserDto user = new();
     private List<SkillDto> skillList = new();
     private List<ServiceDto> serviceList = new();
+    private List<ImageDto> imageList = new();
+    private List<ArchievementDto> archievementList = new();
+    private List<PostDto> postList = new();
 
     protected override async Task OnInitializedAsync()
     {
         user = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
         skillList = (await SkillRepo.GetAllAsync(ApiEndPoints.SkillEndpoint)).ToList();
         serviceList = (await ServiceRepo.GetAllAsync(ApiEndPoints.ServiceEndpoint)).ToList();
+        imageList = (await ImageRepo.GetAllAsync(ApiEndPoints.ImageEndpoint)).ToList();
+        archievementList = (await ArchievementRepo.GetAllAsync(ApiEndPoints.ArchievementEndpoint)).ToList();
+        postList = (await PostRepo.GetAllAsync(ApiEndPoints.PostEndpoint)).ToList();
     }
 }

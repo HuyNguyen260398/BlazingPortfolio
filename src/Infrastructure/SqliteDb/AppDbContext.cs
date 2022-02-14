@@ -24,7 +24,7 @@ public class AppDbContext : DbContext
             new Archievement { ArchievementId = 1, Name = "Happy Clients", Count = 111 },
             new Archievement { ArchievementId = 2, Name = "Projects Finished", Count = 333 },
             new Archievement { ArchievementId = 4, Name = "Certificates Archieved", Count = 555 },
-            new Archievement { ArchievementId = 3, Name = "Awards Won", Count = 777 },
+            new Archievement { ArchievementId = 3, Name = "Awards Won", Count = 777 }
         };
 
         List<Image> imagesToSeed = new()
@@ -50,6 +50,15 @@ public class AppDbContext : DbContext
             new Image
             {
                 ImageId = 3,
+                ImageGuid = Guid.NewGuid().ToString(),
+                NewImageExtension = ".png",
+                NewImageBase64Content = String.Empty,
+                OldImagePath = String.Empty,
+                RelativeImagePath = String.Empty
+            },
+            new Image
+            {
+                ImageId = 4,
                 ImageGuid = Guid.NewGuid().ToString(),
                 NewImageExtension = ".png",
                 NewImageBase64Content = String.Empty,
@@ -90,6 +99,16 @@ public class AppDbContext : DbContext
                 IsPublished = true,
                 PublishDate = DateTime.Now.Date,
             },
+            new Post
+            {
+                PostId = 4,
+                Title = "Post 4",
+                ThumbnailPath = String.Empty,
+                Excerpt = "Excerpt 4",
+                Content = "Content 4",
+                IsPublished = true,
+                PublishDate = DateTime.Now.Date,
+            }
         };
 
         List<Service> servicesToSeed = new()
@@ -122,7 +141,7 @@ public class AppDbContext : DbContext
             new Skill { SkillId = 1, Name = "C#", YearsOfExperience = 3, ScorePercentage = 0.9m },
             new Skill { SkillId = 2, Name = "SQL", YearsOfExperience = 1, ScorePercentage = 0.5m },
             new Skill { SkillId = 3, Name = "DotNet", YearsOfExperience = 2, ScorePercentage = 0.7m },
-            new Skill { SkillId = 4, Name = "Blazor", YearsOfExperience = 2, ScorePercentage = 0.7m },
+            new Skill { SkillId = 4, Name = "Blazor", YearsOfExperience = 2, ScorePercentage = 0.7m }
         };
 
         List<User> usersToSeed = new()

@@ -7,9 +7,11 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IArchievementRepo, ArchievementRepo>();
+builder.Services.AddScoped<IImageRepo, ImageRepo>();
+builder.Services.AddScoped<IPostRepo, PostRepo>();
 builder.Services.AddScoped<IServiceRepo, ServiceRepo>();
 builder.Services.AddScoped<ISkillRepo, SkillRepo>();
-builder.Services.AddScoped<IImageRepo, ImageRepo>();
+builder.Services.AddScoped<IUserRepo, UserRepo>();
 
 await builder.Build().RunAsync();

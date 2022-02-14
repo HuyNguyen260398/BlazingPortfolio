@@ -1,42 +1,18 @@
 ﻿<MudGrid Class="mt-5">
-    <MudItem lg="3" md="4" sm="6" xs="12">
-        <MudTooltip Color="Color.Secondary" Arrow="true" Text="My first project">
-            <MudImage Elevation="5" Fluid="true" Src="./asset/img/creative_castle.jpg" />
-        </MudTooltip>
-    </MudItem>
-    <MudItem lg="3" md="4" sm="6" xs="12">
-        <MudTooltip Color="Color.Secondary" Arrow="true" Text="My first project">
-            <MudImage Elevation="5" Fluid="true" Src="./asset/img/creative_castle.jpg" />
-        </MudTooltip>
-    </MudItem>
-    <MudItem lg="3" md="4" sm="6" xs="12">
-        <MudTooltip Color="Color.Secondary" Arrow="true" Text="My first project">
-            <MudImage Elevation="5" Fluid="true" Src="./asset/img/creative_castle.jpg" />
-        </MudTooltip>
-    </MudItem>
-    <MudItem lg="3" md="4" sm="6" xs="12">
-        <MudTooltip Color="Color.Secondary" Arrow="true" Text="My first project">
-            <MudImage Elevation="5" Fluid="true" Src="./asset/img/creative_castle.jpg" />
-        </MudTooltip>
-    </MudItem>
-    <MudItem lg="3" md="4" sm="6" xs="12">
-        <MudTooltip Color="Color.Secondary" Arrow="true" Text="My first project">
-            <MudImage Elevation="5" Fluid="true" Src="./asset/img/creative_castle.jpg" />
-        </MudTooltip>
-    </MudItem>
-    <MudItem lg="3" md="4" sm="6" xs="12">
-        <MudTooltip Color="Color.Secondary" Arrow="true" Text="My first project">
-            <MudImage Elevation="5" Fluid="true" Src="./asset/img/creative_castle.jpg" />
-        </MudTooltip>
-    </MudItem>
-    <MudItem lg="3" md="4" sm="6" xs="12">
-        <MudTooltip Color="Color.Secondary" Arrow="true" Text="My first project">
-            <MudImage Elevation="5" Fluid="true" Src="./asset/img/creative_castle.jpg" />
-        </MudTooltip>
-    </MudItem>
-    <MudItem lg="3" md="4" sm="6" xs="12">
-        <MudTooltip Color="Color.Secondary" Arrow="true" Text="My first project">
-            <MudImage Elevation="5" Fluid="true" Src="./asset/img/creative_castle.jpg" />
-        </MudTooltip>
-    </MudItem>
+
+    @foreach (var item in PortfolioImageList)
+    {
+        <MudItem lg="3" md="4" sm="6" xs="12">
+            <MudTooltip Color="Color.Secondary" Arrow="true" Text="Portfolio Image">
+                <MudImage Elevation="5" Fluid="true" Src="@($"{ApiEndPoints.ServerBaseUrl}/{item.RelativeImagePath}")" />
+            </MudTooltip>
+        </MudItem>
+    }
+
 </MudGrid>
+
+@code
+{
+    [Parameter]
+    public List<ImageDto> PortfolioImageList { get; set; }
+}

@@ -1,55 +1,27 @@
 ﻿<MudGrid id="posts" Class="mt-5">
     <SectionTitle Title="Visit My Latest Posts" />
-    <MudItem lg="3" md="4" sm="6" xs="12" Class="d-flex justify-center">
-        <MudCard Style="width: 400px">
-            <MudCardMedia Image="./asset/img/post.jpg" Height="250" />
-            <MudCardContent>
-                <MudText Typo="Typo.h5"><strong>Old Paint</strong></MudText>
-                <MudText Typo="Typo.subtitle1" Class="mb-5">January 22, 2018</MudText>
-                <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia. This photo was taken in a small village in Istra Croatia.</MudText>
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large">Read More</MudButton>
-            </MudCardActions>
-        </MudCard>
-    </MudItem>
-    <MudItem lg="3" md="4" sm="6" xs="12" Class="d-flex justify-center">
-        <MudCard Style="width: 400px">
-            <MudCardMedia Image="./asset/img/post.jpg" Height="250" />
-            <MudCardContent>
-                <MudText Typo="Typo.h5"><strong>Old Paint</strong></MudText>
-                <MudText Typo="Typo.subtitle1" Class="mb-5">January 22, 2018</MudText>
-                <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia. This photo was taken in a small village in Istra Croatia.</MudText>
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large">Read More</MudButton>
-            </MudCardActions>
-        </MudCard>
-    </MudItem>
-    <MudItem lg="3" md="4" sm="6" xs="12" Class="d-flex justify-center">
-        <MudCard Style="width: 400px">
-            <MudCardMedia Image="./asset/img/post.jpg" Height="250" />
-            <MudCardContent>
-                <MudText Typo="Typo.h5"><strong>Old Paint</strong></MudText>
-                <MudText Typo="Typo.subtitle1" Class="mb-5">January 22, 2018</MudText>
-                <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia. This photo was taken in a small village in Istra Croatia.</MudText>
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large">Read More</MudButton>
-            </MudCardActions>
-        </MudCard>
-    </MudItem>
-    <MudItem lg="3" md="4" sm="6" xs="12" Class="d-flex justify-center">
-        <MudCard Style="width: 400px">
-            <MudCardMedia Image="./asset/img/post.jpg" Height="250" />
-            <MudCardContent>
-                <MudText Typo="Typo.h5"><strong>Old Paint</strong></MudText>
-                <MudText Typo="Typo.subtitle1" Class="mb-5">January 22, 2018</MudText>
-                <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia. This photo was taken in a small village in Istra Croatia.</MudText>
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large">Read More</MudButton>
-            </MudCardActions>
-        </MudCard>
-    </MudItem>
+
+    @foreach (var item in PostList)
+    {
+        <MudItem lg="3" md="4" sm="6" xs="12" Class="d-flex justify-center">
+            <MudCard Style="width: 400px">
+                <MudCardMedia Image="@($"{ApiEndPoints.ServerBaseUrl}/{item.ThumbnailPath}")" Height="250" />
+                <MudCardContent>
+                    <MudText Typo="Typo.h5"><strong>@item.Title</strong></MudText>
+                    <MudText Typo="Typo.subtitle1" Class="mb-5">@item.PublishDate.ToString("MMMM dd, yyyy")</MudText>
+                    <MudText Typo="Typo.body2">@item.Excerpt</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large">Read More</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    }
+
 </MudGrid>
+
+@code
+{
+    [Parameter]
+    public List<PostDto> PostList { get; set; }
+}
