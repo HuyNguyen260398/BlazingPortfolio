@@ -1,12 +1,16 @@
 ﻿@page "/"
 
-<Home />
+@inject IUserRepo UserRepo
+@inject ISkillRepo SkillRepo
+@inject IServiceRepo ServiceRepo
 
-<About />
+<Home AvatarPath="@(user.AvatarImagePath)" />
 
-<Skills />
+<About User="user" />
 
-<Services />
+<Skills SkillList="skillList" />
+
+<Services ServiceList="serviceList" />
 
 <Portfolio />
 
@@ -19,3 +23,17 @@
 <Contact />
 
 <AnchorNavigation />
+
+@code
+{
+    private UserDto user = new();
+    private List<SkillDto> skillList = new();
+    private List<ServiceDto> serviceList = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
+        skillList = (await SkillRepo.GetAllAsync(ApiEndPoints.SkillEndpoint)).ToList();
+        serviceList = (await ServiceRepo.GetAllAsync(ApiEndPoints.ServiceEndpoint)).ToList();
+    }
+}

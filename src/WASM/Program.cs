@@ -9,6 +9,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IServiceRepo, ServiceRepo>();
+builder.Services.AddScoped<ISkillRepo, SkillRepo>();
 builder.Services.AddScoped<IImageRepo, ImageRepo>();
 
 await builder.Build().RunAsync();

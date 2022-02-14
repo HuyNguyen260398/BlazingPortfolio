@@ -51,7 +51,7 @@ public class UserRepo : IUserRepo
         if (entity == null)
             return false;
 
-        _db.Update(entity);
+        _db.Update(_mapper.Map<User>(entity));
         return await _db.SaveChangesAsync() > 0;
     }
 }

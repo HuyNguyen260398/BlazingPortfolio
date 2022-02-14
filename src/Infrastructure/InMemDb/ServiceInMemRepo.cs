@@ -10,21 +10,21 @@ public class ServiceInMemRepo : IServiceRepo
             ServiceId = 1, 
             Name = "Web Developement", 
             Description = "Building web apps with DotNet", 
-            SvgPath = "uploads/code.svg" 
+            DisplayIcon = "Icons.Filled.DesktopWindows"
         },
         new Service 
         { 
             ServiceId = 2, 
             Name = "DevOps", 
             Description = "Upscaling apps using DevOps stacks", 
-            SvgPath = "uploads/telegram.svg" 
+            DisplayIcon = "Icons.Filled.CloudSync"
         },
         new Service 
         { 
             ServiceId = 3, 
             Name = "Data Analysist", 
             Description = "Visualizing data by Power Bi", 
-            SvgPath = "uploads/creativity.svg"
+            DisplayIcon = "Icons.Filled.QueryStats"
         }
     };
 

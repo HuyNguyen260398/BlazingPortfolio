@@ -7,6 +7,7 @@ internal static class ApiEndPoints
 #else
     internal const string ServerBaseUrl = "";
 #endif
-    internal readonly static string UserEndpoint = $"{ServerBaseUrl}/api/users";
     internal readonly static string ServiceEndpoint = $"{ServerBaseUrl}/api/services";
+    internal readonly static string SkillEndpoint = $"{ServerBaseUrl}/api/skills";
+    internal readonly static string UserEndpoint = $"{ServerBaseUrl}/api/users";
 }

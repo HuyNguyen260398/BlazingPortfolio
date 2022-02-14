@@ -1,35 +1,35 @@
 ﻿<MudGrid id="about" Class="mt-5">
     <SectionTitle Title="Some Words About Me" />
     <MudItem md="4" sm="12" xs="12" Class="d-flex justify-center">
-            <MudImage Elevation="5" Fluid="true" Src="./asset/img/dotnet-bot.png" Style="height:100%"/>
+            <MudImage Elevation="5" Fluid="true" Src="@($"{ApiEndPoints.ServerBaseUrl}/{User.BackgroundImagePath}")" Style="height:100%"/>
     </MudItem>
     <MudItem md="8" sm="12" xs="12">
         <MudPaper Class="pa-5" Elevation="5" Style="height: 100%">
-            <MudText Typo="Typo.h5">My name is <span class="mud-primary-text"><strong>Nguyen Gia Huy</strong></span></MudText>
+            <MudText Typo="Typo.h5">My name is <span class="mud-primary-text"><strong>@($"{User.FirstName} {User.LastName}")</strong></span></MudText>
             <MudText Typo="Typo.body1" Class="mt-5">
-                I am a Web Developer, and I'm very passionate and dedicated to my work. With 20 years experience as a professional Web developer, I have acquired the skills and knowledge necessary to make your project a success. I enjoy every step of the design process, from discussion and collaboration to concept and execution, but I find the most satisfaction in seeing the finished product do everything for you that it was created to do.
+                @User.Intro
             </MudText>
             <MudGrid Class="mt-5">
                 <MudItem md="6" sm="12" xs="12">
                     <div class="row">
                         <MudIcon Class="col-sm-2" Icon="@Icons.Filled.Cake" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
                         <MudText Class="col-sm-2"><strong>Birthday:</strong></MudText>
-                        <MudText Class="col-sm-8 text-end">26.03.1998</MudText>
+                        <MudText Class="col-sm-8 text-end">@User.DoB.ToString("dd.MM.yyyy")</MudText>
                     </div>
                     <div class="row">
                         <MudIcon Class="col-sm-2" Icon="@Icons.Filled.LocationOn" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
                         <MudText Class="col-sm-2"><strong>Location:</strong></MudText>
-                        <MudText Class="col-sm-8 text-end">HCM City, VN</MudText>
+                        <MudText Class="col-sm-8 text-end">@User.Address</MudText>
                     </div>
                     <div class="row">
                         <MudIcon Class="col-sm-2" Icon="@Icons.Filled.Business" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
                         <MudText Class="col-sm-2"><strong>Study:</strong></MudText>
-                        <MudText Class="col-sm-8 text-end">Greenwich</MudText>
+                        <MudText Class="col-sm-8 text-end">@User.Study</MudText>
                     </div>
                     <div class="row">
                         <MudIcon Class="col-sm-2" Icon="@Icons.Filled.Email" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
                         <MudText Class="col-sm-2"><strong>Email:</strong></MudText>
-                        <MudText Class="col-sm-8 text-end">huynguyen260398@gmail.com</MudText>
+                        <MudText Class="col-sm-8 text-end">@User.Email</MudText>
                     </div>
                 </MudItem>
                 <MudItem md="6" sm="12" xs="12">
@@ -41,17 +41,17 @@
                     <div class="row">
                         <MudIcon Class="col-sm-2" Icon="@Icons.Filled.VideogameAsset" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
                         <MudText Class="col-sm-2"><strong>Interests:</strong></MudText>
-                        <MudText Class="col-sm-8 text-end">Musics</MudText>
+                        <MudText Class="col-sm-8 text-end">@User.Interests</MudText>
                     </div>
                     <div class="row">
                         <MudIcon Class="col-sm-2" Icon="@Icons.Filled.School" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
                         <MudText Class="col-sm-2"><strong>Degree:</strong></MudText>
-                        <MudText Class="col-sm-8 text-end">Bachelor</MudText>
+                        <MudText Class="col-sm-8 text-end">@User.Degree</MudText>
                     </div>
                     <div class="row">
                         <MudIcon Class="col-sm-2" Icon="@Icons.Filled.Phone" Style="width:50px; height:50px; margin-top:-15px; margin-right:-15px" />
                         <MudText Class="col-sm-2"><strong>Phone:</strong></MudText>
-                        <MudText Class="col-sm-8 text-end">0903.336.493</MudText>
+                        <MudText Class="col-sm-8 text-end">@User.Phone</MudText>
                     </div>
                 </MudItem>
             </MudGrid>
@@ -64,3 +64,9 @@
         </MudPaper>
     </MudItem>
 </MudGrid>
+
+@code
+{
+    [Parameter]
+    public UserDto User { get; set; }
+}

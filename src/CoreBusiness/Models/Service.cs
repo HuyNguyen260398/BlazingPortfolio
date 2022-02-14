@@ -10,5 +10,5 @@ public class Service
 
     public string Description { get; set; }
 
-    public string SvgPath { get; set; }
+    public string DisplayIcon { get; set; }
 }
