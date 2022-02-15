@@ -1,0 +1,8 @@
+﻿<MudBreadcrumbs Items="_items"></MudBreadcrumbs>
+
+@code {
+    private List<BreadcrumbItem> _items = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem("Dashboard", href: "/admin", icon: Icons.Material.Filled.Home)
+    };
+}
