@@ -1,9 +1,25 @@
-﻿<MudDrawer ClipMode="@DrawerClipMode.Always" @bind-Open="@DrawerOpen" Elevation="5" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
-    <NavMenu />
+﻿@inject NavigationManager NavManager
+
+<MudDrawer ClipMode="@DrawerClipMode.Always" @bind-Open="@DrawerOpen" Elevation="5" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
+    @if (isAdminPages)
+    {
+        <AdminNavMenu />
+    }
+    else
+    {
+        <PublicNavMenu />
+    }
 </MudDrawer>
 
 @code
 {
     [Parameter]
     public bool DrawerOpen { get; set; }
+    private bool isAdminPages = false;
+
+    protected override void OnInitialized()
+    {
+        if (NavManager.Uri.Contains("admin"))
+            isAdminPages = true;
+    }
 }
