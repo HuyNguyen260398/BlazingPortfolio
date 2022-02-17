@@ -1,0 +1,83 @@
+﻿@page "/admin/profile"
+
+<Breadcrumbs />
+
+<MudGrid>
+    <MudItem md="3" sm="6" xs="12" Class="mt-5">
+        <MudPaper Elevation="5">
+            <MudGrid>
+                <MudItem xs="12" Class="d-flex justify-center">
+                    <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" Elevation="5" Src="./asset/img/avatar.png" Height="200" Width="200" Class="rounded-circle" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h4" Class="text-center">
+                        Huy Nguyen
+                    </MudText>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h5" Class="mt-n3 text-center">
+                        DotNet Developer.
+                    </MudText>
+                </MudItem>
+                <MudItem xs="12" Class="d-flex justify-center">
+                    <InputFile id="fileInput" hidden multiple />
+                    <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.PhotoCamera" HtmlTag="label" for="fileInput" Class="mx-1" />
+                    <MudFab Color="Color.Primary" StartIcon="@Icons.Filled.Edit" Class="mx-1" />
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+    <MudItem md="9" sm="6" xs="12" Class="mt-5">
+        <MudPaper Elevation="5">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h5" Class="ml-5"><span class="mud-primary-text"><strong>Personal Info</strong></span></MudText>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudForm Class="mx-5">
+                        <MudGrid>
+                            <MudItem md="6" sm="12" xs="12">
+                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="First Name"
+                                              Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.DriveFileRenameOutline" AdornmentColor="Color.Dark">
+                                </MudTextField>
+                                <MudTextField Class="mb-3" Variant="Variant.Outlined" Label="DoB"
+                                              T="DateTime?" Format="yyyy-MM-dd" InputType="InputType.Date">
+                                </MudTextField>
+                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Address"
+                                              Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.LocationOn" AdornmentColor="Color.Dark">
+                                </MudTextField>
+                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Study"
+                                              Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Business" AdornmentColor="Color.Dark">
+                                </MudTextField>
+                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Email"
+                                              Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Email" AdornmentColor="Color.Dark">
+                                </MudTextField>
+                            </MudItem>
+                            <MudItem md="6" sm="12" xs="12">
+                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Last Name" 
+                                              Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.DriveFileRenameOutline" AdornmentColor="Color.Dark">
+                                </MudTextField>
+                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Gender"
+                                              Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Transgender" AdornmentColor="Color.Dark">
+                                </MudTextField>
+                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Interests"
+                                              Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.VideogameAsset" AdornmentColor="Color.Dark">
+                                </MudTextField>
+                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Degree" 
+                                              Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.School" AdornmentColor="Color.Dark">
+                                </MudTextField>
+                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Phone"
+                                              Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Phone" AdornmentColor="Color.Dark">
+                                </MudTextField>
+                            </MudItem>
+                        </MudGrid>
+                    </MudForm>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+    public string TextValue { get; set; }
+}

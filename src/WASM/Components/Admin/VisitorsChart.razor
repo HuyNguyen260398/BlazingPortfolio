@@ -1,11 +1,11 @@
-﻿<MudGrid Class="mt-5">
-    <MudItem md="6" sm="12" xs="12">
+﻿<MudGrid>
+    <MudItem md="6" sm="12" xs="12" Class="mt-5">
         <MudCard Elevation="5">
             <MudChart ChartType="ChartType.Bar" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
             <MudText Typo="Typo.h5" Class="text-center">Number of visitors monthly</MudText>
         </MudCard>
     </MudItem>
-    <MudItem md="6" sm="12" xs="12">
+    <MudItem md="6" sm="12" xs="12" Class="mt-5">
         <MudCard Elevation="5">
             <MudChart ChartType="ChartType.Donut" LegendPosition="@Position.Bottom" Width="100%" Height="350px" InputData="@data" InputLabels="@labels"></MudChart>
             <MudText Typo="Typo.h5" Class="text-center">Top 5 most views posts</MudText>

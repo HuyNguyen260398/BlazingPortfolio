@@ -1,9 +1,9 @@
 ﻿<MudGrid id="about" Class="mt-5">
     <SectionTitle Title="Some Words About Me" />
-    <MudItem md="4" sm="12" xs="12" Class="d-flex justify-center">
+    <MudItem md="3" sm="12" xs="12" Class="d-flex justify-center">
             <MudImage Elevation="5" Fluid="true" Src="@($"{ApiEndPoints.ServerBaseUrl}/{User.BackgroundImagePath}")" Style="height:100%"/>
     </MudItem>
-    <MudItem md="8" sm="12" xs="12">
+    <MudItem md="9" sm="12" xs="12">
         <MudPaper Class="pa-5" Elevation="5" Style="height: 100%">
             <MudText Typo="Typo.h5">My name is <span class="mud-primary-text"><strong>@($"{User.FirstName} {User.LastName}")</strong></span></MudText>
             <MudText Typo="Typo.body1" Class="mt-5">
