@@ -1,6 +1,7 @@
 ﻿@page "/admin/skills"
 
 @inject ISkillRepo SkillRepo
+@inject NavigationManager NavManager
 
 <Breadcrumbs />
 
@@ -18,7 +19,7 @@
                 <MudTh></MudTh>
                 <MudTh>
                     <MudItem Class="d-flex justify-end">
-                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.Add" Size="Size.Medium" Class="mx-3"/>
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.Add" Size="Size.Medium" Class="mx-3" OnClick="GotoCreate"/>
                     </MudItem>
                 </MudTh>
             </HeaderContent>
@@ -54,5 +55,10 @@
     protected override async Task OnInitializedAsync()
     {
         skills = await SkillRepo.GetAllAsync(ApiEndPoints.SkillEndpoint);
+    }
+
+    private void GotoCreate()
+    {
+        NavManager.NavigateTo("/admin/skills/create");
     }
 }

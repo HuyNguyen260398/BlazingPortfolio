@@ -1,0 +1,31 @@
+﻿@page "/admin/skills/create"
+
+@inject ISkillRepo SkillRepo
+
+<Breadcrumbs />
+
+<MudGrid>
+    <MudItem xs="12" Class="mt-5">
+        <MudPaper Elevation="5" Class="pa-5">
+            <EditForm Model="Skill" OnValidSubmit="HandleCreate">
+                <MudTextField Class="mt-5" @bind-Value="@Skill.Name" Variant="Variant.Outlined" Label="Skill Name" >
+                </MudTextField>
+                <MudNumericField Class="mt-5" @bind-Value="@Skill.YearsOfExperience" Variant="Variant.Outlined" Label="Years of Experience" >
+                </MudNumericField>
+                <MudNumericField  Class="mt-5" @bind-Value="@Skill.ScorePercentage" Variant="Variant.Outlined" Label="Percentage" >
+                </MudNumericField>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" Class="mt-5">Save</MudButton>
+            </EditForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code
+{
+    private SkillDto Skill = new SkillDto();
+
+    private async Task HandleCreate()
+    {
+        
+    }
+}
