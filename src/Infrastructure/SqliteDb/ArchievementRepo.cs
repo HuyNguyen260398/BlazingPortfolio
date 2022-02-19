@@ -57,7 +57,9 @@ public class ArchievementRepo : IArchievementRepo
         if (entity == null)
             return false;
 
-        _db.Archievements.Update(_mapper.Map<Archievement>(entity));
+        _db.ChangeTracker.Clear();
+        _db.Entry(_mapper.Map<Archievement>(entity)).State = EntityState.Modified;
+
         return await SaveAsync();
     }
 }
