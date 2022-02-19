@@ -56,7 +56,9 @@ public class ServiceRepo : IServiceRepo
         if (entity == null)
             return false;
 
-        _db.Services.Update(_mapper.Map<Service>(entity));
+        _db.ChangeTracker.Clear();
+        _db.Entry(_mapper.Map<Service>(entity)).State = EntityState.Modified;
+
         return await SaveAsync();
     }
 }

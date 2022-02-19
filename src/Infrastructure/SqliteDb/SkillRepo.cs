@@ -56,7 +56,8 @@ public class SkillRepo : ISkillRepo
         if (entity == null)
             return false;
 
-        _db.Skills.Update(_mapper.Map<Skill>(entity));
+        _db.ChangeTracker.Clear();
+        _db.Entry(_mapper.Map<Skill>(entity)).State = EntityState.Modified;
         return await SaveAsync();
     }
 }

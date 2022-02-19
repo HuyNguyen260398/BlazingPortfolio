@@ -55,7 +55,9 @@ public class PostRepo : IPostRepo
         if (entity == null)
             return false;
 
-        _db.Posts.Update(_mapper.Map<Post>(entity));
+        _db.ChangeTracker.Clear();
+        _db.Entry(_mapper.Map<Post>(entity)).State = EntityState.Modified;
+
         return await SaveAsync();
     }
 }
