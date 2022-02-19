@@ -1,5 +1,7 @@
 ﻿@page "/admin/profile"
 
+@inject IUserRepo UserRepo
+
 <Breadcrumbs />
 
 <MudGrid>
@@ -22,7 +24,7 @@
                 <MudItem xs="12" Class="d-flex justify-center">
                     <InputFile id="fileInput" hidden multiple />
                     <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.PhotoCamera" HtmlTag="label" for="fileInput" Class="mx-1" />
-                    <MudFab Color="Color.Primary" StartIcon="@Icons.Filled.Edit" Class="mx-1" />
+                    <MudFab Color="Color.Primary" StartIcon="@Icons.Filled.Edit" Class="mx-1" OnClick="UpdateInfo" />
                 </MudItem>
             </MudGrid>
         </MudPaper>
@@ -34,42 +36,50 @@
                     <MudText Typo="Typo.h5" Class="ml-5"><span class="mud-primary-text"><strong>Personal Info</strong></span></MudText>
                 </MudItem>
                 <MudItem xs="12">
-                    <MudForm Class="mx-5">
+                    <MudForm Class="mx-5" Model="user">
                         <MudGrid>
                             <MudItem md="6" sm="12" xs="12">
-                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="First Name"
+                                <MudTextField Class="mb-3" @bind-Value="@user.FirstName" Variant="Variant.Outlined" Label="First Name" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.DriveFileRenameOutline" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" Variant="Variant.Outlined" Label="DoB"
-                                              T="DateTime?" Format="yyyy-MM-dd" InputType="InputType.Date">
+                                <MudTextField Class="mb-3" @bind-Value="@user.DoB" Variant="Variant.Outlined" Label="DoB" ReadOnly="@readOnly"
+                                              T="DateTime" Format="yyyy-MM-dd" InputType="InputType.Date">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Address"
+                                <MudTextField Class="mb-3" @bind-Value="@user.Address" Variant="Variant.Outlined" Label="Address" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.LocationOn" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Study"
+                                <MudTextField Class="mb-3" @bind-Value="@user.Study" Variant="Variant.Outlined" Label="Study" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Business" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Email"
+                                <MudTextField Class="mb-3" @bind-Value="@user.Email" Variant="Variant.Outlined" Label="Email" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Email" AdornmentColor="Color.Dark">
                                 </MudTextField>
                             </MudItem>
                             <MudItem md="6" sm="12" xs="12">
-                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Last Name" 
+                                <MudTextField Class="mb-3" @bind-Value="@user.LastName" Variant="Variant.Outlined" Label="Last Name" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.DriveFileRenameOutline" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Gender"
+                                <MudTextField Class="mb-3" @bind-Value="@gender" Variant="Variant.Outlined" Label="Gender" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Transgender" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Interests"
+                                <MudTextField Class="mb-3" @bind-Value="@user.Interests" Variant="Variant.Outlined" Label="Interests" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.VideogameAsset" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Degree" 
+                                <MudTextField Class="mb-3" @bind-Value="@user.Degree" Variant="Variant.Outlined" Label="Degree" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.School" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="TextValue" Variant="Variant.Outlined" Label="Phone"
+                                <MudTextField Class="mb-3" @bind-Value="@user.Phone" Variant="Variant.Outlined" Label="Phone" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Phone" AdornmentColor="Color.Dark">
                                 </MudTextField>
                             </MudItem>
+
+                            @if (!readOnly)
+                            {
+                                <MudItem xs="12" Class="d-flex justify-end">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="mt-n5" OnClick="SaveUpdate">Save</MudButton>
+                                </MudItem>
+                            }
+
                         </MudGrid>
                     </MudForm>
                 </MudItem>
@@ -80,4 +90,25 @@
 
 @code {
     public string TextValue { get; set; }
+
+    private UserDto user = new();
+
+    private string gender = "Male";
+
+    private bool readOnly = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
+    }
+
+    void UpdateInfo()
+    {
+        readOnly = false;
+    }
+
+    void SaveUpdate()
+    {
+        readOnly = true;
+    }
 }
