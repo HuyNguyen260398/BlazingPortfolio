@@ -40,7 +40,7 @@ public class ImageController : BaseController<ImageDto>, IImageController
             if (!isSuccess)
                 return Results.Problem();
 
-            return Results.Created("Create", imageDtoToUpload);
+            return Results.Created("Create", relativePathWithoutTrailingSlashes);
         }
         catch (Exception e)
         {

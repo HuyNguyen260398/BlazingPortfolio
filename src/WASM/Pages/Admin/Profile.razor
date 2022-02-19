@@ -1,6 +1,8 @@
 ﻿@page "/admin/profile"
 
+@inject HttpClient HttpClient
 @inject IUserRepo UserRepo
+@inject IImageRepo ImageRepo
 
 <Breadcrumbs />
 
@@ -9,7 +11,7 @@
         <MudPaper Elevation="5">
             <MudGrid>
                 <MudItem xs="12" Class="d-flex justify-center">
-                    <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" Elevation="5" Src="./asset/img/avatar.png" Height="200" Width="200" Class="rounded-circle" />
+                    <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" Src="@($"{ApiEndPoints.ServerBaseUrl}/{user.AvatarImagePath}")" Height="200" Width="200" Class="rounded-circle" />
                 </MudItem>
                 <MudItem xs="12">
                     <MudText Typo="Typo.h4" Class="text-center">
@@ -22,9 +24,9 @@
                     </MudText>
                 </MudItem>
                 <MudItem xs="12" Class="d-flex justify-center">
-                    <InputFile id="fileInput" hidden multiple />
+                    <InputFile id="fileInput" hidden multiple OnChange="HandleUploadImage" />
                     <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.PhotoCamera" HtmlTag="label" for="fileInput" Class="mx-1" />
-                    <MudFab Color="Color.Primary" StartIcon="@Icons.Filled.Edit" Class="mx-1" OnClick="UpdateInfo" />
+                    <MudFab Color="Color.Primary" StartIcon="@Icons.Filled.Edit" Class="mx-1" OnClick="HandleUpdateInfo" />
                 </MudItem>
             </MudGrid>
         </MudPaper>
@@ -36,7 +38,7 @@
                     <MudText Typo="Typo.h5" Class="ml-5"><span class="mud-primary-text"><strong>Personal Info</strong></span></MudText>
                 </MudItem>
                 <MudItem xs="12">
-                    <EditForm Class="mx-5" Model="user" OnValidSubmit="SaveUpdate" >
+                    <EditForm Class="mx-5" Model="user" OnValidSubmit="HandleSaveUpdate" >
                         <MudGrid>
                             <MudItem md="6" sm="12" xs="12">
                                 <MudTextField Class="mb-3" @bind-Value="@user.FirstName" Variant="Variant.Outlined" Label="First Name" ReadOnly="@readOnly"
@@ -92,28 +94,76 @@
     public string TextValue { get; set; }
 
     private UserDto user = new();
-
     private string gender = "Male";
-
     private bool readOnly = true;
+    private bool _attemptUpload = false;
+    private bool _attemptUploadFailed = false;
+    private string _reasonUploadFailed = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         user = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
     }
 
-    void UpdateInfo()
+    private void HandleUpdateInfo()
     {
-        readOnly = false;
+        readOnly = !readOnly;
     }
 
-    async Task SaveUpdate()
+    private async Task HandleSaveUpdate()
     {
         var results = await UserRepo.UpdateAsync(ApiEndPoints.UserEndpoint, user);
 
         if (results)
             readOnly = true;
 
+        StateHasChanged();
+    }
+
+    private async Task HandleUploadImage(InputFileChangeEventArgs e)
+    {
+        _attemptUpload = true;
+
+        if (e.File.ContentType != "image/jpeg" && e.File.ContentType != "image/png")
+        {
+            _reasonUploadFailed = "Invalid image type.";
+            _attemptUploadFailed = true;
+        }
+        else if (e.File.Size >= 31000000) // ~30 megabytes
+        {
+            _reasonUploadFailed = "Image must not larger than 30MB.";
+            _attemptUploadFailed = true;
+        }
+        else
+        {
+            IBrowserFile uploadedFile = e.File;
+            byte[] fileAsByte = new byte[uploadedFile.Size];
+
+            // Fills the content of the image byte array
+            await uploadedFile.OpenReadStream(31000000).ReadAsync(fileAsByte);
+            string byteString = Convert.ToBase64String(fileAsByte);
+
+            ImageDto avatarUploaded = new ImageDto()
+            {
+                NewImageExtension = uploadedFile.Name.Substring(uploadedFile.Name.Length - 4),
+                NewImageBase64Content = byteString,
+                OldImagePath = string.Empty
+            };
+
+            var relativeImagePath = await ImageRepo.SaveImageAsync(ApiEndPoints.ImageEndpoint, avatarUploaded);
+
+            if (!String.IsNullOrWhiteSpace(relativeImagePath))
+            {
+                user.AvatarImagePath = relativeImagePath;
+                await UserRepo.UpdateAsync(ApiEndPoints.UserEndpoint, user);
+            }
+            else
+            {
+                _reasonUploadFailed = $"Error update avatar";
+                _attemptUploadFailed = true;
+            }
+        }
+        _attemptUpload = false;
         StateHasChanged();
     }
 }
