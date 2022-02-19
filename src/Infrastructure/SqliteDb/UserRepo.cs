@@ -33,7 +33,7 @@ public class UserRepo : IUserRepo
 
     public async Task<UserDto> GetUserAsync()
     {
-        return _mapper.Map<UserDto>((await _db.Users.ToListAsync()).First());
+        return _mapper.Map<UserDto>((await _db.Users.AsNoTracking().ToListAsync()).First());
     }
 
     public Task<bool> IsExistsAsync(int id)

@@ -36,7 +36,7 @@
                     <MudText Typo="Typo.h5" Class="ml-5"><span class="mud-primary-text"><strong>Personal Info</strong></span></MudText>
                 </MudItem>
                 <MudItem xs="12">
-                    <MudForm Class="mx-5" Model="user">
+                    <EditForm Class="mx-5" Model="user" OnValidSubmit="SaveUpdate" >
                         <MudGrid>
                             <MudItem md="6" sm="12" xs="12">
                                 <MudTextField Class="mb-3" @bind-Value="@user.FirstName" Variant="Variant.Outlined" Label="First Name" ReadOnly="@readOnly"
@@ -76,12 +76,12 @@
                             @if (!readOnly)
                             {
                                 <MudItem xs="12" Class="d-flex justify-end">
-                                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="mt-n5" OnClick="SaveUpdate">Save</MudButton>
+                                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" Class="mt-n5">Save</MudButton>
                                 </MudItem>
                             }
 
                         </MudGrid>
-                    </MudForm>
+                    </EditForm>
                 </MudItem>
             </MudGrid>
         </MudPaper>
@@ -107,8 +107,13 @@
         readOnly = false;
     }
 
-    void SaveUpdate()
+    async Task SaveUpdate()
     {
-        readOnly = true;
+        var results = await UserRepo.UpdateAsync(ApiEndPoints.UserEndpoint, user);
+
+        if (results)
+            readOnly = true;
+
+        StateHasChanged();
     }
 }
