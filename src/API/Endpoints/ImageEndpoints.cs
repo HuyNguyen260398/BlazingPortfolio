@@ -13,6 +13,7 @@ public class ImageEndpoints : IEndpoint
     {
         app.MapGet("/api/images", async () => await _imageController.GetAll()).WithTags("Image");
         app.MapPost("/api/images", async (ImageDto imageDto) => await _imageController.UploadImage(imageDto)).WithTags("Image");
-        app.MapDelete("/api/images/{guid}", async (string guid) => await _imageController.RemoveImage(guid)).WithTags("Image");
+        //app.MapDelete("/api/images/{guid}", async (string guid) => await _imageController.RemoveImage(guid)).WithTags("Image");
+        app.MapDelete("/api/images/{id}", async (int id) => await _imageController.RemoveImage(id)).WithTags("Image");
     }
 }

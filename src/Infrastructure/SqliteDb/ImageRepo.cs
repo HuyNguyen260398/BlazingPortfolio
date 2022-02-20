@@ -16,9 +16,15 @@ public class ImageRepo : IImageRepo
         throw new NotImplementedException();
     }
 
-    public Task<bool> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var imageToDelete = await _db.Images.FindAsync(id);
+
+        if (imageToDelete == null)
+            return false;
+
+        _db.Images.Remove(imageToDelete);
+        return await _db.SaveChangesAsync() > 0;
     }
 
     public async Task<IEnumerable<ImageDto>> GetAllAsync()
@@ -26,9 +32,9 @@ public class ImageRepo : IImageRepo
         return _mapper.Map<IEnumerable<ImageDto>>(await _db.Images.ToListAsync());
     }
 
-    public Task<ImageDto> GetByIdAsync(int id)
+    public async Task<ImageDto> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return _mapper.Map<ImageDto>(await _db.Images.FindAsync(id));
     }
 
     public async Task<ImageDto> GetImageByGuid(string guid)
@@ -44,6 +50,7 @@ public class ImageRepo : IImageRepo
     public async Task<bool> RemoveImageAsync(string guid)
     {
         var imageToDelete = await _db.Images.SingleOrDefaultAsync(x => x.ImageGuid.Equals(guid, StringComparison.OrdinalIgnoreCase));
+
         if (imageToDelete == null)
             return false;
 

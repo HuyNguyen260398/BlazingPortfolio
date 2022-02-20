@@ -35,4 +35,23 @@ public class ImageRepo : BaseRepo<ImageDto>, IImageRepo
         }
         return "";
     }
+
+    public async Task<bool> RemoveImageAsync(string url, string guid)
+    {
+        try
+        {
+            if (String.IsNullOrEmpty(guid))
+                return false;
+
+            var response = await _httpClient.DeleteAsync($"{url}/{guid}");
+
+            if (response.StatusCode == HttpStatusCode.NoContent)
+                return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+        return false;
+    }
 }

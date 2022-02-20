@@ -48,11 +48,13 @@ public class ImageController : BaseController<ImageDto>, IImageController
         }
     }
 
-    public async Task<IResult> RemoveImage(string guid)
+    //public async Task<IResult> RemoveImage(string guid)
+    public async Task<IResult> RemoveImage(int id)
     {
         try
         {
-            var imageDtoToRemove = await _imageRepo.GetImageByGuid(guid);
+            //var imageDtoToRemove = await _imageRepo.GetImageByGuid(guid);
+            var imageDtoToRemove = await _imageRepo.GetByIdAsync(id);
 
             if (imageDtoToRemove == null)
                 return Results.NotFound();
@@ -63,7 +65,8 @@ public class ImageController : BaseController<ImageDto>, IImageController
             string imageName = imageDtoToRemove.RelativeImagePath.Split('/').Last();
             File.Delete($"{_webHostEnvironment.ContentRootPath}\\wwwroot\\uploads\\{imageName}");
 
-            var isSuccess = await _imageRepo.RemoveImageAsync(guid);
+            //var isSuccess = await _imageRepo.RemoveImageAsync(guid);
+            var isSuccess = await _imageRepo.DeleteAsync(id);
 
             if (!isSuccess)
                 return Results.Problem();

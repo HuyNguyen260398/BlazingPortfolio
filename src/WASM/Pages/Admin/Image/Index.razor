@@ -1,0 +1,193 @@
+﻿@page "/admin/images"
+
+@inject NavigationManager NavManager
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject IImageRepo ImageRepo
+
+<Breadcrumbs />
+
+<MudGrid>
+    <MudItem xs="12" Class="mt-5">
+        <MudGrid>
+            <MudItem md="3" sm="6" xs="12" Class="mt-5">
+                <MudPaper Elevation="5">
+                    <MudGrid>
+                        <MudItem xs="12" Class="d-flex justify-center">
+                            <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" Src="@imageDataUrl" />
+                        </MudItem>
+                        <MudItem xs="12" Class="d-flex justify-center">
+                            <InputFile id="fileInput" hidden multiple OnChange="OnFileChange" />
+                            <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.PhotoCamera" HtmlTag="label" for="fileInput" Class="mx-1" />
+                            <MudFab Color="Color.Primary" StartIcon="@Icons.Filled.Edit" Class="mx-1" />
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </MudItem>
+            <MudItem md="9" sm="6" xs="12" Class="mt-5">
+                <MudPaper Elevation="5">
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.h5" Class="ml-5"><span class="mud-primary-text"><strong>Upload New Image</strong></span></MudText>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <EditForm Class="mx-5" Model="Image" OnValidSubmit="HandleSubmit">
+                                <MudTextField Class="mb-3" @bind-Value="@Image.RelativeImagePath" Variant="Variant.Outlined" Label="Image Tooltip">
+                                </MudTextField>
+                                <MudSelect @bind-Value="@Image.OldImagePath" T="string" Label="Image For" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                                    <MudSelectItem T="string" Value="@("avatars")" />
+                                    <MudSelectItem T="string" Value="@("services")" />
+                                    <MudSelectItem T="string" Value="@("posts")" />
+                                </MudSelect>
+                            </EditForm>
+                        </MudItem>
+                        <MudItem xs="12" Class="d-flex justify-end">
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Filled.Save" Class="mt-n5">Save</MudButton>
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+    <MudItem xs="12" Class="mt-5">
+        <MudTable Elevation="5" Items="@Images" Hover="true">
+            <ToolBarContent>
+                <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-5"></MudTextField>
+                <MudSpacer />
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh Class="text-center">Image</MudTh>
+                <MudTh Class="text-center">Relative Path</MudTh>
+                <MudTh>
+                    <MudItem Class="d-flex justify-end">
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.Add" Size="Size.Medium" Class="mx-3" Link="/admin/images/edit" />
+                    </MudItem>
+                </MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd Class="text-center" DataLabel="Image">
+                    <MudImage Fluid="true" Height="200" Width="200" Src="@($"{ApiEndPoints.ServerBaseUrl}/{context.RelativeImagePath}")" />
+                </MudTd>
+                <MudTd Class="text-center" DataLabel="Relative Path">@context.RelativeImagePath</MudTd>
+                <MudTd>
+                    <MudItem Class="d-flex justify-end">
+                        <MudFab Color="Color.Error" StartIcon="@Icons.Filled.Delete" Size="Size.Medium" Class="mx-3" OnClick="(() => DeleteImage(context.ImageId))" />
+                    </MudItem>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager />
+            </PagerContent>
+        </MudTable>
+    </MudItem>
+</MudGrid>
+
+@code
+{
+    private IEnumerable<ImageDto> Images = new List<ImageDto>();
+
+    private ImageDto Image = new ImageDto();
+
+    private string searchString = "";
+    private bool _attemptUpload = false;
+    private bool _attemptUploadFailed = false;
+    private string _reasonUploadFailed = string.Empty;
+    private string imageDataUrl = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Images = await ImageRepo.GetAllAsync(ApiEndPoints.ImageEndpoint);
+    }
+
+    private async Task OnFileChange(InputFileChangeEventArgs e)
+    {
+        var imageFile = e.File;
+        var format = "img/png";
+        var resizedImageFile = await imageFile.RequestImageFileAsync(format, 200, 200);
+        var buffer = new byte[resizedImageFile.Size];
+        await resizedImageFile.OpenReadStream().ReadAsync(buffer);
+        imageDataUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+    }
+
+    private async Task HandleSubmit()
+    {
+        //if (Id == 0)
+        //    submitResult = await ServiceRepo.CreateAsync(ApiEndPoints.ServiceEndpoint, Service);
+        //else
+        //    submitResult = await ServiceRepo.UpdateAsync(ApiEndPoints.ServiceEndpoint, Service);
+
+        //if (submitResult)
+        //    Snackbar.Add("Operation Success", Severity.Success);
+        //else
+        //    Snackbar.Add("Operation Error", Severity.Error);
+    }
+
+    private async Task HandleUploadImage(InputFileChangeEventArgs e)
+    {
+        _attemptUpload = true;
+
+        if (e.File.ContentType != "image/jpeg" && e.File.ContentType != "image/png")
+        {
+            _reasonUploadFailed = "Invalid image type.";
+            _attemptUploadFailed = true;
+        }
+        else if (e.File.Size >= 31000000) // ~30 megabytes
+        {
+            _reasonUploadFailed = "Image must not larger than 30MB.";
+            _attemptUploadFailed = true;
+        }
+        else
+        {
+            IBrowserFile uploadedFile = e.File;
+            byte[] fileAsByte = new byte[uploadedFile.Size];
+
+            // Fills the content of the image byte array
+            await uploadedFile.OpenReadStream(31000000).ReadAsync(fileAsByte);
+            string byteString = Convert.ToBase64String(fileAsByte);
+
+            ImageDto avatarUploaded = new ImageDto()
+                {
+                    NewImageExtension = uploadedFile.Name.Substring(uploadedFile.Name.Length - 4),
+                    NewImageBase64Content = byteString,
+                    OldImagePath = string.Empty
+                };
+
+            var relativeImagePath = await ImageRepo.SaveImageAsync(ApiEndPoints.ImageEndpoint, avatarUploaded);
+
+            if (String.IsNullOrWhiteSpace(relativeImagePath))
+            {
+                _reasonUploadFailed = $"Error upload image!";
+                _attemptUploadFailed = true;
+            }
+        }
+        _attemptUpload = false;
+        StateHasChanged();
+    }
+
+    private async void DeleteImage(int id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Are you sure to delete this record?");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions();
+
+        var deleteDialog = DialogService.Show<ConfirmDeleteDialog>("Delete", parameters, options);
+        var confirmResult = await deleteDialog.Result;
+
+        if (!confirmResult.Cancelled)
+        {
+            var deleteResult = await ImageRepo.DeleteAsync(ApiEndPoints.ImageEndpoint, id);
+
+            if (deleteResult)
+            {
+                Snackbar.Add("Delete Success", Severity.Success);
+                StateHasChanged();
+                NavManager.NavigateTo("/admin/images", true);
+            }
+            else
+                Snackbar.Add("Delete Error", Severity.Error);
+        }
+    }
+}
