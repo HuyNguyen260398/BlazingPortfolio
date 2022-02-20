@@ -1,0 +1,61 @@
+﻿@page "/admin/services/edit"
+@page "/admin/services/edit/{Id:int}"
+
+@inject NavigationManager NavManager
+@inject ISnackbar Snackbar
+@inject IServiceRepo ServiceRepo
+
+<Breadcrumbs />
+
+<MudGrid>
+    <MudItem xs="12" Class="mt-5">
+        <MudPaper Elevation="5" Class="pa-5">
+            <EditForm Model="Service" OnValidSubmit="HandleSubmit">
+                <DataAnnotationsValidator />
+                <MudTextField Class="mt-5" @bind-Value="@Service.Name" For="@(() => Service.Name)" Variant="Variant.Outlined" Label="Service Name">
+                </MudTextField>
+                <MudTextField Class="mt-5" @bind-Value="@Service.Description" For="@(() => Service.Description)" Variant="Variant.Outlined" Label="Description">
+                </MudTextField>
+                <MudTextField Class="mt-5" @bind-Value="@Service.DisplayIcon" For="@(() => Service.DisplayIcon)" Variant="Variant.Outlined" Label="MudBlazor Display Icon">
+                </MudTextField>
+                <MudItem Class="d-flex justify-end mt-5">
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Filled.Save" Class="mr-5">Save</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.ArrowBack" OnClick="BackToList">Back</MudButton>
+                </MudItem>
+            </EditForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; } = 0;
+
+    private ServiceDto Service = new ServiceDto();
+    private bool submitResult = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+            Service = await ServiceRepo.GetByIdAsync(ApiEndPoints.ServiceEndpoint, Id);
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (Id == 0)
+            submitResult = await ServiceRepo.CreateAsync(ApiEndPoints.ServiceEndpoint, Service);
+        else
+            submitResult = await ServiceRepo.UpdateAsync(ApiEndPoints.ServiceEndpoint, Service);
+            
+        if (submitResult)
+            Snackbar.Add("Operation Success", Severity.Success);
+        else
+            Snackbar.Add("Operation Error", Severity.Error);
+    }
+
+    private void BackToList()
+    {
+        NavManager.NavigateTo("/admin/services");
+    }
+}
