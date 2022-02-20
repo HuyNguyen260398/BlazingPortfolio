@@ -1,7 +1,9 @@
 ﻿@page "/admin/skills"
 
-@inject ISkillRepo SkillRepo
 @inject NavigationManager NavManager
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject ISkillRepo SkillRepo
 
 <Breadcrumbs />
 
@@ -19,7 +21,7 @@
                 <MudTh></MudTh>
                 <MudTh>
                     <MudItem Class="d-flex justify-end">
-                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.Add" Size="Size.Medium" Class="mx-3" OnClick="GotoCreate"/>
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.Add" Size="Size.Medium" Class="mx-3" Link="/admin/skills/edit" />
                     </MudItem>
                 </MudTh>
             </HeaderContent>
@@ -35,7 +37,7 @@
                 <MudTd>
                     <MudItem Class="d-flex justify-end">
                         <MudFab Color="Color.Warning" StartIcon="@Icons.Filled.Edit" Size="Size.Medium" Class="mx-3" Link="@($"admin/skills/edit/{context.SkillId}")" />
-                        <MudFab Color="Color.Error" StartIcon="@Icons.Filled.Delete" Size="Size.Medium" Class="mx-3" />
+                        <MudFab Color="Color.Error" StartIcon="@Icons.Filled.Delete" Size="Size.Medium" Class="mx-3" OnClick="(() => DeleteSkill(context.SkillId))" />
                     </MudItem>
                 </MudTd>
             </RowTemplate>
@@ -57,8 +59,30 @@
         Skills = await SkillRepo.GetAllAsync(ApiEndPoints.SkillEndpoint);
     }
 
-    private void GotoCreate()
+    private async void DeleteSkill(int id)
     {
-        NavManager.NavigateTo("/admin/skills/edit");
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Are you sure to delete this record?");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions();
+
+        var deleteDialog = DialogService.Show<ConfirmDeleteDialog>("Delete", parameters, options);
+        var confirmResult = await deleteDialog.Result;
+
+        if (!confirmResult.Cancelled)
+        {
+            var deleteResult = await SkillRepo.DeleteAsync(ApiEndPoints.SkillEndpoint, id);
+
+            if (deleteResult)
+            {
+                Snackbar.Add("Delete Success", Severity.Success);
+                StateHasChanged();
+                NavManager.NavigateTo("/admin/skills", true);
+            }
+            else
+                Snackbar.Add("Delete Error", Severity.Error);
+        }
     }
 }
