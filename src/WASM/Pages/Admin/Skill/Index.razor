@@ -34,7 +34,7 @@
                 </MudTd>
                 <MudTd>
                     <MudItem Class="d-flex justify-end">
-                        <MudFab Color="Color.Warning" StartIcon="@Icons.Filled.Edit" Size="Size.Medium" Class="mx-3" />
+                        <MudFab Color="Color.Warning" StartIcon="@Icons.Filled.Edit" Size="Size.Medium" Class="mx-3" Link="@($"admin/skills/edit/{context.SkillId}")" />
                         <MudFab Color="Color.Error" StartIcon="@Icons.Filled.Delete" Size="Size.Medium" Class="mx-3" />
                     </MudItem>
                 </MudTd>
@@ -59,6 +59,6 @@
 
     private void GotoCreate()
     {
-        NavManager.NavigateTo("/admin/skills/create");
+        NavManager.NavigateTo("/admin/skills/edit");
     }
 }

@@ -29,7 +29,7 @@ public class BaseRepo<T> : IBaseRepo<T> where T : class
             if (id < 1)
                 return null;
 
-            var response = await _httpClient.GetFromJsonAsync<T>(url + id);
+            var response = await _httpClient.GetFromJsonAsync<T>($"{url}/{id}");
             return response;
         }
         catch (Exception)
@@ -83,7 +83,7 @@ public class BaseRepo<T> : IBaseRepo<T> where T : class
             if (id < 1)
                 return false;
 
-            var response = await _httpClient.DeleteAsync(url + id);
+            var response = await _httpClient.DeleteAsync($"{url}/{id}");
 
             if (response.StatusCode == HttpStatusCode.NoContent)
                 return true;

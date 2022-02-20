@@ -1,0 +1,61 @@
+﻿@page "/admin/skills/edit"
+@page "/admin/skills/edit/{Id:int}"
+
+@inject NavigationManager NavManager
+@inject ISnackbar Snackbar
+@inject ISkillRepo SkillRepo
+
+<Breadcrumbs />
+
+<MudGrid>
+    <MudItem xs="12" Class="mt-5">
+        <MudPaper Elevation="5" Class="pa-5">
+            <EditForm Model="Skill" OnValidSubmit="HandleSubmit">
+                <DataAnnotationsValidator />
+                <MudTextField Class="mt-5" @bind-Value="@Skill.Name" For="@(() => Skill.Name)" Variant="Variant.Outlined" Label="Skill Name">
+                </MudTextField>
+                <MudNumericField Class="mt-5" @bind-Value="@Skill.YearsOfExperience" Variant="Variant.Outlined" Label="Years of Experience">
+                </MudNumericField>
+                <MudNumericField Class="mt-5" @bind-Value="@Skill.ScorePercentage" Variant="Variant.Outlined" Label="Percentage">
+                </MudNumericField>
+                <MudItem Class="d-flex justify-end mt-5">
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Filled.Save" Class="mr-5">Save</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.ArrowBack" OnClick="BackToList">Back</MudButton>
+                </MudItem>
+            </EditForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; } = 0;
+
+    private SkillDto Skill = new SkillDto();
+    private bool submitResult = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+            Skill = await SkillRepo.GetByIdAsync(ApiEndPoints.SkillEndpoint, Id);
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (Id == 0)
+            submitResult = await SkillRepo.CreateAsync(ApiEndPoints.SkillEndpoint, Skill);
+        else
+            submitResult = await SkillRepo.UpdateAsync(ApiEndPoints.SkillEndpoint, Skill);
+            
+        if (submitResult)
+            Snackbar.Add("Operation Success", Severity.Success);
+        else
+            Snackbar.Add("Operation Error", Severity.Error);
+    }
+
+    private void BackToList()
+    {
+        NavManager.NavigateTo("/admin/skills");
+    }
+}
