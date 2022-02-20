@@ -1,5 +1,7 @@
 ﻿@page "/admin/skills/create"
 
+@inject NavigationManager NavManager
+@inject ISnackbar Snackbar
 @inject ISkillRepo SkillRepo
 
 <Breadcrumbs />
@@ -8,13 +10,17 @@
     <MudItem xs="12" Class="mt-5">
         <MudPaper Elevation="5" Class="pa-5">
             <EditForm Model="Skill" OnValidSubmit="HandleCreate">
-                <MudTextField Class="mt-5" @bind-Value="@Skill.Name" Variant="Variant.Outlined" Label="Skill Name" >
+                <DataAnnotationsValidator />
+                <MudTextField Class="mt-5" @bind-Value="@Skill.Name" For="@(() => Skill.Name)" Variant="Variant.Outlined" Label="Skill Name">
                 </MudTextField>
-                <MudNumericField Class="mt-5" @bind-Value="@Skill.YearsOfExperience" Variant="Variant.Outlined" Label="Years of Experience" >
+                <MudNumericField Class="mt-5" @bind-Value="@Skill.YearsOfExperience" Variant="Variant.Outlined" Label="Years of Experience">
                 </MudNumericField>
-                <MudNumericField  Class="mt-5" @bind-Value="@Skill.ScorePercentage" Variant="Variant.Outlined" Label="Percentage" >
+                <MudNumericField Class="mt-5" @bind-Value="@Skill.ScorePercentage" Variant="Variant.Outlined" Label="Percentage">
                 </MudNumericField>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" Class="mt-5">Save</MudButton>
+                <MudItem Class="d-flex justify-end mt-5">
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Filled.Save" Class="mr-5">Save</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.ArrowBack" OnClick="BackToList">Back</MudButton>
+                </MudItem>
             </EditForm>
         </MudPaper>
     </MudItem>
@@ -26,6 +32,20 @@
 
     private async Task HandleCreate()
     {
-        
+        var result = await SkillRepo.CreateAsync(ApiEndPoints.SkillEndpoint, Skill);
+
+        if (result)
+        {
+            Snackbar.Add("Success", Severity.Success);
+        }
+        else
+        {
+            Snackbar.Add("Error", Severity.Error);
+        }
+    }
+
+    private void BackToList()
+    {
+        NavManager.NavigateTo("/admin/skills");
     }
 }

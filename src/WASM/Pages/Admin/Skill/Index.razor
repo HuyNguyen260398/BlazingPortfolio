@@ -7,7 +7,7 @@
 
 <MudGrid>
     <MudItem xs="12" Class="mt-5">
-        <MudTable Elevation="5" Items="@skills" Hover="true">
+        <MudTable Elevation="5" Items="@Skills" Hover="true">
             <ToolBarContent>
                 <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-5"></MudTextField>
                 <MudSpacer />
@@ -48,13 +48,13 @@
 
 @code
 {
-    private IEnumerable<SkillDto> skills = new List<SkillDto>();
+    private IEnumerable<SkillDto> Skills = new List<SkillDto>();
 
     private string searchString = "";
 
     protected override async Task OnInitializedAsync()
     {
-        skills = await SkillRepo.GetAllAsync(ApiEndPoints.SkillEndpoint);
+        Skills = await SkillRepo.GetAllAsync(ApiEndPoints.SkillEndpoint);
     }
 
     private void GotoCreate()

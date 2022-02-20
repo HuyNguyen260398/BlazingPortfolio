@@ -17,7 +17,7 @@
     public bool DrawerOpen { get; set; }
     private bool isAdminPages = false;
 
-    protected override void OnInitialized()
+    protected override void OnAfterRender(bool firstRender)
     {
         if (NavManager.Uri.Contains("admin"))
             isAdminPages = true;

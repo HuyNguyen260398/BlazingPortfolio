@@ -11,7 +11,7 @@
         <MudPaper Elevation="5">
             <MudGrid>
                 <MudItem xs="12" Class="d-flex justify-center">
-                    <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" Src="@($"{ApiEndPoints.ServerBaseUrl}/{user.AvatarImagePath}")" Height="200" Width="200" Class="rounded-circle" />
+                    <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" Src="@($"{ApiEndPoints.ServerBaseUrl}/{User.AvatarImagePath}")" Height="200" Width="200" Class="rounded-circle" />
                 </MudItem>
                 <MudItem xs="12">
                     <MudText Typo="Typo.h4" Class="text-center">
@@ -38,39 +38,39 @@
                     <MudText Typo="Typo.h5" Class="ml-5"><span class="mud-primary-text"><strong>Personal Info</strong></span></MudText>
                 </MudItem>
                 <MudItem xs="12">
-                    <EditForm Class="mx-5" Model="user" OnValidSubmit="HandleSaveUpdate" >
+                    <EditForm Class="mx-5" Model="User" OnValidSubmit="HandleSaveUpdate" >
                         <MudGrid>
                             <MudItem md="6" sm="12" xs="12">
-                                <MudTextField Class="mb-3" @bind-Value="@user.FirstName" Variant="Variant.Outlined" Label="First Name" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-3" @bind-Value="@User.FirstName" Variant="Variant.Outlined" Label="First Name" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.DriveFileRenameOutline" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@user.DoB" Variant="Variant.Outlined" Label="DoB" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-3" @bind-Value="@User.DoB" Variant="Variant.Outlined" Label="DoB" ReadOnly="@readOnly"
                                               T="DateTime" Format="yyyy-MM-dd" InputType="InputType.Date">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@user.Address" Variant="Variant.Outlined" Label="Address" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-3" @bind-Value="@User.Address" Variant="Variant.Outlined" Label="Address" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.LocationOn" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@user.Study" Variant="Variant.Outlined" Label="Study" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-3" @bind-Value="@User.Study" Variant="Variant.Outlined" Label="Study" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Business" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@user.Email" Variant="Variant.Outlined" Label="Email" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-3" @bind-Value="@User.Email" Variant="Variant.Outlined" Label="Email" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Email" AdornmentColor="Color.Dark">
                                 </MudTextField>
                             </MudItem>
                             <MudItem md="6" sm="12" xs="12">
-                                <MudTextField Class="mb-3" @bind-Value="@user.LastName" Variant="Variant.Outlined" Label="Last Name" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-3" @bind-Value="@User.LastName" Variant="Variant.Outlined" Label="Last Name" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.DriveFileRenameOutline" AdornmentColor="Color.Dark">
                                 </MudTextField>
                                 <MudTextField Class="mb-3" @bind-Value="@gender" Variant="Variant.Outlined" Label="Gender" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Transgender" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@user.Interests" Variant="Variant.Outlined" Label="Interests" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-3" @bind-Value="@User.Interests" Variant="Variant.Outlined" Label="Interests" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.VideogameAsset" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@user.Degree" Variant="Variant.Outlined" Label="Degree" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-3" @bind-Value="@User.Degree" Variant="Variant.Outlined" Label="Degree" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.School" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@user.Phone" Variant="Variant.Outlined" Label="Phone" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-3" @bind-Value="@User.Phone" Variant="Variant.Outlined" Label="Phone" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Phone" AdornmentColor="Color.Dark">
                                 </MudTextField>
                             </MudItem>
@@ -78,7 +78,7 @@
                             @if (!readOnly)
                             {
                                 <MudItem xs="12" Class="d-flex justify-end">
-                                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" Class="mt-n5">Save</MudButton>
+                                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Filled.Save" Class="mt-n5">Save</MudButton>
                                 </MudItem>
                             }
 
@@ -93,7 +93,7 @@
 @code {
     public string TextValue { get; set; }
 
-    private UserDto user = new();
+    private UserDto User = new();
     private string gender = "Male";
     private bool readOnly = true;
     private bool _attemptUpload = false;
@@ -102,7 +102,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        user = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
+        User = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
     }
 
     private void HandleUpdateInfo()
@@ -112,7 +112,7 @@
 
     private async Task HandleSaveUpdate()
     {
-        var results = await UserRepo.UpdateAsync(ApiEndPoints.UserEndpoint, user);
+        var results = await UserRepo.UpdateAsync(ApiEndPoints.UserEndpoint, User);
 
         if (results)
             readOnly = true;
@@ -154,8 +154,8 @@
 
             if (!String.IsNullOrWhiteSpace(relativeImagePath))
             {
-                user.AvatarImagePath = relativeImagePath;
-                await UserRepo.UpdateAsync(ApiEndPoints.UserEndpoint, user);
+                User.AvatarImagePath = relativeImagePath;
+                await UserRepo.UpdateAsync(ApiEndPoints.UserEndpoint, User);
             }
             else
             {
