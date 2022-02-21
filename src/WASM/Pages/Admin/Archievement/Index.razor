@@ -1,0 +1,80 @@
+﻿@page "/admin/archievements"
+
+@inject NavigationManager NavManager
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject IArchievementRepo ArchievementRepo
+
+<Breadcrumbs />
+
+<MudGrid>
+    <MudItem xs="12" Class="mt-5">
+        <MudTable Elevation="5" Items="@Archievements" Hover="true">
+            <ToolBarContent>
+                <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-5"></MudTextField>
+                <MudSpacer />
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh Class="text-center">Archievement</MudTh>
+                <MudTh Class="text-center">Count</MudTh>
+                <MudTh>
+                    <MudItem Class="d-flex justify-end">
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.Add" Size="Size.Medium" Class="mx-3" Link="/admin/archievements/edit" />
+                    </MudItem>
+                </MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd Class="text-center" DataLabel="Archievement">@context.Name</MudTd>
+                <MudTd Class="text-center" DataLabel="Count">@context.Count</MudTd>
+                <MudTd>
+                    <MudItem Class="d-flex justify-end">
+                        <MudFab Color="Color.Warning" StartIcon="@Icons.Filled.Edit" Size="Size.Medium" Class="mx-3" Link="@($"admin/archievements/edit/{context.ArchievementId}")" />
+                        <MudFab Color="Color.Error" StartIcon="@Icons.Filled.Delete" Size="Size.Medium" Class="mx-3" OnClick="(() => DeleteArchievement(context.ArchievementId))" />
+                    </MudItem>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager />
+            </PagerContent>
+        </MudTable>
+    </MudItem>
+</MudGrid>
+
+@code
+{
+    private IEnumerable<ArchievementDto> Archievements = new List<ArchievementDto>();
+
+    private string searchString = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Archievements = await ArchievementRepo.GetAllAsync(ApiEndPoints.ArchievementEndpoint);
+    }
+
+    private async void DeleteArchievement(int id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Are you sure to delete this record?");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions();
+
+        var deleteDialog = DialogService.Show<ConfirmDeleteDialog>("Delete", parameters, options);
+        var confirmResult = await deleteDialog.Result;
+
+        if (!confirmResult.Cancelled)
+        {
+            var deleteResult = await ArchievementRepo.DeleteAsync(ApiEndPoints.ArchievementEndpoint, id);
+
+            if (deleteResult)
+            {
+                Snackbar.Add("Delete Success", Severity.Success);
+                StateHasChanged();
+                NavManager.NavigateTo("/admin/archievements", true);
+            }
+            else
+                Snackbar.Add("Delete Error", Severity.Error);
+        }
+    }
+}
