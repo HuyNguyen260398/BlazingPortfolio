@@ -1,0 +1,79 @@
+﻿@page "/admin/posts/edit"
+@page "/admin/posts/edit/{Id:int}"
+
+@inject NavigationManager NavManager
+@inject ISnackbar Snackbar
+@inject IPostRepo PostRepo
+
+<Breadcrumbs />
+
+<MudGrid>
+    <MudItem xs="12" Class="mt-5">
+        <MudPaper Elevation="5" Class="pa-5">
+            <EditForm Model="Post" OnValidSubmit="HandleSubmit">
+                <DataAnnotationsValidator />
+
+                <MudTextField Class="mt-5" @bind-Value="@Post.Title" For="@(() => Post.Title)" Variant="Variant.Outlined" Label="Title">
+                </MudTextField>
+
+                <MudImage Elevation="5" Fluid="true" ObjectFit="ObjectFit.Cover" Src="@imageDataUrl" Style="height:100%" Class="mt-5" />
+                <InputFile id="fileInput" hidden multiple OnChange="OnFileChange" />
+                <MudButton HtmlTag="label" for="fileInput" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.PhotoCamera" Class="mx-5">Browse</MudButton>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Filled.CloudUpload">Upload</MudButton>
+
+                <MudTextField Class="mt-5" @bind-Value="@Post.Excerpt" For="@(() => Post.Excerpt)" Variant="Variant.Outlined" Label="Excerpt">
+                </MudTextField>
+
+                <MudItem Class="d-flex justify-end mt-5">
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Filled.Save" Class="mr-5">Save</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.ArrowBack" OnClick="BackToList">Back</MudButton>
+                </MudItem>
+            </EditForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; } = 0;
+
+    private PostDto Post = new PostDto();
+    private bool submitResult = false;
+    private IBrowserFile imageUpload;
+    private string imageDataUrl = "./asset/img/placeholder.png";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+            Post = await PostRepo.GetByIdAsync(ApiEndPoints.PostEndpoint, Id);
+    }
+
+    private async Task OnFileChange(InputFileChangeEventArgs e)
+    {
+        imageUpload = e.File;
+        var format = "img/png";
+        var resizedImageFile = await imageUpload.RequestImageFileAsync(format, 300, 300);
+        var buffer = new byte[resizedImageFile.Size];
+        await resizedImageFile.OpenReadStream().ReadAsync(buffer);
+        imageDataUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (Id == 0)
+            submitResult = await PostRepo.CreateAsync(ApiEndPoints.PostEndpoint, Post);
+        else
+            submitResult = await PostRepo.UpdateAsync(ApiEndPoints.PostEndpoint, Post);
+
+        if (submitResult)
+            Snackbar.Add("Operation Success", Severity.Success);
+        else
+            Snackbar.Add("Operation Error", Severity.Error);
+    }
+
+    private void BackToList()
+    {
+        NavManager.NavigateTo("/admin/posts");
+    }
+}
