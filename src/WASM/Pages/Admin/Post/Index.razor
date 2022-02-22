@@ -1,0 +1,89 @@
+﻿@page "/admin/posts"
+
+@inject NavigationManager NavManager
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject IPostRepo PostRepo
+
+<Breadcrumbs />
+
+<MudGrid>
+    <MudItem xs="12" Class="mt-5">
+        <MudTable Elevation="5" Items="@Posts" Hover="true">
+            <ToolBarContent>
+                <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-5"></MudTextField>
+                <MudSpacer />
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh></MudTh>
+                <MudTh>
+                    <MudItem Class="d-flex justify-end">
+                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.Add" Size="Size.Medium" Class="mx-3" Link="/admin/posts/edit" />
+                    </MudItem>
+                </MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Post">
+                    <MudGrid>
+                        <MudItem md="4" sm="6" xs="12">
+                            <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" Src="@($"{ApiEndPoints.ServerBaseUrl}/{context.ThumbnailPath}")" />
+                        </MudItem>
+                        <MudItem md="8" sm="6" xs="12">
+                            <MudText Typo="Typo.h4"><strong>@context.Title</strong></MudText>
+                            <MudText Typo="Typo.h6">@context.PublishDate.ToString("MMMM dd, yyyy")</MudText>
+                            <MudText Typo="Typo.body1">@context.Excerpt</MudText>
+                        </MudItem>
+                    </MudGrid>
+                </MudTd>
+                <MudTd>
+                    <MudItem Class="d-flex justify-end">
+                        <MudFab Color="Color.Warning" StartIcon="@Icons.Filled.Edit" Size="Size.Medium" Class="mx-3" Link="@($"admin/posts/edit/{context.PostId}")" />
+                        <MudFab Color="Color.Error" StartIcon="@Icons.Filled.Delete" Size="Size.Medium" Class="mx-3" OnClick="(() => DeletePost(context.PostId))" />
+                    </MudItem>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager />
+            </PagerContent>
+        </MudTable>
+    </MudItem>
+</MudGrid>
+
+@code
+{
+    private IEnumerable<PostDto> Posts = new List<PostDto>();
+
+    private string searchString = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Posts = await PostRepo.GetAllAsync(ApiEndPoints.PostEndpoint);
+    }
+
+    private async void DeletePost(int id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Are you sure to delete this record?");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions();
+
+        var deleteDialog = DialogService.Show<ConfirmDeleteDialog>("Delete", parameters, options);
+        var confirmResult = await deleteDialog.Result;
+
+        if (!confirmResult.Cancelled)
+        {
+            var deleteResult = await PostRepo.DeleteAsync(ApiEndPoints.PostEndpoint, id);
+
+            if (deleteResult)
+            {
+                Snackbar.Add("Delete Success", Severity.Success);
+                StateHasChanged();
+                NavManager.NavigateTo("/admin/posts", true);
+            }
+            else
+                Snackbar.Add("Delete Error", Severity.Error);
+        }
+    }
+}

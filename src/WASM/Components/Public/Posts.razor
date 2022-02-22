@@ -1,10 +1,10 @@
-﻿<MudGrid id="posts" Class="mt-5">
+﻿<MudGrid id="posts" Class="mt-5 justify-space-between">
     <SectionTitle Title="Visit My Latest Posts" />
 
     @foreach (var item in PostList)
     {
         <MudItem lg="3" md="4" sm="6" xs="12" Class="d-flex justify-center">
-            <MudCard Style="width: 400px">
+            <MudCard Style="width: 450px">
                 <MudCardMedia Image="@($"{ApiEndPoints.ServerBaseUrl}/{item.ThumbnailPath}")" Height="250" />
                 <MudCardContent>
                     <MudText Typo="Typo.h5"><strong>@item.Title</strong></MudText>
