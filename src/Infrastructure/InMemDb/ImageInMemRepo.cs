@@ -93,4 +93,9 @@ public class ImageInMemRepo : IImageRepo
     {
         throw new NotImplementedException();
     }
+
+    public Task<ImageDto> GetImageByPath(string path)
+    {
+        throw new NotImplementedException();
+    }
 }

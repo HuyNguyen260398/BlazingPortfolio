@@ -25,12 +25,12 @@ public class BaseController<T> : IBaseController<T> where T : class
     {
         try
         {
-            var service = await _repo.GetByIdAsync(id);
+            var item = await _repo.GetByIdAsync(id);
 
-            if (service == null)
+            if (item == null)
                 return Results.NotFound();
 
-            return Results.Ok(service);
+            return Results.Ok(item);
         }
         catch (Exception e)
         {

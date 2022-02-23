@@ -11,6 +11,23 @@ public class ImageController : BaseController<ImageDto>, IImageController
         _webHostEnvironment = webHostEnvironment;
     }
 
+    public async Task<IResult> GetImageByPath(string path)
+    {
+        try
+        {
+            var image = await _imageRepo.GetImageByPath(path);
+
+            if (image == null)
+                return Results.NotFound();
+
+            return Results.Ok(image);
+        }
+        catch (Exception e)
+        {
+            return Results.Problem(e.Message);
+        }
+    }
+
     public async Task<IResult> UploadImage(ImageDto imageDtoToUpload)
     {
         try

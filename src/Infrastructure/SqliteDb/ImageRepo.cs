@@ -42,6 +42,11 @@ public class ImageRepo : IImageRepo
         return _mapper.Map<ImageDto>(await _db.Images.SingleOrDefaultAsync(x => x.ImageGuid.Equals(guid, StringComparison.OrdinalIgnoreCase)));
     }
 
+    public async Task<ImageDto> GetImageByPath(string path)
+    {
+        return _mapper.Map<ImageDto>(await _db.Images.SingleOrDefaultAsync(x => x.RelativeImagePath.Equals(path)));
+    }
+
     public Task<bool> IsExistsAsync(int id)
     {
         throw new NotImplementedException();
