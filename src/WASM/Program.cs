@@ -1,3 +1,6 @@
+// Register Syncfusion license
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NTg2MDU2QDMxMzkyZTM0MmUzMGtadklLK3lZQzVYbVNaZHV5SWgxc0YrREhQUjFKZ2M0UmdBY1ZidXczUzg9");
+
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services.AddMudServices();
@@ -18,6 +21,8 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.ShowTransitionDuration = 500;
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
+
+builder.Services.AddSyncfusionBlazor();
 
 builder.Services.AddScoped<IArchievementRepo, ArchievementRepo>();
 builder.Services.AddScoped<IImageRepo, ImageRepo>();

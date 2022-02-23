@@ -4,6 +4,7 @@
 @inject NavigationManager NavManager
 @inject ISnackbar Snackbar
 @inject IPostRepo PostRepo
+@inject IImageRepo ImageRepo
 
 <Breadcrumbs />
 
@@ -12,18 +13,32 @@
         <MudPaper Elevation="5" Class="pa-5">
             <EditForm Model="Post" OnValidSubmit="HandleSubmit">
                 <DataAnnotationsValidator />
-
-                <MudTextField Class="mt-5" @bind-Value="@Post.Title" For="@(() => Post.Title)" Variant="Variant.Outlined" Label="Title">
+                <MudGrid>
+                    <MudItem md="4" sm="6" xs="12" Class="mt-5">
+                        <MudGrid>
+                            <MudItem xs="12" Class="d-flex justify-center">
+                                <MudImage Elevation="5" Fluid="true" ObjectFit="ObjectFit.Cover" Src="@imageDataUrl" Style="height:100%" />
+                            </MudItem>
+                            <MudItem xs="12" Class="d-flex justify-center">
+                                <InputFile id="fileInput" hidden multiple OnChange="HandleFileChange" />
+                                <MudButton HtmlTag="label" for="fileInput" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.PhotoCamera" Class="mr-5">Browse</MudButton>
+                            </MudItem>
+                        </MudGrid>
+                    </MudItem>
+                </MudGrid>
+                <MudTextField @bind-Value="@Post.Title" For="@(() => Post.Title)" Variant="Variant.Outlined" Label="Title" Class="mt-5">
                 </MudTextField>
-
-                <MudImage Elevation="5" Fluid="true" ObjectFit="ObjectFit.Cover" Src="@imageDataUrl" Style="height:100%" Class="mt-5" />
-                <InputFile id="fileInput" hidden multiple OnChange="OnFileChange" />
-                <MudButton HtmlTag="label" for="fileInput" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.PhotoCamera" Class="mx-5">Browse</MudButton>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Filled.CloudUpload">Upload</MudButton>
-
-                <MudTextField Class="mt-5" @bind-Value="@Post.Excerpt" For="@(() => Post.Excerpt)" Variant="Variant.Outlined" Label="Excerpt">
+                <MudTextField @bind-Value="@Post.Excerpt" For="@(() => Post.Excerpt)" Variant="Variant.Outlined" Label="Excerpt" Class="mt-5">
                 </MudTextField>
-
+                <div class="control-section mt-5">
+                    <div class="control-wrapper">
+                        <div class="">
+                            <SfRichTextEditor ShowCharCount="true" MaxLength="2000" AutoSaveOnIdle="true" @bind-Value="@Post.Content">
+                                <RichTextEditorToolbarSettings Items="@Tools" />
+                            </SfRichTextEditor>
+                        </div>
+                    </div>
+                </div>
                 <MudItem Class="d-flex justify-end mt-5">
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Filled.Save" Class="mr-5">Save</MudButton>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.ArrowBack" OnClick="BackToList">Back</MudButton>
@@ -35,6 +50,41 @@
 
 @code
 {
+    private List<ToolbarItemModel> Tools = new List<ToolbarItemModel>()
+    {
+        new ToolbarItemModel() { Command = ToolbarCommand.Bold },
+        new ToolbarItemModel() { Command = ToolbarCommand.Italic },
+        new ToolbarItemModel() { Command = ToolbarCommand.Underline },
+        new ToolbarItemModel() { Command = ToolbarCommand.StrikeThrough },
+        new ToolbarItemModel() { Command = ToolbarCommand.FontName },
+        new ToolbarItemModel() { Command = ToolbarCommand.FontSize },
+        new ToolbarItemModel() { Command = ToolbarCommand.FontColor },
+        new ToolbarItemModel() { Command = ToolbarCommand.BackgroundColor },
+        new ToolbarItemModel() { Command = ToolbarCommand.LowerCase },
+        new ToolbarItemModel() { Command = ToolbarCommand.UpperCase },
+        new ToolbarItemModel() { Command = ToolbarCommand.SuperScript },
+        new ToolbarItemModel() { Command = ToolbarCommand.SubScript },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Formats },
+        new ToolbarItemModel() { Command = ToolbarCommand.Alignments },
+        new ToolbarItemModel() { Command = ToolbarCommand.NumberFormatList },
+        new ToolbarItemModel() { Command = ToolbarCommand.BulletFormatList },
+        new ToolbarItemModel() { Command = ToolbarCommand.Outdent },
+        new ToolbarItemModel() { Command = ToolbarCommand.Indent },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.CreateLink },
+        new ToolbarItemModel() { Command = ToolbarCommand.Image },
+        new ToolbarItemModel() { Command = ToolbarCommand.CreateTable },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.ClearFormat },
+        new ToolbarItemModel() { Command = ToolbarCommand.Print },
+        new ToolbarItemModel() { Command = ToolbarCommand.SourceCode },
+        new ToolbarItemModel() { Command = ToolbarCommand.FullScreen },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Undo },
+        new ToolbarItemModel() { Command = ToolbarCommand.Redo }
+    };
+
     [Parameter]
     public int Id { get; set; } = 0;
 
@@ -42,14 +92,19 @@
     private bool submitResult = false;
     private IBrowserFile imageUpload;
     private string imageDataUrl = "./asset/img/placeholder.png";
+    private bool _attemptUpload = false;
+    private bool _attemptUploadFailed = false;
 
     protected override async Task OnParametersSetAsync()
     {
         if (Id != 0)
             Post = await PostRepo.GetByIdAsync(ApiEndPoints.PostEndpoint, Id);
+
+        if (!String.IsNullOrEmpty(Post.ThumbnailPath))
+            imageDataUrl = $"{ApiEndPoints.ServerBaseUrl}/{Post.ThumbnailPath}";
     }
 
-    private async Task OnFileChange(InputFileChangeEventArgs e)
+    private async Task HandleFileChange(InputFileChangeEventArgs e)
     {
         imageUpload = e.File;
         var format = "img/png";
@@ -61,15 +116,63 @@
 
     private async Task HandleSubmit()
     {
-        if (Id == 0)
-            submitResult = await PostRepo.CreateAsync(ApiEndPoints.PostEndpoint, Post);
-        else
-            submitResult = await PostRepo.UpdateAsync(ApiEndPoints.PostEndpoint, Post);
+        if (!imageDataUrl.Contains("placeholder"))
+            await HandleUploadImage();
 
-        if (submitResult)
-            Snackbar.Add("Operation Success", Severity.Success);
+        if (!_attemptUploadFailed)
+        {
+            if (Id == 0)
+                submitResult = await PostRepo.CreateAsync(ApiEndPoints.PostEndpoint, Post);
+            else
+                submitResult = await PostRepo.UpdateAsync(ApiEndPoints.PostEndpoint, Post);
+
+            if (submitResult)
+                Snackbar.Add("Operation Success", Severity.Success);
+            else
+                Snackbar.Add("Operation Error", Severity.Error);
+        }
+    }
+
+    private async Task HandleUploadImage()
+    {
+        _attemptUpload = true;
+
+        if (imageUpload.ContentType != "image/jpeg" && imageUpload.ContentType != "image/png")
+        {
+            Snackbar.Add("Invalid image type.", Severity.Warning);
+            _attemptUploadFailed = true;
+        }
+        else if (imageUpload.Size >= 31000000) // ~30 megabytes
+        {
+            Snackbar.Add("Image must not larger than 30MB.", Severity.Warning);
+            _attemptUploadFailed = true;
+        }
         else
-            Snackbar.Add("Operation Error", Severity.Error);
+        {
+            byte[] fileAsByte = new byte[imageUpload.Size];
+
+            // Fills the content of the image byte array
+            await imageUpload.OpenReadStream(31000000).ReadAsync(fileAsByte);
+            var byteString = Convert.ToBase64String(fileAsByte);
+
+            ImageDto uploadImage = new ImageDto();
+            uploadImage.NewImageExtension = imageUpload.Name.Substring(imageUpload.Name.Length - 4);
+            uploadImage.NewImageBase64Content = byteString;
+
+            var relativeImagePath = await ImageRepo.SaveImageAsync(ApiEndPoints.ImageEndpoint, uploadImage);
+
+            if (String.IsNullOrWhiteSpace(relativeImagePath))
+            {
+                Snackbar.Add("Error upload image!", Severity.Error);
+                _attemptUploadFailed = true;
+            }
+            else
+            {
+                Post.ThumbnailPath = relativeImagePath;
+            }
+        }
+
+        _attemptUpload = false;
     }
 
     private void BackToList()

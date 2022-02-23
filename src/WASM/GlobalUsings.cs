@@ -4,6 +4,7 @@ global using Microsoft.AspNetCore.Components.Web;
 global using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 global using MudBlazor.Services;
 global using MudBlazor;
+global using Syncfusion.Blazor;
 global using WASM;
 global using WASM.Services;
 global using WASM.Interfaces;

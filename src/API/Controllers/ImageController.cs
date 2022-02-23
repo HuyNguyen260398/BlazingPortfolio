@@ -15,12 +15,6 @@ public class ImageController : BaseController<ImageDto>, IImageController
     {
         try
         {
-            if (imageDtoToUpload.OldImagePath != string.Empty)
-            {
-                string oldImageName = imageDtoToUpload.OldImagePath.Split('/').Last();
-                File.Delete($"{_webHostEnvironment.ContentRootPath}\\wwwroot\\uploads\\{oldImageName}");
-            }
-
             string guid = Guid.NewGuid().ToString();
             string imageName = guid + imageDtoToUpload.NewImageExtension;
             string fullImageFileSystemPath = $"{_webHostEnvironment.ContentRootPath}\\wwwroot\\uploads\\{imageName}";
@@ -33,6 +27,7 @@ public class ImageController : BaseController<ImageDto>, IImageController
             string relativePathWithoutTrailingSlashes = $"uploads/{imageName}";
 
             imageDtoToUpload.ImageGuid = guid;
+            imageDtoToUpload.OldImagePath = String.Empty; // This property to be removed
             imageDtoToUpload.RelativeImagePath = relativePathWithoutTrailingSlashes;
 
             var isSuccess = await _imageRepo.SaveImageAsync(imageDtoToUpload);
