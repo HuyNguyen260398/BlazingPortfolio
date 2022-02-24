@@ -36,7 +36,9 @@ public class AppDbContext : DbContext
                 NewImageExtension = ".png",
                 NewImageBase64Content = String.Empty,
                 OldImagePath = String.Empty,
-                RelativeImagePath = String.Empty
+                RelativeImagePath = String.Empty,
+                ImageFor = "services",
+                Tooltip = "service_1_img"
             },
             new Image
             {
@@ -45,7 +47,9 @@ public class AppDbContext : DbContext
                 NewImageExtension = ".png",
                 NewImageBase64Content = String.Empty,
                 OldImagePath = String.Empty,
-                RelativeImagePath = String.Empty
+                RelativeImagePath = String.Empty,
+                ImageFor = "services",
+                Tooltip = "service_2_img"
             },
             new Image
             {
@@ -54,7 +58,9 @@ public class AppDbContext : DbContext
                 NewImageExtension = ".png",
                 NewImageBase64Content = String.Empty,
                 OldImagePath = String.Empty,
-                RelativeImagePath = String.Empty
+                RelativeImagePath = String.Empty,
+                ImageFor = "services",
+                Tooltip = "service_3_img"
             },
             new Image
             {
@@ -63,7 +69,9 @@ public class AppDbContext : DbContext
                 NewImageExtension = ".png",
                 NewImageBase64Content = String.Empty,
                 OldImagePath = String.Empty,
-                RelativeImagePath = String.Empty
+                RelativeImagePath = String.Empty,
+                ImageFor = "services",
+                Tooltip = "service_4_img"
             }
         };
 
@@ -74,6 +82,7 @@ public class AppDbContext : DbContext
                 PostId = 1,
                 Title = "Post 1",
                 ThumbnailPath = String.Empty,
+                ImageId = 1,
                 Excerpt = "Excerpt 1",
                 Content = "Content 1",
                 IsPublished = true,
@@ -84,6 +93,7 @@ public class AppDbContext : DbContext
                 PostId = 2,
                 Title = "Post 2",
                 ThumbnailPath = String.Empty,
+                ImageId = 2,
                 Excerpt = "Excerpt 2",
                 Content = "Content 2",
                 IsPublished = true,
@@ -94,6 +104,7 @@ public class AppDbContext : DbContext
                 PostId = 3,
                 Title = "Post 3",
                 ThumbnailPath = String.Empty,
+                ImageId = 3,
                 Excerpt = "Excerpt 3",
                 Content = "Content 3",
                 IsPublished = true,
@@ -152,6 +163,7 @@ public class AppDbContext : DbContext
                 FirstName = "Huy",
                 LastName = "Nguyen",
                 DoB = new DateTime(1998, 03, 26).Date,
+                Gender = "Male",
                 Email = "huynguyen260398@gmail.com",
                 Password = "Pas$w0rd",
                 Phone = "(+84)903336493",

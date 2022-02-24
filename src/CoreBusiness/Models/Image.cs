@@ -17,4 +17,8 @@ public class Image
     public string OldImagePath { get; set; }
 
     public string RelativeImagePath { get; set; }
+
+    public string Tooltip { get; set; }
+
+    public string ImageFor { get; set; }
 }
