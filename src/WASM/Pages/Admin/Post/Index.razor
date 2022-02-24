@@ -4,6 +4,7 @@
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 @inject IPostRepo PostRepo
+@inject IImageRepo ImageRepo
 
 <Breadcrumbs />
 
@@ -38,7 +39,7 @@
                 <MudTd>
                     <MudItem Class="d-flex justify-end">
                         <MudFab Color="Color.Warning" StartIcon="@Icons.Filled.Edit" Size="Size.Medium" Class="mx-3" Link="@($"admin/posts/edit/{context.PostId}")" />
-                        <MudFab Color="Color.Error" StartIcon="@Icons.Filled.Delete" Size="Size.Medium" Class="mx-3" OnClick="(() => DeletePost(context.PostId))" />
+                        <MudFab Color="Color.Error" StartIcon="@Icons.Filled.Delete" Size="Size.Medium" Class="mx-3" OnClick="(() => DeletePost(context.PostId, context.ImageId))" />
                     </MudItem>
                 </MudTd>
             </RowTemplate>
@@ -60,7 +61,7 @@
         Posts = await PostRepo.GetAllAsync(ApiEndPoints.PostEndpoint);
     }
 
-    private async void DeletePost(int id)
+    private async void DeletePost(int postId, int imageId)
     {
         var parameters = new DialogParameters();
         parameters.Add("ContentText", "Are you sure to delete this record?");
@@ -74,16 +75,22 @@
 
         if (!confirmResult.Cancelled)
         {
-            var deleteResult = await PostRepo.DeleteAsync(ApiEndPoints.PostEndpoint, id);
-
-            if (deleteResult)
+            var deleteImageResult = await ImageRepo.DeleteAsync(ApiEndPoints.ImageEndpoint, imageId);
+            if (deleteImageResult)
             {
-                Snackbar.Add("Delete Success", Severity.Success);
-                StateHasChanged();
-                NavManager.NavigateTo("/admin/posts", true);
+                var deleteResult = await PostRepo.DeleteAsync(ApiEndPoints.PostEndpoint, postId);
+
+                if (deleteResult)
+                {
+                    Snackbar.Add("Delete Post Success", Severity.Success);
+                    StateHasChanged();
+                    NavManager.NavigateTo("/admin/posts", true);
+                }
+                else
+                    Snackbar.Add("Delete Post Error", Severity.Error);
             }
             else
-                Snackbar.Add("Delete Error", Severity.Error);
+                Snackbar.Add("Delete Image Error", Severity.Error);
         }
     }
 }

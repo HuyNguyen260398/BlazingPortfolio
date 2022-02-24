@@ -34,14 +34,14 @@ public class ImageController : BaseController<ImageDto>, IImageController
         {
             string guid = Guid.NewGuid().ToString();
             string imageName = guid + imageDtoToUpload.NewImageExtension;
-            string fullImageFileSystemPath = $"{_webHostEnvironment.ContentRootPath}\\wwwroot\\uploads\\{imageName}";
+            string fullImageFileSystemPath = $"{_webHostEnvironment.ContentRootPath}\\wwwroot\\uploads\\{imageDtoToUpload.ImageFor}\\{imageName}";
 
             FileStream fileStream = File.Create(fullImageFileSystemPath);
             byte[] imageAsByte = Convert.FromBase64String(imageDtoToUpload.NewImageBase64Content);
             await fileStream.WriteAsync(imageAsByte, 0, imageAsByte.Length);
             fileStream.Close();
 
-            string relativePathWithoutTrailingSlashes = $"uploads/{imageName}";
+            string relativePathWithoutTrailingSlashes = $"uploads/{imageDtoToUpload.ImageFor}/{imageName}";
 
             imageDtoToUpload.ImageGuid = guid;
             imageDtoToUpload.OldImagePath = String.Empty; // This property to be removed
@@ -75,7 +75,7 @@ public class ImageController : BaseController<ImageDto>, IImageController
                 return Results.NotFound();
 
             string imageName = imageDtoToRemove.RelativeImagePath.Split('/').Last();
-            File.Delete($"{_webHostEnvironment.ContentRootPath}\\wwwroot\\uploads\\{imageName}");
+            File.Delete($"{_webHostEnvironment.ContentRootPath}\\wwwroot\\uploads\\{imageDtoToRemove.ImageFor}\\{imageName}");
 
             //var isSuccess = await _imageRepo.RemoveImageAsync(guid);
             var isSuccess = await _imageRepo.DeleteAsync(id);

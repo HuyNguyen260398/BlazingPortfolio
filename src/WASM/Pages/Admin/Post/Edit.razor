@@ -158,6 +158,8 @@
             ImageDto uploadImage = new ImageDto();
             uploadImage.NewImageExtension = imageUpload.Name.Substring(imageUpload.Name.Length - 4);
             uploadImage.NewImageBase64Content = byteString;
+            uploadImage.Tooltip = $"{Post.Title}_thumbnail";
+            uploadImage.ImageFor = "posts";
 
             var relativeImagePath = await ImageRepo.SaveImageAsync(ApiEndPoints.ImageEndpoint, uploadImage);
 
@@ -168,7 +170,12 @@
             }
             else
             {
+                // Get latest image uploaded
+                var uploadedImages = await ImageRepo.GetAllAsync(ApiEndPoints.ImageEndpoint);
+                var latestImage = uploadedImages.Last();
+
                 Post.ThumbnailPath = relativeImagePath;
+                Post.ImageId = latestImage.ImageId;
             }
         }
 

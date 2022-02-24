@@ -1,6 +1,7 @@
 ﻿@page "/admin/profile"
 
 @inject HttpClient HttpClient
+@inject ISnackbar Snackbar
 @inject IUserRepo UserRepo
 @inject IImageRepo ImageRepo
 
@@ -11,7 +12,7 @@
         <MudPaper Elevation="5">
             <MudGrid>
                 <MudItem xs="12" Class="d-flex justify-center">
-                    <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" Src="@($"{ApiEndPoints.ServerBaseUrl}/{User.AvatarImagePath}")" Height="200" Width="200" Class="rounded-circle" />
+                    <MudImage Fluid="true" ObjectFit="ObjectFit.Cover" Src="@imageDataUrl" Height="200" Width="200" Class="rounded-circle" />
                 </MudItem>
                 <MudItem xs="12">
                     <MudText Typo="Typo.h4" Class="text-center">
@@ -24,8 +25,8 @@
                     </MudText>
                 </MudItem>
                 <MudItem xs="12" Class="d-flex justify-center">
-                    <InputFile id="fileInput" hidden multiple OnChange="HandleUploadImage" />
-                    <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.PhotoCamera" HtmlTag="label" for="fileInput" Class="mx-1" />
+                    <InputFile id="fileInput" hidden multiple OnChange="HandleFileChange" />
+                    <MudFab Color="Color.Secondary" StartIcon="@Icons.Filled.PhotoCamera" Disabled="@readOnly" HtmlTag="label" for="fileInput" Class="mx-1" />
                     <MudFab Color="Color.Primary" StartIcon="@Icons.Filled.Edit" Class="mx-1" OnClick="HandleUpdateInfo" />
                 </MudItem>
             </MudGrid>
@@ -35,43 +36,49 @@
         <MudPaper Elevation="5">
             <MudGrid>
                 <MudItem xs="12">
-                    <MudText Typo="Typo.h5" Class="ml-5"><span class="mud-primary-text"><strong>Personal Info</strong></span></MudText>
+                    <MudText Typo="Typo.h5" Class="ml-5 mb-5"><span class="mud-primary-text"><strong>Personal Info</strong></span></MudText>
                 </MudItem>
                 <MudItem xs="12">
-                    <EditForm Class="mx-5" Model="User" OnValidSubmit="HandleSaveUpdate" >
+                    <EditForm Class="mx-5" Model="User" OnValidSubmit="HandleSaveUpdate">
+                        <DataAnnotationsValidator />
                         <MudGrid>
                             <MudItem md="6" sm="12" xs="12">
-                                <MudTextField Class="mb-3" @bind-Value="@User.FirstName" Variant="Variant.Outlined" Label="First Name" ReadOnly="@readOnly"
+                                <MudTextField Class="mt-n5 mb-5" @bind-Value="@User.FirstName" For="@(() => User.FirstName)" Variant="Variant.Outlined" Label="First Name" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.DriveFileRenameOutline" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@User.DoB" Variant="Variant.Outlined" Label="DoB" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-5" @bind-Value="@User.DoB" For="@(() => User.DoB)" Variant="Variant.Outlined" Label="DoB" ReadOnly="@readOnly"
                                               T="DateTime" Format="yyyy-MM-dd" InputType="InputType.Date">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@User.Address" Variant="Variant.Outlined" Label="Address" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-5" @bind-Value="@User.Address" For="@(() => User.Address)" Variant="Variant.Outlined" Label="Address" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.LocationOn" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@User.Study" Variant="Variant.Outlined" Label="Study" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-5" @bind-Value="@User.Study" For="@(() => User.Study)" Variant="Variant.Outlined" Label="Study" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Business" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@User.Email" Variant="Variant.Outlined" Label="Email" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-5" @bind-Value="@User.Email" For="@(() => User.Email)" Variant="Variant.Outlined" Label="Email" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Email" AdornmentColor="Color.Dark">
                                 </MudTextField>
                             </MudItem>
                             <MudItem md="6" sm="12" xs="12">
-                                <MudTextField Class="mb-3" @bind-Value="@User.LastName" Variant="Variant.Outlined" Label="Last Name" ReadOnly="@readOnly"
+                                <MudTextField Class="mt-n5 mb-5" @bind-Value="@User.LastName" For="@(() => User.LastName)" Variant="Variant.Outlined" Label="Last Name" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.DriveFileRenameOutline" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@gender" Variant="Variant.Outlined" Label="Gender" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-5" @bind-Value="@User.Gender" For="@(() => User.Gender)" Variant="Variant.Outlined" Label="Gender" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Transgender" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@User.Interests" Variant="Variant.Outlined" Label="Interests" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-5" @bind-Value="@User.Interests" For="@(() => User.Interests)" Variant="Variant.Outlined" Label="Interests" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.VideogameAsset" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@User.Degree" Variant="Variant.Outlined" Label="Degree" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-5" @bind-Value="@User.Degree" For="@(() => User.Degree)" Variant="Variant.Outlined" Label="Degree" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.School" AdornmentColor="Color.Dark">
                                 </MudTextField>
-                                <MudTextField Class="mb-3" @bind-Value="@User.Phone" Variant="Variant.Outlined" Label="Phone" ReadOnly="@readOnly"
+                                <MudTextField Class="mb-5" @bind-Value="@User.Phone" For="@(() => User.Phone)" Variant="Variant.Outlined" Label="Phone" ReadOnly="@readOnly"
                                               Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Phone" AdornmentColor="Color.Dark">
+                                </MudTextField>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudTextField Class="mt-n5 mb-5" @bind-Value="@User.Intro" For="@(() => User.Intro)" Variant="Variant.Outlined" Label="Intro" ReadOnly="@readOnly"
+                                              Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Biotech" AdornmentColor="Color.Dark">
                                 </MudTextField>
                             </MudItem>
 
@@ -94,15 +101,16 @@
     public string TextValue { get; set; }
 
     private UserDto User = new();
-    private string gender = "Male";
+    private IBrowserFile imageUpload;
+    private string imageDataUrl = string.Empty;
     private bool readOnly = true;
     private bool _attemptUpload = false;
     private bool _attemptUploadFailed = false;
-    private string _reasonUploadFailed = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         User = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
+        imageDataUrl = $"{ApiEndPoints.ServerBaseUrl}/{User.AvatarImagePath}";
     }
 
     private void HandleUpdateInfo()
@@ -110,60 +118,78 @@
         readOnly = !readOnly;
     }
 
-    private async Task HandleSaveUpdate()
+    private async Task HandleFileChange(InputFileChangeEventArgs e)
     {
-        var results = await UserRepo.UpdateAsync(ApiEndPoints.UserEndpoint, User);
-
-        if (results)
-            readOnly = true;
-
-        StateHasChanged();
+        imageUpload = e.File;
+        var format = "img/png";
+        var resizedImageFile = await imageUpload.RequestImageFileAsync(format, 300, 300);
+        var buffer = new byte[resizedImageFile.Size];
+        await resizedImageFile.OpenReadStream().ReadAsync(buffer);
+        imageDataUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
     }
 
-    private async Task HandleUploadImage(InputFileChangeEventArgs e)
+    private async Task HandleSaveUpdate()
+    {
+        await HandleUploadImage();
+
+        if (_attemptUploadFailed)
+            Snackbar.Add("Error uploading avatar.", Severity.Error);
+        else
+        {
+            var results = await UserRepo.UpdateAsync(ApiEndPoints.UserEndpoint, User);
+
+            if (results)
+            {
+                imageDataUrl = $"{ApiEndPoints.ServerBaseUrl}/{User.AvatarImagePath}";
+                readOnly = true;
+                Snackbar.Add("Success updating profile.", Severity.Success);
+                StateHasChanged();
+            }
+            else
+            {
+                Snackbar.Add("Error updating profile.", Severity.Error);
+            }
+        }
+    }
+
+    private async Task HandleUploadImage()
     {
         _attemptUpload = true;
 
-        if (e.File.ContentType != "image/jpeg" && e.File.ContentType != "image/png")
+        if (imageUpload.ContentType != "image/jpeg" && imageUpload.ContentType != "image/png")
         {
-            _reasonUploadFailed = "Invalid image type.";
+            Snackbar.Add("Invalid image type.", Severity.Warning);
             _attemptUploadFailed = true;
         }
-        else if (e.File.Size >= 31000000) // ~30 megabytes
+        else if (imageUpload.Size >= 31000000) // ~30 megabytes
         {
-            _reasonUploadFailed = "Image must not larger than 30MB.";
+            Snackbar.Add("Image must not larger than 30MB.", Severity.Warning);
             _attemptUploadFailed = true;
         }
         else
         {
-            IBrowserFile uploadedFile = e.File;
-            byte[] fileAsByte = new byte[uploadedFile.Size];
+            byte[] fileAsByte = new byte[imageUpload.Size];
 
             // Fills the content of the image byte array
-            await uploadedFile.OpenReadStream(31000000).ReadAsync(fileAsByte);
+            await imageUpload.OpenReadStream(31000000).ReadAsync(fileAsByte);
             string byteString = Convert.ToBase64String(fileAsByte);
 
             ImageDto avatarUploaded = new ImageDto()
-            {
-                NewImageExtension = uploadedFile.Name.Substring(uploadedFile.Name.Length - 4),
-                NewImageBase64Content = byteString,
-                OldImagePath = string.Empty
-            };
+                {
+                    NewImageExtension = imageUpload.Name.Substring(imageUpload.Name.Length - 4),
+                    NewImageBase64Content = byteString,
+                    OldImagePath = string.Empty,
+                    Tooltip = "avatar_image",
+                    ImageFor = "avatars"
+                };
 
             var relativeImagePath = await ImageRepo.SaveImageAsync(ApiEndPoints.ImageEndpoint, avatarUploaded);
 
             if (!String.IsNullOrWhiteSpace(relativeImagePath))
-            {
                 User.AvatarImagePath = relativeImagePath;
-                await UserRepo.UpdateAsync(ApiEndPoints.UserEndpoint, User);
-            }
             else
-            {
-                _reasonUploadFailed = $"Error update avatar";
                 _attemptUploadFailed = true;
-            }
         }
         _attemptUpload = false;
-        StateHasChanged();
     }
 }

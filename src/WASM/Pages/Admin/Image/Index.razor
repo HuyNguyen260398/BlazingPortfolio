@@ -17,15 +17,15 @@
                 <MudItem xs="12">
                     <EditForm Class="mx-5" Model="Image" OnValidSubmit="HandleSubmit">
                         <DataAnnotationsValidator />
-                        <MudTextField Class="mb-5" @bind-Value="@Image.OldImagePath" For="@(() => Image.OldImagePath)" Variant="Variant.Outlined" Label="Image Tooltip">
+                        <MudTextField Class="mb-5" @bind-Value="@Image.Tooltip" For="@(() => Image.Tooltip)" Variant="Variant.Outlined" Label="Image Tooltip">
                         </MudTextField>
-                        <MudSelect Class="mb-5" @bind-Value="@Image.OldImagePath" T="string" Label="Image For" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                        <MudSelect Class="mb-5" @bind-Value="@Image.ImageFor" T="string" Label="Image For" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
                             <MudSelectItem T="string" Value="@("avatars")" />
                             <MudSelectItem T="string" Value="@("services")" />
                             <MudSelectItem T="string" Value="@("posts")" />
                         </MudSelect>
                         <MudItem Class="d-flex justify-end">
-                            <InputFile id="fileInput" hidden multiple OnChange="OnFileChange" />
+                            <InputFile id="fileInput" hidden multiple OnChange="HandleFileChange" />
                             <MudButton HtmlTag="label" for="fileInput" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.PhotoCamera" Class="mr-5">Browse</MudButton>
                             <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Filled.CloudUpload">Upload</MudButton>
                         </MudItem>
@@ -79,7 +79,7 @@
         Images = await ImageRepo.GetAllAsync(ApiEndPoints.ImageEndpoint);
     }
 
-    private async Task OnFileChange(InputFileChangeEventArgs e)
+    private async Task HandleFileChange(InputFileChangeEventArgs e)
     {
         imageUpload = e.File;
         var format = "img/png";
