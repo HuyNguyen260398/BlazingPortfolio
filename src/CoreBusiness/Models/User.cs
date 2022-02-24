@@ -13,6 +13,8 @@ public class User
 
     public DateTime DoB { get; set; }
 
+    public string Gender { get; set; }
+
     [Required]
     [DataType(DataType.EmailAddress)]
     public string Email { get; set; }

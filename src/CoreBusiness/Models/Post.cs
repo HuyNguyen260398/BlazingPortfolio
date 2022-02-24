@@ -11,6 +11,8 @@ public class Post
     [Required]
     public string ThumbnailPath { get; set; }
 
+    public int ImageId { get; set; }
+
     [Required]
     public string Excerpt { get; set; }
 
