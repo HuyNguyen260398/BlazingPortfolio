@@ -4,7 +4,7 @@
             <MudCardContent>
                 <MudGrid>
                     <MudItem xs="6">
-                        <MudText Typo="Typo.h4" Class="my-3"><strong>3</strong></MudText>
+                        <MudText Typo="Typo.h4" Class="my-3"><strong>@ServiceList.Count()</strong></MudText>
                         <MudText Typo="Typo.h5" Class="my-3">Services</MudText>
                     </MudItem>
                     <MudItem xs="6" Class="d-flex justify-end align-center">
@@ -22,7 +22,7 @@
             <MudCardContent>
                 <MudGrid>
                     <MudItem xs="6">
-                        <MudText Typo="Typo.h4" Class="my-3"><strong>4</strong></MudText>
+                        <MudText Typo="Typo.h4" Class="my-3"><strong>@ImageList.Count()</strong></MudText>
                         <MudText Typo="Typo.h5" Class="my-3">Images</MudText>
                     </MudItem>
                     <MudItem xs="6" Class="d-flex justify-end align-center">
@@ -40,7 +40,7 @@
             <MudCardContent>
                 <MudGrid>
                     <MudItem xs="6">
-                        <MudText Typo="Typo.h4" Class="my-3"><strong>1776</strong></MudText>
+                        <MudText Typo="Typo.h4" Class="my-3"><strong>@ArchievementList.Count()</strong></MudText>
                         <MudText Typo="Typo.h5" Class="my-3">Archievements</MudText>
                     </MudItem>
                     <MudItem xs="6" Class="d-flex justify-end align-center">
@@ -58,7 +58,7 @@
             <MudCardContent>
                 <MudGrid>
                     <MudItem xs="6">
-                        <MudText Typo="Typo.h4" Class="my-3"><strong>4</strong></MudText>
+                        <MudText Typo="Typo.h4" Class="my-3"><strong>@PostList.Count()</strong></MudText>
                         <MudText Typo="Typo.h5" Class="my-3">Posts</MudText>
                     </MudItem>
                     <MudItem xs="6" Class="d-flex justify-end align-center">
@@ -72,3 +72,18 @@
         </MudCard>
     </MudItem>
 </MudGrid>
+
+@code
+{
+    [Parameter]
+    public IEnumerable<ServiceDto> ServiceList { get; set; }
+
+    [Parameter]
+    public IEnumerable<ImageDto> ImageList { get; set; }
+
+    [Parameter]
+    public IEnumerable<ArchievementDto> ArchievementList { get; set; }
+
+    [Parameter]
+    public IEnumerable<PostDto> PostList { get; set; }
+}

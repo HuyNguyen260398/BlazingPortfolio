@@ -78,8 +78,8 @@
             if (deleteResult)
             {
                 Snackbar.Add("Delete Success", Severity.Success);
+                Skills = await SkillRepo.GetAllAsync(ApiEndPoints.SkillEndpoint);
                 StateHasChanged();
-                NavManager.NavigateTo("/admin/skills", true);
             }
             else
                 Snackbar.Add("Delete Error", Severity.Error);

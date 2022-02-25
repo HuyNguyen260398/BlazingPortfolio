@@ -72,8 +72,8 @@
             if (deleteResult)
             {
                 Snackbar.Add("Delete Success", Severity.Success);
+                Services = await ServiceRepo.GetAllAsync(ApiEndPoints.ServiceEndpoint);
                 StateHasChanged();
-                NavManager.NavigateTo("/admin/services", true);
             }
             else
                 Snackbar.Add("Delete Error", Severity.Error);

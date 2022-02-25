@@ -83,8 +83,8 @@
                 if (deleteResult)
                 {
                     Snackbar.Add("Delete Post Success", Severity.Success);
+                    Posts = await PostRepo.GetAllAsync(ApiEndPoints.PostEndpoint);
                     StateHasChanged();
-                    NavManager.NavigateTo("/admin/posts", true);
                 }
                 else
                     Snackbar.Add("Delete Post Error", Severity.Error);

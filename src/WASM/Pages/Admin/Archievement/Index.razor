@@ -70,8 +70,8 @@
             if (deleteResult)
             {
                 Snackbar.Add("Delete Success", Severity.Success);
+                Archievements = await ArchievementRepo.GetAllAsync(ApiEndPoints.ArchievementEndpoint);
                 StateHasChanged();
-                NavManager.NavigateTo("/admin/archievements", true);
             }
             else
                 Snackbar.Add("Delete Error", Severity.Error);

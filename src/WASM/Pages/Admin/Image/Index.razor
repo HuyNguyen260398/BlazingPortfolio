@@ -131,8 +131,8 @@
         if (!_attemptUploadFailed)
         {
             Snackbar.Add("Upload image success!", Severity.Success);
+            Images = await ImageRepo.GetAllAsync(ApiEndPoints.ImageEndpoint);
             StateHasChanged();
-            NavManager.NavigateTo("/admin/images", true);
         }
 
         _attemptUpload = false;
@@ -157,8 +157,8 @@
             if (deleteResult)
             {
                 Snackbar.Add("Delete Success", Severity.Success);
+                Images = await ImageRepo.GetAllAsync(ApiEndPoints.ImageEndpoint);
                 StateHasChanged();
-                NavManager.NavigateTo("/admin/images", true);
             }
             else
                 Snackbar.Add("Delete Error", Severity.Error);

@@ -1,7 +1,32 @@
 ﻿@page "/admin"
 
+@inject IServiceRepo ServiceRepo
+@inject IImageRepo ImageRepo
+@inject IArchievementRepo ArchievementRepo
+@inject IPostRepo PostRepo
+
 <Breadcrumbs />
 
-<SummaryCards />
+<SummaryCards
+    ServiceList="@_services"
+    ImageList="@_images"
+    ArchievementList="_archievements"
+    PostList="_posts"/>
 
 <VisitorsChart />
+
+@code
+{
+    private IEnumerable<ServiceDto> _services = new List<ServiceDto>();
+    private IEnumerable<ImageDto> _images = new List<ImageDto>();
+    private IEnumerable<ArchievementDto> _archievements = new List<ArchievementDto>();
+    private IEnumerable<PostDto> _posts = new List<PostDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _services = await ServiceRepo.GetAllAsync(ApiEndPoints.ServiceEndpoint);
+        _images = await ImageRepo.GetAllAsync(ApiEndPoints.ImageEndpoint);
+        _archievements = await ArchievementRepo.GetAllAsync(ApiEndPoints.ArchievementEndpoint);
+        _posts = await PostRepo.GetAllAsync(ApiEndPoints.PostEndpoint);
+    }
+}

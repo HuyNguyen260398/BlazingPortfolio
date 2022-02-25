@@ -3,7 +3,7 @@
     @foreach (var item in PortfolioImageList)
     {
         <MudItem lg="3" md="4" sm="6" xs="12">
-            <MudTooltip Color="Color.Secondary" Arrow="true" Text="Portfolio Image">
+            <MudTooltip Color="Color.Secondary" Arrow="true" Text="@item.Tooltip">
                 <MudImage Elevation="5" Fluid="true" Src="@($"{ApiEndPoints.ServerBaseUrl}/{item.RelativeImagePath}")" />
             </MudTooltip>
         </MudItem>
