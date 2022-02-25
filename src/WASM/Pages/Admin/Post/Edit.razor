@@ -34,6 +34,7 @@
                     <div class="control-wrapper">
                         <div class="">
                             <SfRichTextEditor ShowCharCount="true" MaxLength="2000" AutoSaveOnIdle="true" @bind-Value="@Post.Content">
+                                <RichTextEditorPasteCleanupSettings />
                                 <RichTextEditorToolbarSettings Items="@Tools" />
                             </SfRichTextEditor>
                         </div>

@@ -1,4 +1,6 @@
-﻿<MudGrid id="posts" Class="mt-5 justify-space-between">
+﻿@inject NavigationManager NavManager
+
+<MudGrid id="posts" Class="mt-5 justify-space-between">
     <SectionTitle Title="Visit My Latest Posts" />
 
     @foreach (var item in PostList)
@@ -12,7 +14,7 @@
                     <MudText Typo="Typo.body2">@item.Excerpt</MudText>
                 </MudCardContent>
                 <MudCardActions>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large">Read More</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" OnClick="@(() => ViewPost(item.PostId))">Read More</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
@@ -24,4 +26,9 @@
 {
     [Parameter]
     public List<PostDto> PostList { get; set; }
+
+    private void ViewPost(int id)
+    {
+        NavManager.NavigateTo($"/posts/{id}");
+    }
 }
