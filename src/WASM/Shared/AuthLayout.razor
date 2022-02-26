@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider />
+<MudDialogProvider 
+    DisableBackdropClick="true"
+    CloseOnEscapeKey="true"
+    MaxWidth="MaxWidth.ExtraSmall"
+    Position="DialogPosition.Center"
+/>
+<MudSnackbarProvider />
+
+<MudLayout>
+    <AppBar DisplayDrawer="false" />
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-5">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>

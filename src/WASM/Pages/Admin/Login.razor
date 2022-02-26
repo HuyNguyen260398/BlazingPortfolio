@@ -1,0 +1,44 @@
+﻿@layout AuthLayout
+@page "/admin/login"
+
+@inject NavigationManager NavManager
+@inject ISnackbar Snackbar
+@inject IUserRepo UserRepo
+
+<MudGrid>
+    <MudItem xs="12" Class="d-flex justify-center align-items-center" Style="height:100%">
+        <MudPaper Elevation="5" Width="400px" Height="300px" Class="pa-5" Style="margin-top:200px">
+            <MudText Typo="Typo.h4" Class="text-center">Login</MudText>
+            <EditForm Model="User" class="ma-5">
+                <DataAnnotationsValidator />
+                <MudTextField Class="mt-5" @bind-Value="@User.Email" For="@(() => User.Email)" InputType="InputType.Email" Variant="Variant.Outlined" Label="Email">
+                </MudTextField>
+                <MudTextField Class="mt-5" @bind-Value="@User.Password" For="@(() => User.Password)" InputType="InputType.Password" Variant="Variant.Outlined" Label="Password">
+                </MudTextField>
+                <MudItem Class="d-flex justify-center mt-5">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Filled.Login" FullWidth="true" OnClick="HandleLogin">Login</MudButton>
+                </MudItem>
+            </EditForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code
+{
+    private UserDto User = new UserDto();
+
+    private async Task HandleLogin()
+    {
+        var user = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
+
+        if (User.Email.Equals(user.Email))
+        {
+            if (User.Password.Equals(user.Password))
+                NavManager.NavigateTo("/admin");
+            else
+                Snackbar.Add("Password is invalid!", Severity.Error);
+        }
+        else
+            Snackbar.Add("Email is invalid!", Severity.Error);
+    }
+}

@@ -10,10 +10,16 @@
     <MudIconButton Icon="@Icons.Filled.Login" Color="Color.Inherit" OnClick="Login" />
 </MudAppBar>
 
-<Drawer DrawerOpen="_drawerOpen" />
+@if (DisplayDrawer)
+{
+    <Drawer DrawerOpen="_drawerOpen" />
+}
 
 @code
 {
+    [Parameter]
+    public bool DisplayDrawer { get; set; } = true;
+
     private bool _drawerOpen = false;
 
     private void DrawerToggle()
@@ -23,6 +29,6 @@
 
     private void Login()
     {
-        NavManager.NavigateTo("/admin");
+        NavManager.NavigateTo("/admin/login");
     }
 }
