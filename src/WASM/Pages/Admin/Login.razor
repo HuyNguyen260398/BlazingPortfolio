@@ -7,15 +7,18 @@
 
 <MudGrid>
     <MudItem xs="12" Class="d-flex justify-center align-items-center" Style="height:100%">
-        <MudPaper Elevation="5" Width="400px" Height="300px" Class="pa-5" Style="margin-top:200px">
-            <MudText Typo="Typo.h4" Class="text-center">Login</MudText>
+        <MudPaper Elevation="5" Width="400px" Height="auto" Class="pa-5" Style="margin-top:200px">
+            @*<MudText Typo="Typo.h4" Class="text-center">Login</MudText>*@
+            <MudItem Class="d-flex justify-center">
+                <MudIcon Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Primary" Style="font-size: 5rem;" />
+            </MudItem>
             <EditForm Model="User" class="ma-5">
                 <DataAnnotationsValidator />
                 <MudTextField Class="mt-5" @bind-Value="@User.Email" For="@(() => User.Email)" InputType="InputType.Email" Variant="Variant.Outlined" Label="Email">
                 </MudTextField>
                 <MudTextField Class="mt-5" @bind-Value="@User.Password" For="@(() => User.Password)" InputType="InputType.Password" Variant="Variant.Outlined" Label="Password">
                 </MudTextField>
-                <MudItem Class="d-flex justify-center mt-5">
+                <MudItem Class="d-flex justify-center mt-10">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Filled.Login" FullWidth="true" OnClick="HandleLogin">Login</MudButton>
                 </MudItem>
             </EditForm>
