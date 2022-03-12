@@ -11,10 +11,10 @@ public class PostEndpoints : IEndpoint
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/posts", async () => await _postController.GetAll()).WithTags("Post");
-        app.MapGet("/api/posts/{id}", async (int id) => await _postController.GetById(id)).WithTags("Post");
-        app.MapPost("/api/posts", async (PostDto postDto) => await _postController.Create(postDto)).WithTags("Post");
-        app.MapPut("/api/posts", async (PostDto postDto) => await _postController.Update(postDto)).WithTags("Post");
-        app.MapDelete("/api/posts/{id}", async (int id) => await _postController.Delete(id)).WithTags("Post");
+        app.MapGet("/api/posts", [AllowAnonymous] async () => await _postController.GetAll()).WithTags("Post");
+        app.MapGet("/api/posts/{id}", [AllowAnonymous] async (int id) => await _postController.GetById(id)).WithTags("Post");
+        app.MapPost("/api/posts", [Authorize] async (PostDto postDto) => await _postController.Create(postDto)).WithTags("Post");
+        app.MapPut("/api/posts", [Authorize] async (PostDto postDto) => await _postController.Update(postDto)).WithTags("Post");
+        app.MapDelete("/api/posts/{id}", [Authorize] async (int id) => await _postController.Delete(id)).WithTags("Post");
     }
 }

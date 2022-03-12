@@ -1,6 +1,52 @@
 var builder = WebApplication.CreateBuilder(args);
 
+var securityScheme = new OpenApiSecurityScheme()
+{
+    Name = "Authorization",
+    Type = SecuritySchemeType.ApiKey,
+    Scheme = "Bearer",
+    BearerFormat = "JWT",
+    In = ParameterLocation.Header,
+    Description = "JOSN Web Token based security"
+};
 
+var securityReq = new OpenApiSecurityRequirement()
+{
+    {
+        new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"
+            }
+        },
+        new string[] { }
+    }
+};
+
+var contact = new OpenApiContact()
+{
+    Name = "Huy Nguyen",
+    Email = "huynguyen260398@gmail.com",
+    Url = new Uri("http://www.huynguyen.com")
+};
+
+var license = new OpenApiLicense()
+{
+    Name = "Free License",
+    Url = new Uri("http://www.huynguyen.com")
+};
+
+var info = new OpenApiInfo()
+{
+    Version = "V1",
+    Title = "Minimal API - JWT Auth",
+    Description = "Implement JWT Auth in Minimal API",
+    TermsOfService = new Uri("http://www.huynguyen.com"),
+    Contact = contact,
+    License = license
+};
 
 // Cors Policy
 builder.Services.AddCors(o =>
@@ -16,8 +62,38 @@ Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(o =>
+{
+    o.SwaggerDoc("v1", info);
+    o.AddSecurityDefinition("Bearer", securityScheme);
+    o.AddSecurityRequirement(securityReq);
+});
+
 builder.Services.AddAutoMapper(typeof(Mapping));
+
+// Add JWT Config
+builder.Services.AddAuthentication(o =>
+{
+    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(o =>
+{
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
+});
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IArchievementRepo, ArchievementRepo>();
 builder.Services.AddScoped<IImageRepo, ImageRepo>();
@@ -44,12 +120,52 @@ builder.Services.AddEndpoints();
 
 var app = builder.Build();
 
+app.MapPost("api/users/login", [AllowAnonymous] async (string email, string password, IUserRepo userRepo) => {
+    var user = await userRepo.GetUserAsync();
+
+    if (email == user.Email && password == user.Password)
+    {
+        var secureKey = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
+        var issuer = builder.Configuration["Jwt:Issuer"];
+        var audience = builder.Configuration["Jwt:Audience"];
+        var securityKey = new SymmetricSecurityKey(secureKey);
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
+
+        var jwtTokenHandler = new JwtSecurityTokenHandler();
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[] {
+                new Claim("Id", "1"),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            }),
+            Expires = DateTime.Now.AddMinutes(15),
+            Audience = audience,
+            Issuer = issuer,
+            SigningCredentials = credentials
+        };
+
+        var token = jwtTokenHandler.CreateToken(tokenDescriptor);
+        var jwtToken = jwtTokenHandler.WriteToken(token);
+        return Results.Ok(jwtToken);
+    }
+    return Results.Unauthorized();
+}).WithTags("User");
+
+app.MapGet("/AuthorizedResource", [Authorize] () => "Action Succeeded");
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
