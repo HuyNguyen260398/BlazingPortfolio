@@ -23,6 +23,9 @@ builder.Services.AddMudServices(config =>
 });
 
 builder.Services.AddSyncfusionBlazor();
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<AuthenticationStateProvider, AppAuthenticationStateProvider>();
 
 builder.Services.AddScoped<IArchievementRepo, ArchievementRepo>();
 builder.Services.AddScoped<IImageRepo, ImageRepo>();

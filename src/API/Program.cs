@@ -120,10 +120,10 @@ builder.Services.AddEndpoints();
 
 var app = builder.Build();
 
-app.MapPost("api/users/login", [AllowAnonymous] async (string email, string password, IUserRepo userRepo) => {
+app.MapPost("api/users/login", [AllowAnonymous] async (UserDto authUser, IUserRepo userRepo) => {
     var user = await userRepo.GetUserAsync();
 
-    if (email == user.Email && password == user.Password)
+    if (authUser.Email == user.Email && authUser.Password == user.Password)
     {
         var secureKey = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
         var issuer = builder.Configuration["Jwt:Issuer"];

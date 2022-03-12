@@ -5,15 +5,18 @@
 @inject IArchievementRepo ArchievementRepo
 @inject IPostRepo PostRepo
 
-<Breadcrumbs />
+<AuthorizeView>
+    <Authorized>
+        <Breadcrumbs />
 
-<SummaryCards
-    ServiceList="@_services"
-    ImageList="@_images"
-    ArchievementList="_archievements"
-    PostList="_posts"/>
+        <SummaryCards ServiceList="@_services"
+                      ImageList="@_images"
+                      ArchievementList="_archievements"
+                      PostList="_posts" />
 
-<VisitorsChart />
+        <VisitorsChart />
+    </Authorized>
+</AuthorizeView>
 
 @code
 {
