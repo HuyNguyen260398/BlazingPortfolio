@@ -1,6 +1,8 @@
 ﻿@page "/admin/posts/edit"
 @page "/admin/posts/edit/{Id:int}"
 
+@attribute [Authorize]
+
 @inject NavigationManager NavManager
 @inject ISnackbar Snackbar
 @inject IPostRepo PostRepo
