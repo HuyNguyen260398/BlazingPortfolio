@@ -1,6 +1,8 @@
 ﻿@page "/admin/archievements/edit"
 @page "/admin/archievements/edit/{Id:int}"
 
+@attribute [Authorize]
+
 @inject NavigationManager NavManager
 @inject ISnackbar Snackbar
 @inject IArchievementRepo ArchievementRepo

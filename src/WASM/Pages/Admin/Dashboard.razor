@@ -1,5 +1,7 @@
 ﻿@page "/admin"
 
+@attribute [Authorize]
+
 @inject IServiceRepo ServiceRepo
 @inject IImageRepo ImageRepo
 @inject IArchievementRepo ArchievementRepo
@@ -7,11 +9,10 @@
 
 <Breadcrumbs />
 
-<SummaryCards
-    ServiceList="@_services"
-    ImageList="@_images"
-    ArchievementList="_archievements"
-    PostList="_posts"/>
+<SummaryCards ServiceList="@_services"
+              ImageList="@_images"
+              ArchievementList="_archievements"
+              PostList="_posts" />
 
 <VisitorsChart />
 

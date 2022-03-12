@@ -1,6 +1,8 @@
 ﻿@page "/admin/services/edit"
 @page "/admin/services/edit/{Id:int}"
 
+@attribute [Authorize]
+
 @inject NavigationManager NavManager
 @inject ISnackbar Snackbar
 @inject IServiceRepo ServiceRepo

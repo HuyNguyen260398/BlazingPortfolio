@@ -1,7 +1,10 @@
 ﻿@layout AuthLayout
 @page "/admin/login"
 
+@inject HttpClient HttpClient
 @inject NavigationManager NavManager
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
 @inject ISnackbar Snackbar
 @inject IUserRepo UserRepo
 
@@ -32,16 +35,30 @@
 
     private async Task HandleLogin()
     {
-        var user = await UserRepo.GetUserAsync(ApiEndPoints.UserEndpoint);
-
-        if (User.Email.Equals(user.Email))
+        var authData = new FormUrlEncodedContent(new[]
         {
-            if (User.Password.Equals(user.Password))
-                NavManager.NavigateTo("/admin");
-            else
-                Snackbar.Add("Password is invalid!", Severity.Error);
-        }
+                new KeyValuePair<string, string>("email", User.Email),
+                new KeyValuePair<string, string>("password", User.Password),
+        });
+
+        var authResponse = await HttpClient.PostAsJsonAsync($"{ApiEndPoints.UserEndpoint}/login", User);
+
+        if (!authResponse.IsSuccessStatusCode)
+            Snackbar.Add("Attemp signin failed", Severity.Error);
         else
-            Snackbar.Add("Email is invalid!", Severity.Error);
+        {
+            string jsonWebToken = await authResponse.Content.ReadAsStringAsync();
+
+            // Work around for getting img path from ReadAsStringAsync() issue
+            var correctJsonWebToken = Regex.Replace(jsonWebToken, @"[^0-9a-zA-Z./-]+", "");
+
+            await LocalStorage.SetItemAsync("BearerToken", correctJsonWebToken);
+
+            await ((AppAuthenticationStateProvider)AuthStateProvider).SignIn();
+
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", jsonWebToken);
+
+            NavManager.NavigateTo("/admin");
+        }
     }
 }

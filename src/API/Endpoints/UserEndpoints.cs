@@ -11,7 +11,7 @@ public class UserEndpoints : IEndpoint
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/users", async () => await _userController.GetUser()).WithTags("User");
-        app.MapPut("/api/users", async (UserDto userDto) => await _userController.Update(userDto)).WithTags("User");
+        app.MapGet("/api/users", [AllowAnonymous] async () => await _userController.GetUser()).WithTags("User");
+        app.MapPut("/api/users", [Authorize] async (UserDto userDto) => await _userController.Update(userDto)).WithTags("User");
     }
 }

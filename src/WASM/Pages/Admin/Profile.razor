@@ -1,5 +1,7 @@
 ﻿@page "/admin/profile"
 
+@attribute [Authorize]
+
 @inject HttpClient HttpClient
 @inject ISnackbar Snackbar
 @inject IUserRepo UserRepo

@@ -1,11 +1,17 @@
 ﻿global using System.Net;
 global using System.Net.Http.Json;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using System.Text.RegularExpressions;
 global using Microsoft.AspNetCore.Components.Web;
 global using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+global using Microsoft.AspNetCore.Components.Authorization;
 global using MudBlazor.Services;
 global using MudBlazor;
 global using Syncfusion.Blazor;
+global using Blazored.LocalStorage;
 global using WASM;
 global using WASM.Services;
 global using WASM.Interfaces;
+global using WASM.Providers;
 global using Application.Dtos;
