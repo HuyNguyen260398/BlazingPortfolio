@@ -21,7 +21,7 @@ var securityReq = new OpenApiSecurityRequirement()
                 Id = "Bearer"
             }
         },
-        new string[] { }
+        Array.Empty<string>()
     }
 };
 
@@ -171,34 +171,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCors("CorsPolicy");
-
-//using (var serviceScope = app.Services.CreateScope())
-//{
-//    var scopeProvider = serviceScope.ServiceProvider;
-
-//    try
-//    {
-//        var userController = scopeProvider.GetRequiredService<IUserController>();
-//        var skillController = scopeProvider.GetRequiredService<ISkillController>();
-//        var serviceController = scopeProvider.GetRequiredService<IServiceController>();
-//        var imageController = scopeProvider.GetRequiredService<IImageController>();
-//        var archievementController = scopeProvider.GetRequiredService<IArchievementController>();
-//        var postController = scopeProvider.GetRequiredService<IPostController>();
-
-//        ApiConfigs.InitDIContainer(
-//            userController,
-//            skillController,
-//            serviceController,
-//            imageController,
-//            archievementController,
-//            postController);
-//    }
-//    catch (Exception)
-//    {
-//        throw;
-//    }
-
-//}
 
 app.MapEndpoints();
 
