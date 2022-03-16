@@ -5,7 +5,7 @@ internal static class ApiEndPoints
 #if DEBUG
     internal const string ServerBaseUrl = "https://localhost:7007";
 #else
-    internal const string ServerBaseUrl = "";
+    internal const string ServerBaseUrl = "https://blazingporfolioapi.azurewebsites.net";
 #endif
     internal readonly static string ArchievementEndpoint = $"{ServerBaseUrl}/api/archievements";
     internal readonly static string ImageEndpoint = $"{ServerBaseUrl}/api/images";
