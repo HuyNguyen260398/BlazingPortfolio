@@ -48,13 +48,18 @@ var info = new OpenApiInfo()
     License = license
 };
 
+var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 // Cors Policy
 builder.Services.AddCors(o =>
 {
-    o.AddPolicy("CorsPolicy", builder =>
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader());
+    o.AddPolicy(name: myAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("https://localhost:7035")
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
 });
 
 Dependencies.ConfigureServices(builder.Configuration, builder.Services);
@@ -167,13 +172,14 @@ app.MapGet("/AuthorizedResource", [Authorize] () => "Action Succeeded");
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseRouting();
 
-app.UseCors("CorsPolicy");
+app.UseCors(myAllowSpecificOrigins);
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapEndpoints();
 
