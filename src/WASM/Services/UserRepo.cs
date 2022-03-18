@@ -3,10 +3,12 @@
 public class UserRepo : BaseRepo<UserDto>, IUserRepo
 {
     private readonly HttpClient _httpClient;
+    private readonly ILocalStorageService _localStorage;
 
-    public UserRepo(HttpClient httpClient) : base(httpClient)
+    public UserRepo(HttpClient httpClient, ILocalStorageService localStorage) : base(httpClient, localStorage)
     {
         _httpClient = httpClient;
+        _localStorage = localStorage;
     }
 
     public async Task<UserDto> GetUserAsync(string url)

@@ -56,7 +56,8 @@ builder.Services.AddCors(o =>
     o.AddPolicy(name: myAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("https://localhost:7035")
+                    builder.WithOrigins("https://localhost:7035",
+                                               "https://blazingporfoliowasm.azurewebsites.net")
                            .AllowAnyHeader()
                            .AllowAnyMethod();
                 });
@@ -161,20 +162,11 @@ app.MapPost("api/users/login", [AllowAnonymous] async (UserDto authUser, IUserRe
 
 app.MapGet("/AuthorizedResource", [Authorize] () => "Action Succeeded");
 
-
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseRouting();
 
 app.UseCors(myAllowSpecificOrigins);
 
