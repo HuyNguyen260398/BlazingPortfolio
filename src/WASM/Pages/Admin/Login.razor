@@ -11,7 +11,6 @@
 <MudGrid>
     <MudItem xs="12" Class="d-flex justify-center align-items-center" Style="height:100%">
         <MudPaper Elevation="5" Width="400px" Height="auto" Class="pa-5" Style="margin-top:200px">
-            @*<MudText Typo="Typo.h4" Class="text-center">Login</MudText>*@
             <MudItem Class="d-flex justify-center">
                 <MudIcon Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Primary" Style="font-size: 5rem;" />
             </MudItem>
@@ -49,14 +48,14 @@
         {
             string jsonWebToken = await authResponse.Content.ReadAsStringAsync();
 
-            // Work around for getting img path from ReadAsStringAsync() issue
-            var correctJsonWebToken = Regex.Replace(jsonWebToken, @"[^0-9a-zA-Z./-]+", "");
+            // Work around for getting returned string from client
+            var correctJsonWebToken = Regex.Replace(jsonWebToken, @"[^0-9a-zA-Z._'-]+", "");
 
             await LocalStorage.SetItemAsync("BearerToken", correctJsonWebToken);
 
             await ((AppAuthenticationStateProvider)AuthStateProvider).SignIn();
 
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", jsonWebToken);
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jsonWebToken);
 
             NavManager.NavigateTo("/admin");
         }

@@ -128,11 +128,16 @@
         var buffer = new byte[resizedImageFile.Size];
         await resizedImageFile.OpenReadStream().ReadAsync(buffer);
         imageDataUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+        _attemptUpload = true;
     }
 
     private async Task HandleSaveUpdate()
     {
-        await HandleUploadImage();
+        if (_attemptUpload)
+        {
+            await HandleUploadImage();
+            _attemptUpload = false;
+        }
 
         if (_attemptUploadFailed)
             Snackbar.Add("Error uploading avatar.", Severity.Error);
@@ -156,8 +161,6 @@
 
     private async Task HandleUploadImage()
     {
-        _attemptUpload = true;
-
         if (imageUpload.ContentType != "image/jpeg" && imageUpload.ContentType != "image/png")
         {
             Snackbar.Add("Invalid image type.", Severity.Warning);
@@ -192,6 +195,5 @@
             else
                 _attemptUploadFailed = true;
         }
-        _attemptUpload = false;
     }
 }
