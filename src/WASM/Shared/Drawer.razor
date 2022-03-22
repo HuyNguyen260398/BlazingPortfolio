@@ -1,16 +1,5 @@
 ﻿@inject NavigationManager NavManager
 
-@*<MudDrawer ClipMode="@DrawerClipMode.Always" @bind-Open="@DrawerOpen" Elevation="5" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
-    <AuthorizeView>
-        <Authorized>
-            <AdminNavMenu />
-        </Authorized>
-        <NotAuthorized>
-            <PublicNavMenu />
-        </NotAuthorized>
-    </AuthorizeView>
-</MudDrawer>*@
-
 <MudDrawer ClipMode="@DrawerClipMode.Always" @bind-Open="@DrawerOpen" Elevation="5" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
     @if (NavManager.Uri.Contains("admin"))
     {
