@@ -1,7 +1,5 @@
 ﻿@page "/admin/archievements"
 
-@attribute [Authorize]
-
 @inject NavigationManager NavManager
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
@@ -44,12 +42,21 @@
 
 @code
 {
-    private IEnumerable<ArchievementDto> Archievements = new List<ArchievementDto>();
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthState { get; set; }
 
+    private IEnumerable<ArchievementDto> Archievements = new List<ArchievementDto>();
     private string searchString = "";
 
     protected override async Task OnInitializedAsync()
     {
+        var user = (await AuthState).User;
+        if (!user.Identity.IsAuthenticated)
+        {
+            var localRedirect = "/" + NavManager.ToBaseRelativePath(NavManager.Uri);
+            NavManager.NavigateTo($"/admin/login?returnUrl={Uri.EscapeDataString(localRedirect)}");
+        }
+
         Archievements = await ArchievementRepo.GetAllAsync(ApiEndPoints.ArchievementEndpoint);
     }
 

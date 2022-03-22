@@ -1,8 +1,6 @@
 ﻿@page "/admin/posts/edit"
 @page "/admin/posts/edit/{Id:int}"
 
-@attribute [Authorize]
-
 @inject NavigationManager NavManager
 @inject ISnackbar Snackbar
 @inject IPostRepo PostRepo
@@ -90,6 +88,9 @@
 
     [Parameter]
     public int Id { get; set; } = 0;
+    
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthState { get; set; }
 
     private PostDto Post = new PostDto();
     private bool submitResult = false;
@@ -97,6 +98,16 @@
     private string imageDataUrl = "./asset/img/placeholder.png";
     private bool _attemptUpload = false;
     private bool _attemptUploadFailed = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = (await AuthState).User;
+        if (!user.Identity.IsAuthenticated)
+        {
+            var localRedirect = "/" + NavManager.ToBaseRelativePath(NavManager.Uri);
+            NavManager.NavigateTo($"/admin/login?returnUrl={Uri.EscapeDataString(localRedirect)}");
+        }
+    }
 
     protected override async Task OnParametersSetAsync()
     {

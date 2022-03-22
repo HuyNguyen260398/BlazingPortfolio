@@ -1,7 +1,5 @@
 ﻿@page "/admin/posts"
 
-@attribute [Authorize]
-
 @inject NavigationManager NavManager
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
@@ -54,12 +52,21 @@
 
 @code
 {
-    private IEnumerable<PostDto> Posts = new List<PostDto>();
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthState { get; set; }
 
+    private IEnumerable<PostDto> Posts = new List<PostDto>();
     private string searchString = "";
 
     protected override async Task OnInitializedAsync()
     {
+        var user = (await AuthState).User;
+        if (!user.Identity.IsAuthenticated)
+        {
+            var localRedirect = "/" + NavManager.ToBaseRelativePath(NavManager.Uri);
+            NavManager.NavigateTo($"/admin/login?returnUrl={Uri.EscapeDataString(localRedirect)}");
+        }
+
         Posts = await PostRepo.GetAllAsync(ApiEndPoints.PostEndpoint);
     }
 

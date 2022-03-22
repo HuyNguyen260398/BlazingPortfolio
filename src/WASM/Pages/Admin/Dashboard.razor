@@ -1,7 +1,6 @@
 ﻿@page "/admin"
 
-@attribute [Authorize]
-
+@inject NavigationManager NavManager
 @inject IServiceRepo ServiceRepo
 @inject IImageRepo ImageRepo
 @inject IArchievementRepo ArchievementRepo
@@ -18,6 +17,9 @@
 
 @code
 {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthState { get; set; }
+
     private IEnumerable<ServiceDto> _services = new List<ServiceDto>();
     private IEnumerable<ImageDto> _images = new List<ImageDto>();
     private IEnumerable<ArchievementDto> _archievements = new List<ArchievementDto>();
@@ -25,6 +27,13 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var user = (await AuthState).User;
+        if (!user.Identity.IsAuthenticated)
+        {
+            var localRedirect = "/" + NavManager.ToBaseRelativePath(NavManager.Uri);
+            NavManager.NavigateTo($"/admin/login?returnUrl={Uri.EscapeDataString(localRedirect)}");
+        }
+
         _services = await ServiceRepo.GetAllAsync(ApiEndPoints.ServiceEndpoint);
         _images = await ImageRepo.GetAllAsync(ApiEndPoints.ImageEndpoint);
         _archievements = await ArchievementRepo.GetAllAsync(ApiEndPoints.ArchievementEndpoint);
