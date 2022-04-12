@@ -1,23 +1,26 @@
 pipeline {
-    node ('test') {
-        environment {
-            dotnet = 'C:\\Program Files\\dotnet\\dotnet.exe'
+    agent {
+        node {
+            label 'test'
         }
-        stages {
-            stage('Checkout') {
-                steps {
-                    git credentialsId: 'HuyNguyen260398', url: 'https://github.com/HuyNguyen260398/BlazingPortfolio.git', branch: 'feature/ci_cd_with_jenkins'
-                }
+    }
+    environment {
+        dotnet = 'C:\\Program Files\\dotnet\\dotnet.exe'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git credentialsId: 'HuyNguyen260398', url: 'https://github.com/HuyNguyen260398/BlazingPortfolio.git', branch: 'feature/ci_cd_with_jenkins'
             }
-            stage('Restore') {
-                steps {
-                    bat 'dotnet restore --configfile Nuget.Config'
-                }
+        }
+        stage('Restore') {
+            steps {
+                bat 'dotnet restore --configfile Nuget.Config'
             }
-            stage('Build') {
-                steps {
-                    bat 'dotnet build --configuration Release'
-                }
+        }
+        stage('Build') {
+            steps {
+                bat 'dotnet build --configuration Release'
             }
         }
     }
