@@ -10,17 +10,29 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'HuyNguyen260398', url: 'https://github.com/HuyNguyen260398/BlazingPortfolio.git', branch: 'feature/ci_cd_with_jenkins'
+                git credentialsId: 'Git_SSH', url: 'git@github.com:HuyNguyen260398/BlazingPortfolio.git', branch: 'feature/ci_cd_with_jenkins'
             }
         }
         stage('Restore') {
             steps {
-                bat 'dotnet restore --configfile Nuget.Config'
+                // bat 'dotnet restore --configfile Nuget.Config'
+                echo 'Restore'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Test'
             }
         }
         stage('Build') {
             steps {
-                bat 'dotnet build --configuration Release'
+                // bat 'dotnet build --configuration Release'
+                echo 'Build'
+            }
+        }
+        stage('Dockerize') {
+            steps {
+                echo 'Dockerize'
             }
         }
     }
