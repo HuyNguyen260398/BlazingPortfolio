@@ -10,7 +10,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'Git_SSH', url: 'git@github.com:HuyNguyen260398/BlazingPortfolio.git', branch: 'feature/ci_cd_with_jenkins'
+                //git credentialsId: 'Git_SSH', url: 'git@github.com:HuyNguyen260398/BlazingPortfolio.git', branch: 'feature/ci_cd_with_jenkins'
+                bat 'pwd'
             }
         }
         stage('Restore') {
