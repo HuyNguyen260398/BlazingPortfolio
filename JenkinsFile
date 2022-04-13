@@ -33,5 +33,10 @@ pipeline {
                 echo "Dockerize"
             }
         }
+        stage("Clean WS") {
+            steps {
+                clearWs()
+            }
+        }
     }
 }
