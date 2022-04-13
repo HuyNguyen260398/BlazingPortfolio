@@ -8,15 +8,10 @@ pipeline {
         dotnet = "C:\\Program Files\\dotnet\\dotnet.exe"
     }
     stages {
-        stage("Checkout") {
-            steps {
-                //git credentialsId: "Git_SSH", url: "git@github.com:HuyNguyen260398/BlazingPortfolio.git", branch: "feature/ci_cd_with_jenkins"
-                echo "${pwd()}"
-            }
-        }
         stage("Restore") {
             steps {
                 // bat "dotnet restore --configfile Nuget.Config"
+                echo "${pwd()}"
                 echo "Restore"
             }
         }
