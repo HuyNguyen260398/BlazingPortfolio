@@ -10,9 +10,9 @@ pipeline {
     stages {
         stage("Restore") {
             steps {
-                // bat "dotnet restore --configfile Nuget.Config"
-                echo "${pwd()}"
-                echo "Restore"
+                bat "dotnet restore"
+                //echo "${pwd()}"
+                //echo "Restore"
             }
         }
         stage("Test") {
