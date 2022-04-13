@@ -11,8 +11,6 @@ pipeline {
         stage("Restore") {
             steps {
                 bat "dotnet restore"
-                //echo "${pwd()}"
-                //echo "Restore"
             }
         }
         stage("Test") {
@@ -22,8 +20,7 @@ pipeline {
         }
         stage("Build") {
             steps {
-                // bat "dotnet build --configuration Release"
-                echo "Build"
+                bat "dotnet build"
             }
         }
         stage("Dockerize") {
