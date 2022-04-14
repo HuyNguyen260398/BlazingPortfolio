@@ -28,9 +28,10 @@ pipeline {
                 bat "dotnet build"
             }
         }
-        stage("Dockerize") {
+        stage("Build Image") {
             steps {
                 echo "Dockerize"
+                pwd()
             }
         }
         stage("Clean WS") {
