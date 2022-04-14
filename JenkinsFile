@@ -39,9 +39,10 @@ pipeline {
         stage("Deploy Images") {
             steps {
                 script {
-                    docker.withRegistry("", dockerhub_credentials)
-                    api_image.push()
-                    wasm_image.push()
+                    docker.withRegistry("", dockerhub_credentials) {
+                        api_image.push()
+                        wasm_image.push()
+                    }
                 }
             }
         }
