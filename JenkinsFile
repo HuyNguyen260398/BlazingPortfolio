@@ -8,7 +8,8 @@ pipeline {
         dotnet = "C:\\Program Files\\dotnet\\dotnet.exe"
         dockerhub_repo = "huynguyen260398/blazing-portfolio"
         dockerhub_credentials = "DockerHub_Credentials"
-        docker_image = ""
+        api_image = ""
+        wasm_image = ""
     }
     stages {
         stage("Restore") {
@@ -31,10 +32,17 @@ pipeline {
                 bat "dotnet build"
             }
         }
-        stage("Build Image") {
+        stage("Build API Image") {
             steps {
                 script {
-                    docker_image = docker.build("test_imge", "-f src/api/Dockerfile .")
+                    api_image = docker.build("api_imge", "-f src/API/Dockerfile .")
+                }
+            }
+        }
+        stage("Build WASM Image") {
+            steps {
+                script {
+                    wasm_image = docker.build("wasm_imge", "-f src/WASM/Dockerfile .")
                 }
             }
         }
