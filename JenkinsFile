@@ -48,6 +48,8 @@ pipeline {
         }
         stage("Clean Workspace") {
             steps {
+                bat "docker rmi ${api_dockerhub_repo}:1.${BUILD_NUMBER}"
+                bat "docker rmi ${wasm_dockerhub_repo}:1.${BUILD_NUMBER}"
                 cleanWs()
             }
         }
