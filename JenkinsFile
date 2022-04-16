@@ -4,6 +4,9 @@ pipeline {
             label "test"
         }
     }
+    options {
+        timestamps ()
+    }
     environment {
         dotnet = "C:\\Program Files\\dotnet\\dotnet.exe"
         api_dockerhub_repo = "huynguyen260398/blazing-portfolio-api"
