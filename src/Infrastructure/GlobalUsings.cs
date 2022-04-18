@@ -1,9 +1,16 @@
 ﻿global using System.Reflection;
+global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
-global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Options;
+global using MongoDB.Driver;
+global using MongoDB.Bson;
+global using MongoDB.Bson.Serialization;
+global using MongoDB.Bson.Serialization.Serializers;
 global using AutoMapper;
 global using Infrastructure.SqliteDb;
+global using Infrastructure.MongoDb;
 global using CoreBusiness.Models;
 global using Application.Dtos;
 global using Application.Interfaces;
+global using Application.Profiles;
