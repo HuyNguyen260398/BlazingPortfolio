@@ -11,10 +11,11 @@ public static class Dependencies
         BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
         BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
 
-        services.Configure<DbSettings>(configuration.GetSection("MongoConnection"));
-
-        services.AddSingleton<MongoContext>();
-
-        services.AddScoped<IMongoDataService, MongoDataService>();
+        services.AddSingleton(serviceProvider =>
+        {
+            var mongodbSettings = configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+            var mongoClient = new MongoClient(mongodbSettings.ConnectionString);
+            return mongoClient.GetDatabase(mongodbSettings.DatabaseName);
+        });
     }
 }

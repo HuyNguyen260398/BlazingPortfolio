@@ -1,6 +1,6 @@
-﻿namespace Application.Profiles;
+﻿namespace Infrastructure.MongoDb;
 
-public class DbSettings
+public class MongoDbSettings
 {
     public string ConnectionString { get; set; }
     public string DatabaseName { get; set; }

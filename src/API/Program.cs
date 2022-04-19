@@ -63,6 +63,8 @@ builder.Services.AddCors(o =>
                 });
 });
 
+builder.Services.AddAutoMapper(typeof(Mapping));
+
 Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
 // Add services to the container.
@@ -75,8 +77,6 @@ builder.Services.AddSwaggerGen(o =>
     o.AddSecurityDefinition("Bearer", securityScheme);
     o.AddSecurityRequirement(securityReq);
 });
-
-builder.Services.AddAutoMapper(typeof(Mapping));
 
 // Add JWT Config
 builder.Services.AddAuthentication(o =>
@@ -101,12 +101,12 @@ builder.Services.AddAuthentication(o =>
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
-//builder.Services.AddScoped<IArchievementRepo, ArchievementMongoRepo>();
-//builder.Services.AddScoped<IImageRepo, ImageMongoRepo>();
-//builder.Services.AddScoped<IPostRepo, PostMongoRepo>();
-//builder.Services.AddScoped<IServiceRepo, ServiceMongoRepo>();
-//builder.Services.AddScoped<ISkillRepo, SkillMongoRepo>();
-//builder.Services.AddScoped<IUserRepo, UserMongoRepo>();
+builder.Services.AddScoped<IArchievementRepo, ArchievementMongoRepo>();
+builder.Services.AddScoped<IImageRepo, ImageMongoRepo>();
+builder.Services.AddScoped<IPostRepo, PostMongoRepo>();
+builder.Services.AddScoped<IServiceRepo, ServiceMongoRepo>();
+builder.Services.AddScoped<ISkillRepo, SkillMongoRepo>();
+builder.Services.AddScoped<IUserRepo, UserMongoRepo>();
 
 //builder.Services.AddScoped<IArchievementRepo, ArchievementRepo>();
 //builder.Services.AddScoped<IImageRepo, ImageRepo>();
