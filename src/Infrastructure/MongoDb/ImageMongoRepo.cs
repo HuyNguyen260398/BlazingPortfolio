@@ -13,12 +13,12 @@ public class ImageMongoRepo : IImageRepo
 
     public async Task<IEnumerable<ImageDto>> GetAllAsync()
     {
-        return _mapper.Map<IEnumerable<ImageDto>>(await Task.FromResult(_collection.AsQueryable()));
+        return _mapper.Map<IEnumerable<ImageDto>>(await Task.FromResult(_collection.AsQueryable().ToList()));
     }
 
     public async Task<ImageDto> GetByIdAsync(int id)
     {
-        return _mapper.Map<ImageDto>(await _collection.FindAsync(i => i.ImageId == id));
+        return _mapper.Map<ImageDto>(await _collection.Find(i => i.ImageId == id).FirstOrDefaultAsync());
     }
 
     public Task<bool> IsExistsAsync(int id)

@@ -13,12 +13,12 @@ public class SkillMongoRepo : ISkillRepo
 
     public async Task<IEnumerable<SkillDto>> GetAllAsync()
     {
-        return _mapper.Map<IEnumerable<SkillDto>>(await Task.FromResult(_collection.AsQueryable()));
+        return _mapper.Map<IEnumerable<SkillDto>>(await Task.FromResult(_collection.AsQueryable().ToList()));
     }
 
     public async Task<SkillDto> GetByIdAsync(int id)
     {
-        return _mapper.Map<SkillDto>(await _collection.FindAsync(i => i.SkillId == id));
+        return _mapper.Map<SkillDto>(await _collection.Find(i => i.SkillId == id).FirstOrDefaultAsync());
     }
 
     public Task<bool> IsExistsAsync(int id)

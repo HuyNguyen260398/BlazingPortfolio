@@ -13,12 +13,12 @@ public class ArchievementMongoRepo : IArchievementRepo
 
     public async Task<IEnumerable<ArchievementDto>> GetAllAsync()
     {
-        return _mapper.Map<IEnumerable<ArchievementDto>>(await Task.FromResult(_collection.AsQueryable()));
+        return _mapper.Map<IEnumerable<ArchievementDto>>(await Task.FromResult(_collection.AsQueryable().ToList()));
     }
 
     public async Task<ArchievementDto> GetByIdAsync(int id)
     {
-        return _mapper.Map<ArchievementDto>(await _collection.FindAsync(i => i.ArchievementId == id));
+        return _mapper.Map<ArchievementDto>(await _collection.Find(i => i.ArchievementId == id).FirstOrDefaultAsync());
     }
 
     public Task<bool> IsExistsAsync(int id)

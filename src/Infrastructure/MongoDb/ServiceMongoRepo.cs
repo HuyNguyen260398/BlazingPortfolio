@@ -13,12 +13,12 @@ public class ServiceMongoRepo : IServiceRepo
 
     public async Task<IEnumerable<ServiceDto>> GetAllAsync()
     {
-        return _mapper.Map<IEnumerable<ServiceDto>>(await Task.FromResult(_collection.AsQueryable()));
+        return _mapper.Map<IEnumerable<ServiceDto>>(await Task.FromResult(_collection.AsQueryable().ToList()));
     }
 
     public async Task<ServiceDto> GetByIdAsync(int id)
     {
-        return _mapper.Map<ServiceDto>(await _collection.FindAsync(i => i.ServiceId == id));
+        return _mapper.Map<ServiceDto>(await _collection.Find(i => i.ServiceId == id).FirstOrDefaultAsync());
     }
 
     public Task<bool> IsExistsAsync(int id)

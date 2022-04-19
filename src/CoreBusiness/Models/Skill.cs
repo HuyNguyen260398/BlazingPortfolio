@@ -1,5 +1,6 @@
 ﻿namespace CoreBusiness.Models;
 
+[BsonIgnoreExtraElements]
 public class Skill
 {
     [Key]

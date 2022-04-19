@@ -13,12 +13,12 @@ public class UserMongoRepo : IUserRepo
 
     public async Task<IEnumerable<UserDto>> GetAllAsync()
     {
-        return _mapper.Map<IEnumerable<UserDto>>(await Task.FromResult(_collection.AsQueryable()));
+        return _mapper.Map<IEnumerable<UserDto>>(await Task.FromResult(_collection.AsQueryable().ToList()));
     }
 
     public async Task<UserDto> GetByIdAsync(int id)
     {
-        return _mapper.Map<UserDto>(await _collection.FindAsync(i => i.UserId == id));
+        return _mapper.Map<UserDto>(await _collection.Find(i => i.UserId == id).FirstOrDefaultAsync());
     }
 
     public Task<bool> IsExistsAsync(int id)

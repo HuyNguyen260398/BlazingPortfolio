@@ -13,12 +13,12 @@ public class PostMongoRepo : IPostRepo
 
     public async Task<IEnumerable<PostDto>> GetAllAsync()
     {
-        return _mapper.Map<IEnumerable<PostDto>>(await Task.FromResult(_collection.AsQueryable()));
+        return _mapper.Map<IEnumerable<PostDto>>(await Task.FromResult(_collection.AsQueryable().ToList()));
     }
 
     public async Task<PostDto> GetByIdAsync(int id)
     {
-        return _mapper.Map<PostDto>(await _collection.FindAsync(i => i.PostId == id));
+        return _mapper.Map<PostDto>(await _collection.Find(i => i.PostId == id).FirstOrDefaultAsync());
     }
 
     public Task<bool> IsExistsAsync(int id)
