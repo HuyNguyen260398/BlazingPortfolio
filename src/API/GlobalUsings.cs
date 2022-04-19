@@ -14,5 +14,4 @@ global using Application.Dtos;
 global using Application.Interfaces;
 global using Application.Profiles;
 global using Infrastructure;
-global using Infrastructure.SqliteDb;
-global using Infrastructure.InMemDb;
+global using Infrastructure.MongoDb;
