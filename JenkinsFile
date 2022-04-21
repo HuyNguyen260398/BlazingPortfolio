@@ -33,7 +33,7 @@ pipeline {
         }
         stage("Archive Sources") {
             steps {
-                archiveArtifacts artifacts: '**/bin/'
+                archiveArtifacts artifacts: '**/API/bin/, **/WASM/bin/'
             }
         }
         stage("Build Images") {
