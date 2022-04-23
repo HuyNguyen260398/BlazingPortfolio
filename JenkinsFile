@@ -64,20 +64,19 @@ pipeline {
     }
     post {
         always {
-            echo 'This will always run'
+            emailext body: 'Test', recipientProviders: [buildUser()], subject: 'Build Finished', to: 'huynguyen260398@live.com'
         }
         success {
-            echo 'This will run only if successful'
+            emailext body: 'Test', recipientProviders: [buildUser()], subject: 'Build Success', to: 'huynguyen260398@live.com'
         }
         failure {
-            echo 'This will run only if failed'
+            emailext body: 'Test', recipientProviders: [buildUser()], subject: 'Build Failed', to: 'huynguyen260398@live.com'
         }
         unstable {
-            echo 'This will run only if the run was marked as unstable'
+            emailext body: 'Test', recipientProviders: [buildUser()], subject: 'Build Unstable', to: 'huynguyen260398@live.com'
         }
         changed {
-            echo 'This will run only if the state of the Pipeline has changed'
-            echo 'For example, if the Pipeline was previously failing but is now successful'
+            emailext body: 'Test', recipientProviders: [buildUser()], subject: 'Build Chagned', to: 'huynguyen260398@live.com'
         }
     }
 }
