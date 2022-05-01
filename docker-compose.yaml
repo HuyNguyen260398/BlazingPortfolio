@@ -1,0 +1,39 @@
+version: '3'
+services:
+  app-api:
+    image: huynguyen260398/blazing-portfolio-api
+    container_name: bp-api
+    ports:
+      - 3090:80
+  app-wasm:
+    image: huynguyen260398/blazing-portfolio-wasm
+    container_name: bp-wasm
+    ports:
+      - 3080:80
+  mongo-db:
+    image: mongo
+    container_name: bp-mongo-db
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - mongo-data:/data/db
+  mongo-express:
+    image: mongo-express
+    container_name: bp-mongo-express
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo-db
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=user
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+      - ME_CONFIG_MONGODB_SERVER=mongo-db
+networks:
+  default:
+    name: mongo-network
+volumes:
+  mongo-data:
+    driver: local
