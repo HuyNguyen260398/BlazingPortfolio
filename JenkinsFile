@@ -23,7 +23,7 @@ pipeline {
         }
         stage("Test Sources") {
             steps {
-                echo "Test"
+                echo "Test Sources"
             }
         }
         stage("Build Sources") {
@@ -46,14 +46,15 @@ pipeline {
         }
         stage("Test Images") {
             steps {
-                script {
-                    api_image.inside {
-                        sh 'echo "Tests passed from API"'
-                    }
-                    wasm_image.inside {
-                        sh 'echo "Tests passed from WASM"'
-                    }
-                }
+                // script {
+                //     api_image.inside {
+                //         sh 'echo "Tests passed from API"'
+                //     }
+                //     wasm_image.inside {
+                //         sh 'echo "Tests passed from WASM"'
+                //     }
+                // }
+                echo "Test Images"
             }
         }
         stage("Deploy Images") {
