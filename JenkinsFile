@@ -45,11 +45,15 @@ pipeline {
             }
         }
         stage("Test Images") {
-            api_image.inside {
-                sh 'echo "Tests passed from API"'
-            }
-            wasm_image.inside {
-                sh 'echo "Tests passed from WASM"'
+            steps {
+                script {
+                    api_image.inside {
+                        sh 'echo "Tests passed from API"'
+                    }
+                    wasm_image.inside {
+                        sh 'echo "Tests passed from WASM"'
+                    }
+                }
             }
         }
         stage("Deploy Images") {
@@ -66,8 +70,10 @@ pipeline {
         }
         stage("Clean Workspace") {
             steps {
-                bat "docker rmi ${api_dockerhub_repo}"
-                bat "docker rmi ${wasm_dockerhub_repo}"
+                bat "docker rmi ${api_dockerhub_repo}:1.1.${BUILD_NUMBER}"
+                bat "docker rmi ${api_dockerhub_repo}:latest"
+                bat "docker rmi ${wasm_dockerhub_repo}:1.1.${BUILD_NUMBER}"
+                bat "docker rmi ${wasm_dockerhub_repo}:latest"
                 cleanWs()
             }
         }
