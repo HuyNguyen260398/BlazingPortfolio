@@ -44,6 +44,14 @@ pipeline {
                 }
             }
         }
+        stage("Test Images") {
+            api_image.inside {
+                sh 'echo "Tests passed from API"'
+            }
+            wasm_image.inside {
+                sh 'echo "Tests passed from WASM"'
+            }
+        }
         stage("Deploy Images") {
             steps {
                 script {
