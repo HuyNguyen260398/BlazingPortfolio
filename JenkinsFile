@@ -69,12 +69,16 @@ pipeline {
                 }
             }
         }
-        stage("Clean Workspace") {
+        stage("Clean Images") {
             steps {
                 bat "docker rmi ${api_dockerhub_repo}:1.1.${BUILD_NUMBER}"
                 bat "docker rmi ${api_dockerhub_repo}:latest"
                 bat "docker rmi ${wasm_dockerhub_repo}:1.1.${BUILD_NUMBER}"
                 bat "docker rmi ${wasm_dockerhub_repo}:latest"
+            }
+        }
+        stage("Clean Workspace") {
+            steps {
                 cleanWs()
             }
         }
