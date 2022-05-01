@@ -39,8 +39,8 @@ pipeline {
         stage("Build Images") {
             steps {
                 script {
-                    api_image = docker.build("${api_dockerhub_repo}:1.${BUILD_NUMBER}", "-f src/API/Dockerfile .")
-                    wasm_image = docker.build("${wasm_dockerhub_repo}:1.${BUILD_NUMBER}", "-f src/WASM/Dockerfile .")
+                    api_image = docker.build("${api_dockerhub_repo}", "-f src/API/Dockerfile .")
+                    wasm_image = docker.build("${wasm_dockerhub_repo}", "-f src/WASM/Dockerfile .")
                 }
             }
         }
@@ -48,16 +48,18 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("", dockerhub_credentials) {
-                        api_image.push()
-                        wasm_image.push()
+                        api_image.push("1.1.${BUILD_NUMBER}")
+                        api_image.push("latest")
+                        wasm_image.push("1.1.${BUILD_NUMBER}")
+                        wasm_image.push("latest")
                     }
                 }
             }
         }
         stage("Clean Workspace") {
             steps {
-                bat "docker rmi ${api_dockerhub_repo}:1.${BUILD_NUMBER}"
-                bat "docker rmi ${wasm_dockerhub_repo}:1.${BUILD_NUMBER}"
+                bat "docker rmi ${api_dockerhub_repo}"
+                bat "docker rmi ${wasm_dockerhub_repo}"
                 cleanWs()
             }
         }
