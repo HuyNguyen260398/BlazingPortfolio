@@ -84,20 +84,20 @@ pipeline {
         }
     }
     post {
-        always {
-            emailext body: 'Test', recipientProviders: [buildUser()], subject: 'Build Finished', to: 'huynguyen260398@live.com'
-        }
+        // always {
+        //     emailext attachLog: true, body: 'Build', recipientProviders: [buildUser()], subject: "'Build Finished'", to: 'huynguyen260398@live.com'
+        // }
         success {
-            emailext body: 'Test', recipientProviders: [buildUser()], subject: 'Build Success', to: 'huynguyen260398@live.com'
+            emailext attachLog: true, body: "Click ${BUILD_URL} for more details", recipientProviders: [buildUser()], subject: "Pipeline ${JOB_NAME} - Build ${BUILD_NUMBER} succeed", to: 'huynguyen260398@live.com'
         }
         failure {
-            emailext body: 'Test', recipientProviders: [buildUser()], subject: 'Build Failed', to: 'huynguyen260398@live.com'
+            emailext attachLog: true, body: "Click ${BUILD_URL} for more details", recipientProviders: [buildUser()], subject: "Pipeline ${JOB_NAME} - Build ${BUILD_NUMBER} failed", to: 'huynguyen260398@live.com'
         }
-        unstable {
-            emailext body: 'Test', recipientProviders: [buildUser()], subject: 'Build Unstable', to: 'huynguyen260398@live.com'
-        }
-        changed {
-            emailext body: 'Test', recipientProviders: [buildUser()], subject: 'Build Chagned', to: 'huynguyen260398@live.com'
-        }
+        // unstable {
+        //     emailext attachLog: true, body: 'Test', recipientProviders: [buildUser()], subject: 'Build Unstable', to: 'huynguyen260398@live.com'
+        // }
+        // changed {
+        //     emailext attachLog: true, body: 'Test', recipientProviders: [buildUser()], subject: 'Build Chagned', to: 'huynguyen260398@live.com'
+        // }
     }
 }
