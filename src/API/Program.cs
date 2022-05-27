@@ -1,3 +1,5 @@
+using Infrastructure.SqliteDb;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var securityScheme = new OpenApiSecurityScheme()
@@ -101,19 +103,19 @@ builder.Services.AddAuthentication(o =>
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
-builder.Services.AddScoped<IArchievementRepo, ArchievementMongoRepo>();
-builder.Services.AddScoped<IImageRepo, ImageMongoRepo>();
-builder.Services.AddScoped<IPostRepo, PostMongoRepo>();
-builder.Services.AddScoped<IServiceRepo, ServiceMongoRepo>();
-builder.Services.AddScoped<ISkillRepo, SkillMongoRepo>();
-builder.Services.AddScoped<IUserRepo, UserMongoRepo>();
+//builder.Services.AddScoped<IArchievementRepo, ArchievementMongoRepo>();
+//builder.Services.AddScoped<IImageRepo, ImageMongoRepo>();
+//builder.Services.AddScoped<IPostRepo, PostMongoRepo>();
+//builder.Services.AddScoped<IServiceRepo, ServiceMongoRepo>();
+//builder.Services.AddScoped<ISkillRepo, SkillMongoRepo>();
+//builder.Services.AddScoped<IUserRepo, UserMongoRepo>();
 
-//builder.Services.AddScoped<IArchievementRepo, ArchievementRepo>();
-//builder.Services.AddScoped<IImageRepo, ImageRepo>();
-//builder.Services.AddScoped<IPostRepo, PostRepo>();
-//builder.Services.AddScoped<IServiceRepo, ServiceRepo>();
-//builder.Services.AddScoped<ISkillRepo, SkillRepo>();
-//builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IArchievementRepo, ArchievementRepo>();
+builder.Services.AddScoped<IImageRepo, ImageRepo>();
+builder.Services.AddScoped<IPostRepo, PostRepo>();
+builder.Services.AddScoped<IServiceRepo, ServiceRepo>();
+builder.Services.AddScoped<ISkillRepo, SkillRepo>();
+builder.Services.AddScoped<IUserRepo, UserRepo>();
 
 //builder.Services.AddScoped<IArchievementRepo, ArchievementInMemRepo>();
 //builder.Services.AddScoped<IImageRepo, ImageInMemRepo>();
