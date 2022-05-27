@@ -88,10 +88,26 @@ pipeline {
         //     emailext attachLog: true, body: 'Build', recipientProviders: [buildUser()], subject: "'Build Finished'", to: 'huynguyen260398@live.com'
         // }
         success {
-            emailext attachLog: true, body: "Click ${BUILD_URL} for more details", recipientProviders: [buildUser()], subject: "Pipeline ${JOB_NAME} - Build ${BUILD_NUMBER} succeed", to: 'huynguyen260398@live.com'
+            emailext 
+                attachLog: true, 
+                subject: "SUCCESSFUL: Job '${JOB_NAME} [${BUILD_NUMBER}]'", 
+                to: 'huynguyen260398@live.com', 
+                recipientProviders: [buildUser()], 
+                body: """
+                    <p>SUCCESSFUL: Job '${JOB_NAME} [${BUILD_NUMBER}]':</p>
+                    <p>Check console output at &QUOT;<a href='${BUILD_URL}'>${JOB_NAME} [${BUILD_NUMBER}]</a>&QUOT;</p>
+                """
         }
         failure {
-            emailext attachLog: true, body: "Click ${BUILD_URL} for more details", recipientProviders: [buildUser()], subject: "Pipeline ${JOB_NAME} - Build ${BUILD_NUMBER} failed", to: 'huynguyen260398@live.com'
+            emailext 
+                attachLog: true, 
+                subject: "FAILED: Job '${JOB_NAME} [${BUILD_NUMBER}]'", 
+                to: 'huynguyen260398@live.com', 
+                recipientProviders: [buildUser()], 
+                body: """
+                    <p>FAILED: Job '${JOB_NAME} [${BUILD_NUMBER}]':</p>
+                    <p>Check console output at &QUOT;<a href='${BUILD_URL}'>${JOB_NAME} [${BUILD_NUMBER}]</a>&QUOT;</p>
+                """
         }
         // unstable {
         //     emailext attachLog: true, body: 'Test', recipientProviders: [buildUser()], subject: 'Build Unstable', to: 'huynguyen260398@live.com'
